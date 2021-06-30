@@ -1,7 +1,7 @@
 import { useCallback, useRef } from "react";
-import { PopupOptions } from "../typings";
-import { getUniqueId } from "../utils";
+
 import { usePopupsContext } from "./usePopupsContext";
+import { PopupOptions } from "../typings";
 
 export const usePopup = ({ popup }: PopupOptions) => {
     const { add, remove } = usePopupsContext();

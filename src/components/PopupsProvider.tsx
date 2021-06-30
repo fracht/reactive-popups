@@ -1,6 +1,7 @@
 import React from "react";
-import { usePopupsController } from "../hooks/usePopupsController";
+
 import { PopupsContext } from "./PopupsContext";
+import { usePopupsController } from "../hooks/usePopupsController";
 
 export const PopupsProvider = ({ children }: React.PropsWithChildren<{}>) => {
     const controller = usePopupsController();
