@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { PopupsContextType } from "../typings/PopupsContextType";
+import { PopupsController } from "../typings";
 
-export const PopupsContext = createContext<PopupsContextType | undefined>(
+export const PopupsContext = createContext<PopupsController | undefined>(
     undefined
 );

@@ -1,5 +1,5 @@
 import { Popup } from "./Popup";
 
 export type PopupOptions = {
-    popup: Popup;
+    popup: Omit<Popup, "id">;
 };
