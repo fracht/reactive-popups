@@ -10,7 +10,7 @@
     "scripts": {
         "build": "aqu build",
         "start": "aqu watch",
-        "lint": "aqu lint",
+        "lint": "eslint .",
         "lint:fix": "aqu lint --fix",
         "test": "aqu test --passWithNoTests",
         "test:watch": "aqu test --passWithNoTests --watch",
