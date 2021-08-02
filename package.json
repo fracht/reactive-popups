@@ -30,12 +30,24 @@
     "bugs": {
         "url": "https://github.com/AlexShukel/reactive-popups/issues"
     },
+    "size-limit": [
+        {
+            "path": "dist/reactive-popups.cjs.production.min.js",
+            "limit": "10 KB"
+        },
+        {
+            "path": "dist/reactive-popups.esm.js",
+            "limit": "10 KB"
+        }
+    ],
     "devDependencies": {
+        "@size-limit/preset-small-lib": "^5.0.2",
         "@types/react": "^17.0.11",
         "@types/react-dom": "^17.0.8",
         "aqu": "0.1.0",
         "np": "^7.5.0",
         "react-dom": "^17.0.2",
+        "size-limit": "^5.0.2",
         "typescript": "^4.3.4"
     },
     "types": "./dist/reactive-popups.d.ts",
