@@ -41,5 +41,8 @@
     "types": "./dist/reactive-popups.d.ts",
     "peerDependencies": {
         "react": ">=16"
+    },
+    "dependencies": {
+        "tiny-invariant": "^1.1.0"
     }
 }
