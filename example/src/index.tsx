@@ -3,7 +3,7 @@ import { render } from "react-dom";
 
 render(
     <React.StrictMode>
-        <div>Pop-ups example</div>
+        <div>reactive-popups example</div>
     </React.StrictMode>,
     document.getElementById("root")
 );

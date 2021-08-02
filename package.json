@@ -1,9 +1,9 @@
 {
-    "name": "pop-ups",
-    "version": "0.0.0",
-    "description": "Library for easy popup management with React",
+    "name": "reactive-popups",
+    "version": "0.0.1",
+    "description": "Easy popup management with React",
     "main": "./dist/index.js",
-    "module": "./dist/pop-ups.esm.js",
+    "module": "./dist/reactive-popups.esm.js",
     "files": [
         "dist"
     ],
@@ -15,40 +15,30 @@
         "test": "aqu test --passWithNoTests",
         "test:watch": "aqu test --passWithNoTests --watch",
         "test:coverage": "aqu test --silent --ci --coverage --coverageReporters=\"text\" --coverageReporters=\"text-summary\"",
-        "prepare": "aqu build",
+        "prepublishOnly": "aqu build",
         "release": "np",
         "size": "size-limit",
         "size:why": "size-limit --why"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
-    "lint-staged": {
-        "**/*.{js,jsx,ts,tsx,json}": "npm run lint:fix"
-    },
     "author": "Aleksandras Šukelovič",
     "license": "MIT",
-    "homepage": "https://github.com/AlexShukel/pop-ups#readme",
+    "homepage": "https://github.com/AlexShukel/reactive-popups#readme",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/AlexShukel/pop-ups.git"
+        "url": "git+https://github.com/AlexShukel/reactive-popups.git"
     },
     "bugs": {
-        "url": "https://github.com/AlexShukel/pop-ups/issues"
+        "url": "https://github.com/AlexShukel/reactive-popups/issues"
     },
     "devDependencies": {
         "@types/react": "^17.0.11",
         "@types/react-dom": "^17.0.8",
         "aqu": "0.1.0",
-        "husky": "^6.0.0",
-        "lint-staged": "^11.0.0",
         "np": "^7.5.0",
         "react-dom": "^17.0.2",
         "typescript": "^4.3.4"
     },
-    "types": "./dist/pop-ups.d.ts",
+    "types": "./dist/reactive-popups.d.ts",
     "peerDependencies": {
         "react": ">=16"
     }

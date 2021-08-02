@@ -1,27 +1,27 @@
-# pop-ups
+# reactive-popups
 
-> 
+>
 
-[![npm version](https://img.shields.io/npm/v/pop-ups)](https://www.npmjs.com/package/pop-ups)
-[![npm downloads](https://img.shields.io/npm/dw/pop-ups)](https://www.npmjs.com/package/pop-ups)
-[![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/pop-ups)](https://www.npmjs.com/package/pop-ups)
+[![npm version](https://img.shields.io/npm/v/reactive-popups)](https://www.npmjs.com/package/reactive-popups)
+[![npm downloads](https://img.shields.io/npm/dw/reactive-popups)](https://www.npmjs.com/package/reactive-popups)
+[![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/reactive-popups)](https://www.npmjs.com/package/reactive-popups)
 
 ## Install
 
 ```bash
-npm install pop-ups
+npm install reactive-popups
 ```
 
 Or
 
 ```bash
-yarn add pop-ups
+yarn add reactive-popups
 ```
 
 ## Usage
 
 ```js
-import { ... } from "pop-ups";
+import { ... } from "reactive-popups";
 ```
 
 ## License
