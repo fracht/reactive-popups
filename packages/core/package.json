@@ -26,5 +26,8 @@
     },
     "peerDependencies": {
         "react": ">=16"
+    },
+    "dependencies": {
+        "tiny-invariant": "^1.2.0"
     }
 }
