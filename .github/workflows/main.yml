@@ -9,7 +9,6 @@ jobs:
         runs-on: ubuntu-latest
         outputs:
             names: ${{ steps.changed_packages.outputs.names }}
-            paths: ${{ steps.changed_packages.outputs.paths }}
             empty: ${{ steps.changed_packages.outputs.empty }}
         steps:
             - name: Checkout repo
