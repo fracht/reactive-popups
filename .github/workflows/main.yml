@@ -15,7 +15,7 @@ jobs:
             - uses: actions/checkout@v2
             - name: Find changed workspaces
               id: changed_packages
-              uses: AlexShukel/get-changed-workspaces-action@main
+              uses: AlexShukel/get-changed-workspaces-action@v1.0.0
             - run: echo "${{ steps.changed_packages.outputs.names }}"
 
     build:
@@ -41,5 +41,5 @@ jobs:
             - name: Install global dependencies
               run: npm install
 
-            - name: Build, lint and test in ${{ matrix.package }}
-              run: npx turbo run build test lint --scope=${{ matrix.package }} --include-dependencies --no-deps
+            - name: Build, lint and test all packages
+              run: npx turbo run build test lint --scope=@reactive-popups/* --include-dependencies --no-deps
