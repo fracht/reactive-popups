@@ -6,28 +6,28 @@ on:
             - example/**
         branches: [main]
 jobs:
-    #    get_changed_packages:
-    #        name: Get changed packages
-    #        runs-on: ubuntu-latest
-    #        outputs:
-    #            names: ${{ steps.changed_packages.outputs.names }}
-    #        steps:
-    #            - uses: actions/checkout@v2
-    #            - name: Find changed workspaces
-    #              id: changed_packages
-    #              uses: AlexShukel/get-changed-workspaces-action@v1.0.0
-    #            - run: echo "${{ steps.changed_packages.outputs.names }}"
+    get_changed_packages:
+        name: Get changed packages
+        runs-on: ubuntu-latest
+        outputs:
+            names: ${{ steps.changed_packages.outputs.names }}
+        steps:
+            - uses: actions/checkout@v2
+            - name: Find changed workspaces
+              id: changed_packages
+              uses: AlexShukel/get-changed-workspaces-action@v1.0.0
+            - run: echo "${{ steps.changed_packages.outputs.names }}"
 
     build:
-        #    needs: [get_changed_packages]
-        #    if: ${{ !fromJson(needs.generate_matrix.outputs.empty) }}
+        needs: [get_changed_packages]
+        if: ${{ !fromJson(needs.generate_matrix.outputs.empty) }}
         name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
                 node: ['14.x', '16.x']
                 os: [ubuntu-latest]
-        #                package: ${{ fromJson(needs.get_changed_packages.outputs.names) }}
+                package: ${{ fromJson(needs.get_changed_packages.outputs.names) }}
 
         steps:
             - name: Checkout repo
