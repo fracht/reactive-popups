@@ -1,5 +1,6 @@
 // hooks
 export * from './hooks/usePopupsContext';
+export * from './hooks/usePopupsBag';
 
 // types
 export * from './types/PopupsContextType';
