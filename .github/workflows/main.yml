@@ -14,8 +14,8 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Find changed workspaces
-              uses: AlexShukel/get-changed-workspaces-action@v1.0.0
               id: changed-packages
+              uses: AlexShukel/get-changed-workspaces-action@main
 
     build:
         name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
