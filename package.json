@@ -5,7 +5,8 @@
     "main": "dist/index.js",
     "scripts": {
         "build": "turbo run build --scope=@reactive-popups/*",
-        "test": "turbo run test --scope=@reactive-popups/*"
+        "test": "turbo run test --scope=@reactive-popups/*",
+        "lint": "eslint ."
     },
     "repository": {
         "type": "git",
@@ -25,5 +26,27 @@
     "devDependencies": {
         "@reactive-tools/eslint-config": "*",
         "turbo": "^1.0.25"
+    },
+    "turbo": {
+        "pipeline": {
+            "build": {
+                "dependsOn": [
+                    "^build"
+                ],
+                "outputs": [
+                    "dist/**"
+                ],
+                "cache": true
+            },
+            "test": {
+                "dependsOn": [
+                    "^build"
+                ],
+                "outputs": []
+            },
+            "lint": {
+                "outputs": []
+            }
+        }
     }
 }
