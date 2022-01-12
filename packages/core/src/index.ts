@@ -1,3 +1,3 @@
 export const main = () => {
-    console.log('hello changes');
+    console.log('hello');
 };
