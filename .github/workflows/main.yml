@@ -6,17 +6,17 @@ on:
             - example/**
         branches: [main]
 jobs:
-    get_changed_packages:
-        name: Get changed packages
-        runs-on: ubuntu-latest
-        outputs:
-            names: ${{ steps.changed_packages.outputs.names }}
-        steps:
-            - uses: actions/checkout@v2
-            - name: Find changed workspaces
-              id: changed_packages
-              uses: AlexShukel/get-changed-workspaces-action@v1.0.0
-            - run: echo "${{ steps.changed_packages.outputs.names }}"
+    #    get_changed_packages:
+    #        name: Get changed packages
+    #        runs-on: ubuntu-latest
+    #        outputs:
+    #            names: ${{ steps.changed_packages.outputs.names }}
+    #        steps:
+    #            - uses: actions/checkout@v2
+    #            - name: Find changed workspaces
+    #              id: changed_packages
+    #              uses: AlexShukel/get-changed-workspaces-action@v1.0.0
+    #            - run: echo "${{ steps.changed_packages.outputs.names }}"
 
     build:
         needs: [get_changed_packages]
@@ -27,7 +27,7 @@ jobs:
             matrix:
                 node: ['14.x', '16.x']
                 os: [ubuntu-latest]
-                package: ${{ fromJson(needs.get_changed_packages.outputs.names) }}
+        #                package: ${{ fromJson(needs.get_changed_packages.outputs.names) }}
 
         steps:
             - name: Checkout repo
@@ -41,5 +41,5 @@ jobs:
             - name: Install global dependencies
               run: npm install
 
-            - name: Build, lint and test in ${{ matrix.package }}
-              run: npx turbo run build test lint --scope=${{ matrix.package }} --include-dependencies --no-deps
+            - name: Build, lint and test all packages
+              run: npx turbo run build test lint --scope=@reactive-popups/* --include-dependencies --no-deps
