@@ -2,9 +2,9 @@ name: CI
 on:
     pull_request:
         paths-ignore:
-            - 'docs/**'
-            - 'example/**'
-        branches: [master]
+            - docs/**
+            - example/**
+        branches: [main]
 jobs:
     get_changed_packages:
         name: Get changed packages
