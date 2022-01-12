@@ -5,7 +5,7 @@ import { Popup } from './Popup';
 
 export type PopupsBag<P extends OmittedProps> = {
     popups: Popup<P>[];
-    visiblePopups: Set<number>;
+    isPopupVisible: (id: number) => boolean;
 
     add: (PopupComponent: ComponentType<P>, props?: Omit<P, 'id'>) => number;
     open: (id: number) => void;

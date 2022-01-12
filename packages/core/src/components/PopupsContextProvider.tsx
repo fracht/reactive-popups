@@ -11,14 +11,14 @@ export const PopupsContextProvider = ({
     children,
     PopupsWrapper = React.Fragment,
 }: PopupsContextProviderType) => {
-    const { popups, visiblePopups, ...context } = usePopupsBag();
+    const { popups, isPopupVisible, ...context } = usePopupsBag();
 
     return (
         <PopupsContext.Provider value={context}>
             {children}
             <PopupsWrapper>
                 {popups
-                    .filter((popup) => visiblePopups.has(popup.id))
+                    .filter((popup) => isPopupVisible(popup.id))
                     .map(({ PopupComponent, props, id }) => {
                         return <PopupComponent {...props} key={id} id={id} />;
                     })}

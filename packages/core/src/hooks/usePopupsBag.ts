@@ -10,6 +10,11 @@ export const usePopupsBag = <P extends OmittedProps>(): PopupsBag<P> => {
     const [popups, setPopups] = useState<Popup<P>[]>([]);
     const visiblePopups = useMemo(() => new Set<number>(), []);
 
+    const isPopupVisible = useCallback(
+        (id: number) => visiblePopups.has(id),
+        [visiblePopups]
+    );
+
     const forceUpdate = useForceUpdate();
 
     const add = useCallback(
@@ -56,7 +61,7 @@ export const usePopupsBag = <P extends OmittedProps>(): PopupsBag<P> => {
 
     return {
         popups,
-        visiblePopups,
+        isPopupVisible,
         add,
         open,
         close,
