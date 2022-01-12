@@ -1,16 +1,16 @@
 name: CI
 on:
     pull_request:
-        paths-ignore:
-            - 'docs/**'
-            - 'example/**'
-        branches: [main]
+        branches: [main],
+    workflow_dispatch:
 jobs:
     generate_matrix:
         name: Get changed packages
         runs-on: ubuntu-latest
         outputs:
             names: ${{ steps.changed_packages.outputs.names }}
+            paths: ${{ steps.changed_packages.outputs.paths }}
+            empty: ${{ steps.changed_packages.outputs.empty }}
         steps:
             - name: Checkout repo
               uses: actions/checkout@v2
