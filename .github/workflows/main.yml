@@ -10,17 +10,18 @@ jobs:
         name: Get changed packages
         runs-on: ubuntu-latest
         outputs:
-            names: ${{ steps.changed-packages.outputs.names }}
+            names: ${{ steps.changed_packages.outputs.names }}
         steps:
             - uses: actions/checkout@v2
             - name: Find changed workspaces
-              id: changed-packages
+              id: changed_packages
               uses: AlexShukel/get-changed-workspaces-action@main
+            - run: echo "${{ steps.changed_packages.outputs.names }}"
 
     build:
-        name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
         needs: [get_changed_packages]
         if: ${{ !fromJson(needs.generate_matrix.outputs.empty) }}
+        name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
