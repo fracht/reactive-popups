@@ -2,18 +2,32 @@ name: CI
 on:
     pull_request:
         paths-ignore:
-            - "docs/**"
-            - "example/**"
-        branches: [master]
+            - docs/**
+            - example/**
+        branches: [main]
 jobs:
-    build:
-        name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
+    get_changed_packages:
+        name: Get changed packages
+        runs-on: ubuntu-latest
+        outputs:
+            names: ${{ steps.changed_packages.outputs.names }}
+        steps:
+            - uses: actions/checkout@v2
+            - name: Find changed workspaces
+              id: changed_packages
+              uses: AlexShukel/get-changed-workspaces-action@main
+            - run: echo "${{ steps.changed_packages.outputs.names }}"
 
+    build:
+        needs: [get_changed_packages]
+        if: ${{ !fromJson(needs.generate_matrix.outputs.empty) }}
+        name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                node: ["12.x", "14.x"]
-                os: [ubuntu-latest, windows-latest, macOS-latest]
+                node: ['14.x', '16.x']
+                os: [ubuntu-latest]
+                package: ${{ fromJson(needs.get_changed_packages.outputs.names) }}
 
         steps:
             - name: Checkout repo
@@ -24,14 +38,8 @@ jobs:
               with:
                   node-version: ${{ matrix.node }}
 
-            - name: Install deps and build (with cache)
-              uses: bahmutov/npm-install@v1
+            - name: Install global dependencies
+              run: npm install
 
-            - name: Lint
-              run: npm run lint
-
-            - name: Test
-              run: npm run test --ci --coverage --maxWorkers=2
-
-            - name: Build
-              run: npm run build
+            - name: Build, lint and test in ${{ matrix.package }}
+              run: npx turbo run build test lint --scope=${{ matrix.package }} --include-dependencies --no-deps

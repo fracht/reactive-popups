@@ -1,60 +1,29 @@
 {
     "name": "reactive-popups",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "Easy popup management with React",
-    "main": "./dist/index.js",
-    "module": "./dist/reactive-popups.esm.js",
-    "files": [
-        "dist"
-    ],
+    "main": "dist/index.js",
     "scripts": {
-        "build": "aqu build",
-        "start": "aqu watch",
-        "lint": "eslint .",
-        "lint:fix": "aqu lint --fix",
-        "test": "aqu test --passWithNoTests",
-        "test:watch": "aqu test --passWithNoTests --watch",
-        "test:coverage": "aqu test --silent --ci --coverage --coverageReporters=\"text\" --coverageReporters=\"text-summary\"",
-        "prepublishOnly": "aqu build",
-        "release": "np",
-        "size": "size-limit",
-        "size:why": "size-limit --why"
+        "build": "turbo run build --scope=@reactive-popups/*",
+        "test": "turbo run test --scope=@reactive-popups/*"
     },
-    "author": "Aleksandras Šukelovič",
-    "license": "MIT",
-    "homepage": "https://github.com/AlexShukel/reactive-popups#readme",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/AlexShukel/reactive-popups.git"
     },
+    "keywords": [],
+    "author": "Aleksandras Šukelovič",
+    "license": "ISC",
     "bugs": {
         "url": "https://github.com/AlexShukel/reactive-popups/issues"
     },
-    "size-limit": [
-        {
-            "path": "dist/reactive-popups.cjs.production.min.js",
-            "limit": "10 KB"
-        },
-        {
-            "path": "dist/reactive-popups.esm.js",
-            "limit": "10 KB"
-        }
+    "homepage": "https://github.com/AlexShukel/reactive-popups#readme",
+    "workspaces": [
+        "packages/*",
+        "tools/*"
     ],
     "devDependencies": {
-        "@size-limit/preset-small-lib": "^5.0.2",
-        "@types/react": "^17.0.11",
-        "@types/react-dom": "^17.0.8",
-        "aqu": "0.1.0",
-        "np": "^7.5.0",
-        "react-dom": "^17.0.2",
-        "size-limit": "^5.0.2",
-        "typescript": "^4.3.4"
-    },
-    "types": "./dist/reactive-popups.d.ts",
-    "peerDependencies": {
-        "react": ">=16"
-    },
-    "dependencies": {
-        "tiny-invariant": "^1.1.0"
+        "@reactive-tools/eslint-config": "*",
+        "turbo": "^1.0.25"
     }
 }
