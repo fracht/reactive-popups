@@ -1,7 +1,7 @@
-export type PopupsContextType = {
-    add: () => number;
-    open: (id: number) => void;
+import { OmittedProps } from './OmittedProps';
+import { PopupsBag } from './PopupsBag';
 
-    remove: (id: number) => void;
-    close: (id: number) => void;
-};
+export type PopupsContextType<P extends OmittedProps> = Omit<
+    PopupsBag<P>,
+    'popups'
+>;
