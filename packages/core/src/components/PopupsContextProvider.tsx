@@ -15,6 +15,7 @@ export const PopupsContextProvider = ({
 
     return (
         <PopupsContext.Provider value={context}>
+            {/* After open event has occured, children rerenders. FIXME - prevent it. Maybe use stocked */}
             {children}
             <PopupsWrapper>
                 {popups

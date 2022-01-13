@@ -1,3 +1,3 @@
-let currentUUID = 0;
+let currentUUID = 1;
 
 export const uuid = () => currentUUID++;

@@ -5,7 +5,9 @@ import { PopupsContext } from '../PopupsContext';
 import { OmittedProps } from '../types/OmittedProps';
 import { PopupsContextType } from '../types/PopupsContextType';
 
-export const usePopupsContext = (): PopupsContextType<OmittedProps> => {
+export const usePopupsContext = <
+    P extends OmittedProps = OmittedProps
+>(): PopupsContextType<P> => {
     const context = useContext(PopupsContext);
 
     invariant(
@@ -13,5 +15,5 @@ export const usePopupsContext = (): PopupsContextType<OmittedProps> => {
         'PopupsContext was not found. Please, wrap your application with PopupsContextProvider.'
     );
 
-    return context;
+    return context as PopupsContextType<P>;
 };
