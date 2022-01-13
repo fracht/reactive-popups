@@ -6,24 +6,23 @@ import { PopupsBag } from '../types/PopupsBag';
 
 type RenderPopupsProps<P extends PopupProps> = {
     PopupsWrapper?: ComponentType<PropsWithChildren<{}>>;
-} & Pick<PopupsBag<P>, 'stock' | 'isPopupVisible'>;
+} & Pick<PopupsBag<P>, 'stock'>;
 
 export const RenderPopups = <P extends PopupProps>({
     PopupsWrapper = React.Fragment,
     stock,
-    isPopupVisible,
 }: RenderPopupsProps<P>) => {
     const popups = useStockValue(stock.paths.popups, stock);
 
-    return (
+    return popups.length > 0 ? (
         <PopupsWrapper>
-            {popups
-                .filter((popup) => isPopupVisible(popup.id))
-                .map(({ PopupComponent, props, id }) => {
-                    return (
+            {popups.map(({ PopupComponent, props, id, visible }) => {
+                return (
+                    visible && (
                         <PopupComponent {...(props as P)} key={id} id={id} />
-                    );
-                })}
+                    )
+                );
+            })}
         </PopupsWrapper>
-    );
+    ) : null;
 };

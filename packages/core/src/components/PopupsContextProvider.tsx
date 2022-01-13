@@ -14,7 +14,7 @@ export const PopupsContextProvider = <P extends PopupProps = PopupProps>({
     children,
     PopupsWrapper,
 }: PopupsContextProviderType) => {
-    const { stock, isPopupVisible, ...context } = usePopupsBag<P>();
+    const { stock, ...context } = usePopupsBag<P>();
 
     return (
         <PopupsContext.Provider
@@ -22,11 +22,7 @@ export const PopupsContextProvider = <P extends PopupProps = PopupProps>({
         >
             {children}
 
-            <RenderPopups
-                PopupsWrapper={PopupsWrapper}
-                stock={stock}
-                isPopupVisible={isPopupVisible}
-            />
+            <RenderPopups PopupsWrapper={PopupsWrapper} stock={stock} />
         </PopupsContext.Provider>
     );
 };

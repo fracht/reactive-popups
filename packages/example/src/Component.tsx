@@ -20,7 +20,6 @@ const props = {
 };
 
 export const Component = () => {
-    console.log('render app');
     const [open, close] = usePopup(PopupComponent, props);
 
     return (
