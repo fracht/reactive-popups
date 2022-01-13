@@ -1,13 +1,13 @@
-import { ComponentType, useCallback, useMemo, useState } from 'react';
+import { ComponentType, useCallback, useMemo } from 'react';
+import { useStock } from 'stocked';
 
-import { useForceUpdate } from './useForceUpdate';
-import { OmittedProps } from '../types/OmittedProps';
 import { Popup } from '../types/Popup';
+import { PopupProps } from '../types/PopupProps';
 import { PopupsBag } from '../types/PopupsBag';
+import { PopupsStock } from '../types/PopupsStock';
 import { uuid } from '../utils/uuid';
 
-export const usePopupsBag = <P extends OmittedProps>(): PopupsBag<P> => {
-    const [popups, setPopups] = useState<Popup<P>[]>([]);
+export const usePopupsBag = <P extends PopupProps>(): PopupsBag<P> => {
     const visiblePopups = useMemo(() => new Set<number>(), []);
 
     const isPopupVisible = useCallback(
@@ -15,7 +15,17 @@ export const usePopupsBag = <P extends OmittedProps>(): PopupsBag<P> => {
         [visiblePopups]
     );
 
-    const forceUpdate = useForceUpdate();
+    const stock = useStock<PopupsStock<P>>({
+        initialValues: {
+            popups: [],
+        },
+    });
+
+    const { paths, setValue } = stock;
+
+    const forceUpdate = useCallback(() => {
+        setValue(paths.popups, (v) => v);
+    }, [setValue, paths]);
 
     const add = useCallback(
         (PopupComponent: ComponentType<P>, props: Omit<P, 'id'> = {} as P) => {
@@ -27,14 +37,14 @@ export const usePopupsBag = <P extends OmittedProps>(): PopupsBag<P> => {
                 id,
             };
 
-            setPopups((prevState) => {
+            setValue(paths.popups, (prevState) => {
                 prevState.push(newPopup);
                 return prevState;
             });
 
             return id;
         },
-        []
+        [setValue, paths]
     );
 
     const open = useCallback(
@@ -45,11 +55,14 @@ export const usePopupsBag = <P extends OmittedProps>(): PopupsBag<P> => {
         [visiblePopups, forceUpdate]
     );
 
-    const remove = useCallback((id: number) => {
-        setPopups((prevState) => {
-            return prevState.filter((popup) => popup.id !== id);
-        });
-    }, []);
+    const remove = useCallback(
+        (id: number) => {
+            setValue(paths.popups, (prevState) => {
+                return prevState.filter((popup) => popup.id !== id);
+            });
+        },
+        [setValue, paths]
+    );
 
     const close = useCallback(
         (id: number) => {
@@ -60,7 +73,7 @@ export const usePopupsBag = <P extends OmittedProps>(): PopupsBag<P> => {
     );
 
     return {
-        popups,
+        stock,
         isPopupVisible,
         add,
         open,

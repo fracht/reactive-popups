@@ -1,7 +1,7 @@
-import { OmittedProps } from './OmittedProps';
+import { PopupProps } from './PopupProps';
 import { PopupsBag } from './PopupsBag';
 
-export type PopupsContextType<P extends OmittedProps> = Omit<
+export type PopupsContextType<P extends PopupProps> = Omit<
     PopupsBag<P>,
-    'popups' | 'isPopupVisible'
+    'stock' | 'isPopupVisible'
 >;

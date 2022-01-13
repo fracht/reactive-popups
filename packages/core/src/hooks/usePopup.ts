@@ -1,10 +1,10 @@
 import { ComponentType, useCallback, useEffect, useRef } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
-import { OmittedProps } from '../types/OmittedProps';
 import { PopupController } from '../types/PopupController';
+import { PopupProps } from '../types/PopupProps';
 
-export const usePopup = <P extends OmittedProps>(
+export const usePopup = <P extends PopupProps>(
     PopupComponent: ComponentType<P>,
     props: Omit<P, 'id'> = {} as P
 ): PopupController => {
@@ -33,7 +33,7 @@ export const usePopup = <P extends OmittedProps>(
         return () => {
             remove(id.current!);
         };
-    }, [add, PopupComponent, props, remove]);
+    }, [PopupComponent, add, props, remove]);
 
     return [open, close];
 };

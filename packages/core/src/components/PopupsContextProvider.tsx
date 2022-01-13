@@ -1,29 +1,32 @@
 import React, { ComponentType, PropsWithChildren } from 'react';
 
+import { RenderPopups } from './RenderPopups';
 import { usePopupsBag } from '../hooks/usePopupsBag';
 import { PopupsContext } from '../PopupsContext';
+import { PopupProps } from '../types/PopupProps';
+import { PopupsContextType } from '../types/PopupsContextType';
 
 type PopupsContextProviderType = PropsWithChildren<{
     PopupsWrapper?: ComponentType<PropsWithChildren<{}>>;
 }>;
 
-export const PopupsContextProvider = ({
+export const PopupsContextProvider = <P extends PopupProps = PopupProps>({
     children,
-    PopupsWrapper = React.Fragment,
+    PopupsWrapper,
 }: PopupsContextProviderType) => {
-    const { popups, isPopupVisible, ...context } = usePopupsBag();
+    const { stock, isPopupVisible, ...context } = usePopupsBag<P>();
 
     return (
-        <PopupsContext.Provider value={context}>
-            {/* After open event has occured, children rerenders. FIXME - prevent it. Maybe use stocked */}
+        <PopupsContext.Provider
+            value={context as PopupsContextType<PopupProps>}
+        >
             {children}
-            <PopupsWrapper>
-                {popups
-                    .filter((popup) => isPopupVisible(popup.id))
-                    .map(({ PopupComponent, props, id }) => {
-                        return <PopupComponent {...props} key={id} id={id} />;
-                    })}
-            </PopupsWrapper>
+
+            <RenderPopups
+                PopupsWrapper={PopupsWrapper}
+                stock={stock}
+                isPopupVisible={isPopupVisible}
+            />
         </PopupsContext.Provider>
     );
 };
