@@ -12,6 +12,7 @@
     ],
     "scripts": {
         "build": "aqu build",
+        "start": "aqu watch",
         "lint": "aqu lint",
         "lint:fix": "aqu lint --fix",
         "test": "aqu test --passWithNoTests",

@@ -6,6 +6,7 @@ build
 .rpt2_cache
 coverage
 dist
+.parcel-cache
 
 # misc
 .DS_Store
