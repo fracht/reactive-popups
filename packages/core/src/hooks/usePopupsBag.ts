@@ -7,8 +7,8 @@ import { PopupsBag } from '../types/PopupsBag';
 import { PopupsRegistry } from '../types/PopupsRegistry';
 import { uuid } from '../utils/uuid';
 
-export const usePopupsBag = <P extends PopupProps>(): PopupsBag<P> => {
-    const stock = useStock<PopupsRegistry<P>>({
+export const usePopupsBag = (): PopupsBag => {
+    const stock = useStock<PopupsRegistry>({
         initialValues: {
             popups: {},
         },
@@ -17,7 +17,10 @@ export const usePopupsBag = <P extends PopupProps>(): PopupsBag<P> => {
     const { paths, setValue, getValue } = stock;
 
     const add = useCallback(
-        (PopupComponent: ComponentType<P>, props: Omit<P, 'id'> = {} as P) => {
+        <P extends PopupProps>(
+            PopupComponent: ComponentType<P>,
+            props: Omit<P, 'id'> = {} as P
+        ) => {
             const id = uuid();
 
             const newPopup: Popup<P> = {
@@ -27,7 +30,10 @@ export const usePopupsBag = <P extends PopupProps>(): PopupsBag<P> => {
                 visible: false,
             };
 
-            setValue(paths.popups[id], newPopup);
+            setValue(
+                paths.popups[id],
+                newPopup as unknown as Popup<PopupProps>
+            );
 
             return id;
         },
@@ -43,6 +49,7 @@ export const usePopupsBag = <P extends PopupProps>(): PopupsBag<P> => {
 
     const remove = useCallback(
         (id: number) => {
+            // FIXME after remove all popups will rerender
             const popups = getValue(paths.popups);
             delete popups[id];
             setValue(paths.popups, popups);

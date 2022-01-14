@@ -4,12 +4,15 @@ import { Stock } from 'stocked';
 import { PopupProps } from './PopupProps';
 import { PopupsRegistry } from './PopupsRegistry';
 
-export type PopupsBag<P extends PopupProps> = {
+export type PopupsBag = {
     // private
-    stock: Stock<PopupsRegistry<P>>;
+    stock: Stock<PopupsRegistry>;
 
     // public
-    add: (PopupComponent: ComponentType<P>, props?: Omit<P, 'id'>) => number;
+    add: <P extends PopupProps>(
+        PopupComponent: ComponentType<P>,
+        props?: Omit<P, keyof PopupProps>
+    ) => number;
     open: (id: number) => void;
     remove: (id: number) => void;
     close: (id: number) => void;

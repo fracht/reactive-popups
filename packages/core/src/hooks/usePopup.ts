@@ -9,11 +9,11 @@ export const usePopup = <P extends PopupProps>(
     props: Omit<P, 'id'> = {} as P
 ): PopupController => {
     const {
-        add,
-        remove,
         open: openPopup,
         close: closePopup,
-    } = usePopupsContext<P>();
+        add,
+        remove,
+    } = usePopupsContext();
     const id = useRef<number | null>(null);
 
     const open = useCallback(() => {

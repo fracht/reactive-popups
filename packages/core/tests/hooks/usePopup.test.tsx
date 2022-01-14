@@ -3,12 +3,7 @@ import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { useStockContext } from 'stocked';
 
-import {
-    PopupProps,
-    PopupsContextProvider,
-    PopupsRenderer,
-    usePopup,
-} from '../../src';
+import { PopupsContextProvider, PopupsRenderer, usePopup } from '../../src';
 import { INITIAL_ID } from '../../src/constants';
 import type { PopupsRegistry } from '../../src/types/PopupsRegistry';
 
@@ -16,8 +11,7 @@ const renderUsePopup = () => {
     const PopupComponent = jest.fn(() => null);
 
     const callback = () => {
-        const { getValue, paths } =
-            useStockContext<PopupsRegistry<PopupProps>>();
+        const { getValue, paths } = useStockContext<PopupsRegistry>();
         const [open, close] = usePopup(PopupComponent, {});
 
         return {

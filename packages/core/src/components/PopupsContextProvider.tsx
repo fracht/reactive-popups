@@ -8,10 +8,10 @@ import { PopupsContextType } from '../types/PopupsContextType';
 
 type PopupsContextProviderType = PropsWithChildren<{}>;
 
-export const PopupsContextProvider = <P extends PopupProps = PopupProps>({
+export const PopupsContextProvider = ({
     children,
 }: PopupsContextProviderType) => {
-    const { stock, ...context } = usePopupsBag<P>();
+    const { stock, ...context } = usePopupsBag();
 
     return (
         <StockContext.Provider value={stock as Stock<object>}>
