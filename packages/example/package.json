@@ -4,7 +4,8 @@
     "description": "",
     "scripts": {
         "start": "webpack serve",
-        "build": "webpack"
+        "build": "webpack",
+        "lint": "eslint ."
     },
     "keywords": [],
     "author": "Aleksandras Šukelovič",

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import ReactDOM from 'react-dom';
-import { PopupsContextProvider } from '@reactive-popups/core';
+import { PopupsContextProvider, PopupsRenderer } from '@reactive-popups/core';
 
 import { App } from './App';
 
@@ -25,8 +25,11 @@ const PopupsWrapper = ({ children }: PropsWithChildren<{}>) => {
 };
 
 ReactDOM.render(
-    <PopupsContextProvider PopupsWrapper={PopupsWrapper}>
+    <PopupsContextProvider>
         <App />
+        <PopupsWrapper>
+            <PopupsRenderer />
+        </PopupsWrapper>
     </PopupsContextProvider>,
     document.getElementById('root')
 );

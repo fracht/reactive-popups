@@ -45,7 +45,7 @@ export const usePopupsBag = <P extends PopupProps>(): PopupsBag<P> => {
         (id: number) => {
             const popups = getValue(paths.popups);
             delete popups[id];
-            setValue(paths.popups[id], popups);
+            setValue(paths.popups, popups);
         },
         [setValue, getValue, paths]
     );
