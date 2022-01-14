@@ -45,4 +45,4 @@ jobs:
               run: npm install
 
             - name: Build, lint and test in ${{ matrix.name }}
-              run: npx turbo run build test lint --scope=${{ matrix.name }} --include-dependencies --no-deps
+              run: npx turbo run build test lint --scope=${{ matrix.name }} --include-dependencies --no-deps --ignore="packages/example"
