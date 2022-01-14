@@ -1,28 +1,25 @@
-import React, { ComponentType, PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react';
+import { Stock, StockContext } from 'stocked';
 
-import { RenderPopups } from './RenderPopups';
 import { usePopupsBag } from '../hooks/usePopupsBag';
 import { PopupsContext } from '../PopupsContext';
 import { PopupProps } from '../types/PopupProps';
 import { PopupsContextType } from '../types/PopupsContextType';
 
-type PopupsContextProviderType = PropsWithChildren<{
-    PopupsWrapper?: ComponentType<PropsWithChildren<{}>>;
-}>;
+type PopupsContextProviderType = PropsWithChildren<{}>;
 
 export const PopupsContextProvider = <P extends PopupProps = PopupProps>({
     children,
-    PopupsWrapper,
 }: PopupsContextProviderType) => {
     const { stock, ...context } = usePopupsBag<P>();
 
     return (
-        <PopupsContext.Provider
-            value={context as PopupsContextType<PopupProps>}
-        >
-            {children}
-
-            <RenderPopups PopupsWrapper={PopupsWrapper} stock={stock} />
-        </PopupsContext.Provider>
+        <StockContext.Provider value={stock as Stock<object>}>
+            <PopupsContext.Provider
+                value={context as PopupsContextType<PopupProps>}
+            >
+                {children}
+            </PopupsContext.Provider>
+        </StockContext.Provider>
     );
 };

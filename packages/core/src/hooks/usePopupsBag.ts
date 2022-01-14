@@ -4,17 +4,17 @@ import { useStock } from 'stocked';
 import { Popup } from '../types/Popup';
 import { PopupProps } from '../types/PopupProps';
 import { PopupsBag } from '../types/PopupsBag';
-import { PopupsStock } from '../types/PopupsStock';
+import { PopupsRegistry } from '../types/PopupsRegistry';
 import { uuid } from '../utils/uuid';
 
 export const usePopupsBag = <P extends PopupProps>(): PopupsBag<P> => {
-    const stock = useStock<PopupsStock<P>>({
+    const stock = useStock<PopupsRegistry<P>>({
         initialValues: {
-            popups: [],
+            popups: {},
         },
     });
 
-    const { paths, setValue } = stock;
+    const { paths, setValue, getValue } = stock;
 
     const add = useCallback(
         (PopupComponent: ComponentType<P>, props: Omit<P, 'id'> = {} as P) => {
@@ -27,10 +27,7 @@ export const usePopupsBag = <P extends PopupProps>(): PopupsBag<P> => {
                 visible: false,
             };
 
-            setValue(paths.popups, (prevState) => {
-                prevState.push(newPopup);
-                return prevState;
-            });
+            setValue(paths.popups[id], newPopup);
 
             return id;
         },
@@ -39,39 +36,23 @@ export const usePopupsBag = <P extends PopupProps>(): PopupsBag<P> => {
 
     const open = useCallback(
         (id: number) => {
-            setValue(paths.popups, (prevState) => {
-                return prevState.map((popup) => {
-                    if (popup.id === id) {
-                        popup.visible = true;
-                    }
-
-                    return popup;
-                });
-            });
+            setValue(paths.popups[id].visible, true);
         },
         [paths, setValue]
     );
 
     const remove = useCallback(
         (id: number) => {
-            setValue(paths.popups, (prevState) => {
-                return prevState.filter((popup) => popup.id !== id);
-            });
+            const popups = getValue(paths.popups);
+            delete popups[id];
+            setValue(paths.popups[id], popups);
         },
-        [setValue, paths]
+        [setValue, getValue, paths]
     );
 
     const close = useCallback(
         (id: number) => {
-            setValue(paths.popups, (prevState) => {
-                return prevState.map((popup) => {
-                    if (popup.id === id) {
-                        popup.visible = false;
-                    }
-
-                    return popup;
-                });
-            });
+            setValue(paths.popups[id].visible, false);
         },
         [paths, setValue]
     );

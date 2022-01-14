@@ -2,11 +2,11 @@ import { ComponentType } from 'react';
 import { Stock } from 'stocked';
 
 import { PopupProps } from './PopupProps';
-import { PopupsStock } from './PopupsStock';
+import { PopupsRegistry } from './PopupsRegistry';
 
 export type PopupsBag<P extends PopupProps> = {
     // private
-    stock: Stock<PopupsStock<P>>;
+    stock: Stock<PopupsRegistry<P>>;
 
     // public
     add: (PopupComponent: ComponentType<P>, props?: Omit<P, 'id'>) => number;

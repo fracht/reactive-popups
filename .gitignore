@@ -7,6 +7,7 @@ build
 coverage
 dist
 .parcel-cache
+.turbo
 
 # misc
 .DS_Store
