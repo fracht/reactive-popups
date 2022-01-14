@@ -1,15 +1,19 @@
 import { ComponentType } from 'react';
+import { Stock } from 'stocked';
 
-import { OmittedProps } from './OmittedProps';
-import { Popup } from './Popup';
+import { PopupProps } from './PopupProps';
+import { PopupsRegistry } from './PopupsRegistry';
 
-export type PopupsBag<P extends OmittedProps> = {
-    popups: Popup<P>[];
-    isPopupVisible: (id: number) => boolean;
+export type PopupsBag = {
+    // private
+    stock: Stock<PopupsRegistry>;
 
-    add: (PopupComponent: ComponentType<P>, props?: Omit<P, 'id'>) => number;
+    // public
+    add: <P extends PopupProps>(
+        PopupComponent: ComponentType<P>,
+        props?: Omit<P, keyof PopupProps>
+    ) => number;
     open: (id: number) => void;
-
     remove: (id: number) => void;
     close: (id: number) => void;
 };

@@ -1,9 +1,9 @@
 import { ComponentType } from 'react';
 
-import { OmittedProps } from './OmittedProps';
+import { PopupProps } from './PopupProps';
 
-export type Popup<P extends OmittedProps> = {
+export type Popup<P extends PopupProps> = {
     PopupComponent: ComponentType<P>;
-    props: Omit<P, 'id'>;
-    id: number;
-};
+    props: Omit<P, keyof PopupProps>;
+    visible: boolean;
+} & PopupProps;

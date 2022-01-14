@@ -6,6 +6,8 @@ build
 .rpt2_cache
 coverage
 dist
+.parcel-cache
+.turbo
 
 # misc
 .DS_Store

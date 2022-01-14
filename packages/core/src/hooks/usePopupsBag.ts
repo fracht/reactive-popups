@@ -1,67 +1,71 @@
-import { ComponentType, useCallback, useMemo, useState } from 'react';
+import { ComponentType, useCallback } from 'react';
+import { useStock } from 'stocked';
 
-import { useForceUpdate } from './useForceUpdate';
-import { OmittedProps } from '../types/OmittedProps';
 import { Popup } from '../types/Popup';
+import { PopupProps } from '../types/PopupProps';
 import { PopupsBag } from '../types/PopupsBag';
+import { PopupsRegistry } from '../types/PopupsRegistry';
 import { uuid } from '../utils/uuid';
 
-export const usePopupsBag = <P extends OmittedProps>(): PopupsBag<P> => {
-    const [popups, setPopups] = useState<Popup<P>[]>([]);
-    const visiblePopups = useMemo(() => new Set<number>(), []);
+export const usePopupsBag = (): PopupsBag => {
+    const stock = useStock<PopupsRegistry>({
+        initialValues: {
+            popups: {},
+        },
+    });
 
-    const isPopupVisible = useCallback(
-        (id: number) => visiblePopups.has(id),
-        [visiblePopups]
-    );
-
-    const forceUpdate = useForceUpdate();
+    const { paths, setValue, getValue } = stock;
 
     const add = useCallback(
-        (PopupComponent: ComponentType<P>, props: Omit<P, 'id'> = {} as P) => {
+        <P extends PopupProps>(
+            PopupComponent: ComponentType<P>,
+            props: Omit<P, 'id'> = {} as P
+        ) => {
             const id = uuid();
 
             const newPopup: Popup<P> = {
                 PopupComponent,
                 props,
                 id,
+                visible: false,
             };
 
-            setPopups((prevState) => {
-                prevState.push(newPopup);
-                return prevState;
-            });
+            setValue(
+                paths.popups[id],
+                newPopup as unknown as Popup<PopupProps>
+            );
 
             return id;
         },
-        []
+        [setValue, paths]
     );
 
     const open = useCallback(
         (id: number) => {
-            visiblePopups.add(id);
-            forceUpdate();
+            setValue(paths.popups[id].visible, true);
         },
-        [visiblePopups, forceUpdate]
+        [paths, setValue]
     );
 
-    const remove = useCallback((id: number) => {
-        setPopups((prevState) => {
-            return prevState.filter((popup) => popup.id !== id);
-        });
-    }, []);
+    const remove = useCallback(
+        (id: number) => {
+            // FIXME after remove all popups will rerender
+            const popups = getValue(paths.popups);
+            delete popups[id];
+            setValue(paths.popups, popups);
+        },
+        [setValue, getValue, paths]
+    );
 
     const close = useCallback(
         (id: number) => {
-            visiblePopups.delete(id);
-            forceUpdate();
+            setValue(paths.popups[id].visible, false);
         },
-        [visiblePopups, forceUpdate]
+        [paths, setValue]
     );
 
     return {
-        popups,
-        isPopupVisible,
+        stock,
         add,
         open,
         close,
