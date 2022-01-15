@@ -1,0 +1,15 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitReturns": false,
+        "noImplicitThis": false,
+        "noImplicitAny": false,
+        "strictNullChecks": false,
+        "suppressImplicitAnyIndexErrors": false,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "strict": false,
+        "alwaysStrict": false
+    }
+}
