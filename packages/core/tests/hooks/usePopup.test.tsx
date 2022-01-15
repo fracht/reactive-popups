@@ -1,17 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
-import { useStockContext } from 'stocked';
 
 import { PopupsContextProvider, PopupsRenderer, usePopup } from '../../src';
 import { INITIAL_ID } from '../../src/constants';
-import type { PopupsRegistry } from '../../src/types/PopupsRegistry';
+import { usePopupsRegistryContext } from '../../src/hooks/usePopupsRegistryContext';
 
 const renderUsePopup = () => {
     const PopupComponent = jest.fn(() => null);
 
     const callback = () => {
-        const { getValue, paths } = useStockContext<PopupsRegistry>();
+        const { getValue, paths } = usePopupsRegistryContext();
         const [open, close] = usePopup(PopupComponent, {});
 
         return {
