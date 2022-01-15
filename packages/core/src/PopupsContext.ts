@@ -1,7 +1,5 @@
 import { createContext } from 'react';
 
-import { PopupsContextType } from './types/PopupsContextType';
+import { PopupsBag } from './types/PopupsBag';
 
-export const PopupsContext = createContext<PopupsContextType | undefined>(
-    undefined
-);
+export const PopupsContext = createContext<PopupsBag | undefined>(undefined);

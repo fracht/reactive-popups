@@ -2,9 +2,9 @@ import { useContext } from 'react';
 import invariant from 'tiny-invariant';
 
 import { PopupsContext } from '../PopupsContext';
-import { PopupsContextType } from '../types/PopupsContextType';
+import { PopupsBag } from '../types/PopupsBag';
 
-export const usePopupsContext = (): PopupsContextType => {
+export const usePopupsContext = (): PopupsBag => {
     const context = useContext(PopupsContext);
 
     invariant(

@@ -1,5 +1,5 @@
 import { ComponentType, useCallback } from 'react';
-import { useStock } from 'stocked';
+import { Stock } from 'stocked';
 
 import { Popup } from '../types/Popup';
 import { PopupProps } from '../types/PopupProps';
@@ -7,15 +7,11 @@ import { PopupsBag } from '../types/PopupsBag';
 import { PopupsRegistry } from '../types/PopupsRegistry';
 import { uuid } from '../utils/uuid';
 
-export const usePopupsBag = (): PopupsBag => {
-    const stock = useStock<PopupsRegistry>({
-        initialValues: {
-            popups: {},
-        },
-    });
-
-    const { paths, setValue, getValue } = stock;
-
+export const usePopupsBag = ({
+    paths,
+    setValue,
+    getValue,
+}: Stock<PopupsRegistry>): PopupsBag => {
     const add = useCallback(
         <P extends PopupProps>(
             PopupComponent: ComponentType<P>,
@@ -65,7 +61,6 @@ export const usePopupsBag = (): PopupsBag => {
     );
 
     return {
-        stock,
         add,
         open,
         close,
