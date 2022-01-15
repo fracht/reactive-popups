@@ -16,7 +16,8 @@
         "lint": "aqu lint",
         "lint:fix": "aqu lint --fix",
         "test": "aqu test --passWithNoTests",
-        "test:watch": "aqu test --passWithNoTests --watch"
+        "test:watch": "aqu test --passWithNoTests --watch",
+        "test:coverage": "aqu test --coverage --json --silent --ci --outputFile=\"report.json\""
     },
     "devDependencies": {
         "@reactive-tools/eslint-config": "*",

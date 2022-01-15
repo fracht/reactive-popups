@@ -9,6 +9,7 @@ jobs:
         runs-on: ubuntu-latest
         outputs:
             names: ${{ steps.changed_packages.outputs.names }}
+            paths: ${{ steps.changed_packages.outputs.paths }}
             empty: ${{ steps.changed_packages.outputs.empty }}
         steps:
             - name: Checkout repo
@@ -17,6 +18,35 @@ jobs:
               id: changed_packages
               uses: AlexShukel/get-changed-workspaces-action@v1.0.0
             - run: echo "${{ steps.changed_packages.outputs.names }}"
+
+    coverage:
+        name: Coverage report
+        if: ${{ !fromJson(needs.generate_matrix.outputs.empty) }}
+        needs: [generate_matrix]
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                path: ${{ fromJson(needs.generate_matrix.outputs.paths) }}
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Use Node 14.x
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 14.x
+
+            - name: Install npm 17.x
+              run: npm i -g npm@latest
+
+            - name: Installing dependencies
+              run: npm install
+
+            - uses: artiomtr/jest-coverage-report-action@v2.0-rc.2
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  skip-step: install
+                  working-directory: ${{ matrix.path }}
+                  test-script: npm run test:coverage
 
     build:
         needs: [generate_matrix]
