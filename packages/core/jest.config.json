@@ -15,7 +15,7 @@
         "node"
     ],
     "collectCoverageFrom": ["**/*.{ts,tsx}"],
-    "testMatch": ["<rootDir>/**/*.(spec|test).{ts,tsx,js,jsx,cjs,mjs}"],
+    "testMatch": ["**/*.(spec|test).{ts,tsx,js,jsx,cjs,mjs}"],
     "testURL": "http://localhost",
     "watchPlugins": [
         "E:\\projects\\reactive-popups\\node_modules\\jest-watch-typeahead\\filename.js",
