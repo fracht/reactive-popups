@@ -15,10 +15,10 @@
         "start": "aqu watch",
         "lint": "aqu lint",
         "lint:fix": "aqu lint --fix",
-        "test": "aqu test --passWithNoTests",
-        "test:watch": "aqu test --passWithNoTests --watch",
-        "test:coverage": "aqu test --coverage --json --silent --ci --outputFile=\"report.json\"",
-        "test:log-coverage": "aqu test --coverage --silent --ci --coverageReporters=text"
+        "test": "jest --passWithNoTests",
+        "test:watch": "jest --passWithNoTests --watch",
+        "test:coverage": "jest --coverage --json --silent --ci --outputFile=\"report.json\"",
+        "test:log-coverage": "jest --coverage --silent --ci --coverageReporters=text"
     },
     "devDependencies": {
         "@reactive-tools/eslint-config": "*",
