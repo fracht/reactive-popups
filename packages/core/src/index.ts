@@ -10,4 +10,4 @@ export * from './hooks/usePopupsContext';
 export * from './types/Popup';
 export * from './types/PopupController';
 export * from './types/PopupProps';
-export * from './types/PopupsContextType';
+export * from './types/PopupsBag';

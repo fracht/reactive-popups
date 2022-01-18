@@ -1,12 +1,12 @@
 import React from 'react';
-import { useStockContext, useStockValue } from 'stocked';
+import { useStockValue } from 'stocked';
 
-import { PopupsRegistry } from '../types/PopupsRegistry';
+import { usePopupsRegistryContext } from '../hooks/usePopupsRegistryContext';
 
 export const PopupsRenderer = () => {
-    const { paths } = useStockContext<PopupsRegistry>();
+    const registry = usePopupsRegistryContext();
 
-    const popups = useStockValue(paths.popups);
+    const popups = useStockValue(registry.paths.popups, registry);
 
     return Object.keys(popups).length > 0 ? (
         <React.Fragment>

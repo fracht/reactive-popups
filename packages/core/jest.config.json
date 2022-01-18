@@ -1,0 +1,24 @@
+{
+    "transformIgnorePatterns": [
+        "[/\\\\]node_modules[/\\\\].+\\.(js|cjs|jsx)$'"
+    ],
+    "rootDir": ".",
+    "preset": "ts-jest/presets/js-with-babel",
+    "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "cjs",
+        "mjs",
+        "json",
+        "node"
+    ],
+    "collectCoverageFrom": ["**/*.{ts,tsx}"],
+    "testMatch": ["**/*.(spec|test).{ts,tsx,js,jsx,cjs,mjs}"],
+    "globals": {
+        "ts-jest": {
+            "tsconfig": "tsconfig.test.json"
+        }
+    }
+}

@@ -1,16 +1,14 @@
 import { useContext } from 'react';
 import invariant from 'tiny-invariant';
 
+import { CONTEXT_NOT_FOUND_ERROR } from '../constants';
 import { PopupsContext } from '../PopupsContext';
-import { PopupsContextType } from '../types/PopupsContextType';
+import { PopupsBag } from '../types/PopupsBag';
 
-export const usePopupsContext = (): PopupsContextType => {
+export const usePopupsContext = (): PopupsBag => {
     const context = useContext(PopupsContext);
 
-    invariant(
-        context,
-        'PopupsContext was not found. Please, wrap your application with PopupsContextProvider.'
-    );
+    invariant(context, CONTEXT_NOT_FOUND_ERROR);
 
     return context;
 };
