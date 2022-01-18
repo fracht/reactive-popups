@@ -2,7 +2,7 @@
     "transformIgnorePatterns": [
         "[/\\\\]node_modules[/\\\\].+\\.(js|cjs|jsx)$'"
     ],
-    "rootDir": "E:\\projects\\reactive-popups\\packages\\core",
+    "rootDir": ".",
     "preset": "ts-jest/presets/js-with-babel",
     "moduleFileExtensions": [
         "ts",
