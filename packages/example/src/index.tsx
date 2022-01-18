@@ -1,13 +1,19 @@
 import React, { PropsWithChildren } from 'react';
 import ReactDOM from 'react-dom';
-import { PopupsContextProvider, PopupsRenderer } from '@reactive-popups/core';
+import {
+    PopupsContextProvider,
+    PopupsRenderer,
+    usePopupsContext,
+} from '@reactive-popups/core';
 
 import { App } from './App';
 
 import './styles.css';
 
 const PopupsWrapper = ({ children }: PropsWithChildren<{}>) => {
-    return (
+    const { empty } = usePopupsContext();
+
+    return empty() ? null : (
         <div
             style={{
                 background: 'gray',

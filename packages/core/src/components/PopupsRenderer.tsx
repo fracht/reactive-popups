@@ -1,12 +1,9 @@
 import React from 'react';
-import { useStockValue } from 'stocked';
 
-import { usePopupsRegistryContext } from '../hooks/usePopupsRegistryContext';
+import { usePopupsContext } from '../hooks/usePopupsContext';
 
 export const PopupsRenderer = () => {
-    const registry = usePopupsRegistryContext();
-
-    const popups = useStockValue(registry.paths.popups, registry);
+    const { popups } = usePopupsContext();
 
     return Object.keys(popups).length > 0 ? (
         <React.Fragment>

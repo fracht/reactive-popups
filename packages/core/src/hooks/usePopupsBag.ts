@@ -1,5 +1,4 @@
-import { ComponentType, useCallback } from 'react';
-import { Stock } from 'stocked';
+import { ComponentType, useCallback, useState } from 'react';
 
 import { Popup } from '../types/Popup';
 import { PopupProps } from '../types/PopupProps';
@@ -7,11 +6,9 @@ import { PopupsBag } from '../types/PopupsBag';
 import { PopupsRegistry } from '../types/PopupsRegistry';
 import { uuid } from '../utils/uuid';
 
-export const usePopupsBag = ({
-    paths,
-    setValue,
-    getValue,
-}: Stock<PopupsRegistry>): PopupsBag => {
+export const usePopupsBag = (): PopupsBag => {
+    const [popups, setPopups] = useState<PopupsRegistry>({});
+
     const add = useCallback(
         <P extends PopupProps>(
             PopupComponent: ComponentType<P>,
@@ -26,44 +23,55 @@ export const usePopupsBag = ({
                 visible: false,
             };
 
-            setValue(
-                paths.popups[id],
-                newPopup as unknown as Popup<PopupProps>
-            );
+            setPopups((registry) => {
+                registry[id] = newPopup as unknown as Popup<PopupProps>;
+                return {
+                    ...registry,
+                };
+            });
 
             return id;
         },
-        [setValue, paths]
+        []
     );
 
-    const open = useCallback(
-        (id: number) => {
-            setValue(paths.popups[id].visible, true);
-        },
-        [paths, setValue]
-    );
+    const open = useCallback((id: number) => {
+        setPopups((registry) => {
+            registry[id].visible = true;
+            return {
+                ...registry,
+            };
+        });
+    }, []);
 
-    const remove = useCallback(
-        (id: number) => {
-            // FIXME after remove all popups will rerender
-            const popups = getValue(paths.popups);
-            delete popups[id];
-            setValue(paths.popups, popups);
-        },
-        [setValue, getValue, paths]
-    );
+    const remove = useCallback((id: number) => {
+        setPopups((registry) => {
+            delete registry[id];
+            return {
+                ...registry,
+            };
+        });
+    }, []);
 
-    const close = useCallback(
-        (id: number) => {
-            setValue(paths.popups[id].visible, false);
-        },
-        [paths, setValue]
-    );
+    const close = useCallback((id: number) => {
+        setPopups((registry) => {
+            registry[id].visible = false;
+            return {
+                ...registry,
+            };
+        });
+    }, []);
+
+    const empty = () => {
+        return Object.values(popups).every(({ visible }) => !visible);
+    };
 
     return {
         add,
         open,
         close,
         remove,
+        popups,
+        empty,
     };
 };

@@ -34,7 +34,6 @@
         "react": ">=16"
     },
     "dependencies": {
-        "stocked": "^1.0.0-beta.23",
         "tiny-invariant": "^1.2.0"
     }
 }
