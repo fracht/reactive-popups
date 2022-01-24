@@ -15,7 +15,7 @@
         "start": "aqu watch",
         "lint": "aqu lint",
         "lint:fix": "aqu lint --fix",
-        "test": "jest --passWithNoTests",
+        "test": "aqu test",
         "test:watch": "jest --passWithNoTests --watch",
         "test:coverage": "jest --coverage --json --silent --ci --outputFile=\"report.json\"",
         "test:log-coverage": "jest --coverage --silent --ci --coverageReporters=text"
