@@ -1,13 +1,14 @@
 import { ComponentType, useCallback, useEffect, useRef } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
+import { ExcludedPropsType } from '../types/ExcludedPropsType';
 import { PopupController } from '../types/PopupController';
 import { PopupProps } from '../types/PopupProps';
 
-export const usePopup = <P extends PopupProps>(
+export const usePopup = <K extends object, P extends K & PopupProps>(
     PopupComponent: ComponentType<P>,
-    props: Omit<P, 'id'> = {} as P
-): PopupController => {
+    props: K = {} as K
+): PopupController<K, P> => {
     const {
         open: openPopup,
         close: closePopup,
@@ -16,11 +17,14 @@ export const usePopup = <P extends PopupProps>(
     } = usePopupsContext();
     const id = useRef<number | null>(null);
 
-    const open = useCallback(() => {
-        if (id.current) {
-            openPopup(id.current);
-        }
-    }, [openPopup]);
+    const open = useCallback(
+        (excludedProps?: ExcludedPropsType<K, P>) => {
+            if (id.current) {
+                openPopup(id.current, excludedProps);
+            }
+        },
+        [openPopup]
+    );
 
     const close = useCallback(() => {
         if (id.current) {
