@@ -3,9 +3,13 @@ import { PopupProps, usePopup } from '@reactive-popups/core';
 
 type PopupComponentProps = {
     message: string;
+    data: number;
 } & PopupProps;
 
-const PopupComponent = ({ message, id }: PopupComponentProps) => {
+const PopupComponent: React.FC<PopupComponentProps> = ({
+    message,
+    id,
+}: PopupComponentProps) => {
     console.log(message, id);
 
     return (
@@ -24,12 +28,21 @@ const props2 = {
 };
 
 export const Component = () => {
-    const [open, close] = usePopup(PopupComponent, props);
+    const [open, close] = usePopup<typeof props, PopupComponentProps>(
+        PopupComponent,
+        props
+    );
     const [open2, close2] = usePopup(PopupComponent, props2);
 
     return (
         <div>
-            <button onClick={open}>open</button>
+            <button
+                onClick={() => {
+                    open({ data: 123 });
+                }}
+            >
+                open
+            </button>
             <button onClick={close}>close</button>
 
             <button onClick={open2}>open2</button>

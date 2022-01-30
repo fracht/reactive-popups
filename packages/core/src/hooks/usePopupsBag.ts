@@ -1,5 +1,6 @@
 import { ComponentType, useCallback, useState } from 'react';
 
+import { ExcludedPropsType } from '../types/ExcludedPropsType';
 import { Popup } from '../types/Popup';
 import { PopupProps } from '../types/PopupProps';
 import { PopupsBag } from '../types/PopupsBag';
@@ -10,15 +11,15 @@ export const usePopupsBag = (): PopupsBag => {
     const [popups, setPopups] = useState<PopupsRegistry>({});
 
     const add = useCallback(
-        <P extends PopupProps>(
+        <K extends object, P extends K & PopupProps>(
             PopupComponent: ComponentType<P>,
-            props: Omit<P, 'id'> = {} as P
+            props: K = {} as K
         ) => {
             const id = uuid();
 
             const newPopup: Popup<P> = {
                 PopupComponent,
-                props,
+                props: props as P,
                 id,
                 visible: false,
             };
@@ -35,14 +36,27 @@ export const usePopupsBag = (): PopupsBag => {
         []
     );
 
-    const open = useCallback((id: number) => {
-        setPopups((registry) => {
-            registry[id].visible = true;
-            return {
-                ...registry,
-            };
-        });
-    }, []);
+    const open = useCallback(
+        <K extends object, P extends K & PopupProps>(
+            id: number,
+            excludedProps: ExcludedPropsType<K, P> = {} as ExcludedPropsType<
+                K,
+                P
+            >
+        ) => {
+            setPopups((registry) => {
+                registry[id].visible = true;
+                registry[id].props = {
+                    ...registry[id].props,
+                    ...excludedProps,
+                };
+                return {
+                    ...registry,
+                };
+            });
+        },
+        []
+    );
 
     const remove = useCallback((id: number) => {
         setPopups((registry) => {
