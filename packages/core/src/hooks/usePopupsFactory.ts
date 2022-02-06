@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
+import { DEFAULT_GROUP_SYMBOL } from '../constants';
 import { PopupComponent } from '../types/PopupComponent';
 
 type OptionalParamFunction<T, R> = keyof T extends never
@@ -14,15 +15,16 @@ export type UsePopupsFactoryBag<T> = [
 
 export const usePopupsFactory = <P, K extends keyof P>(
     PopupComponent: PopupComponent<P>,
-    props: Pick<P, K>
+    props: Pick<P, K>,
+    group = DEFAULT_GROUP_SYMBOL
 ): UsePopupsFactoryBag<Omit<P, K>> => {
     const { add, remove } = usePopupsContext();
 
     const destroy = useCallback(
         (id: number) => {
-            remove(id);
+            remove(id, group);
         },
-        [remove]
+        [remove, group]
     );
 
     const create = useCallback(
@@ -33,6 +35,7 @@ export const usePopupsFactory = <P, K extends keyof P>(
                     ...props,
                     ...omittedProps,
                 } as P,
+                group,
                 {
                     visible: true,
                 },
@@ -41,7 +44,7 @@ export const usePopupsFactory = <P, K extends keyof P>(
 
             return id;
         },
-        [PopupComponent, add, props]
+        [PopupComponent, add, props, group]
     );
 
     return [create, destroy];
