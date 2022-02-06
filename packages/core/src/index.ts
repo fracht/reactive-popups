@@ -8,6 +8,7 @@ export * from './hooks/usePopupsFactory';
 export * from './hooks/usePopupsContext';
 export * from './hooks/usePopupsBag';
 export * from './hooks/usePopupGroup';
+export * from './hooks/useResponsePopup';
 
 // types
 export * from './types/Popup';
