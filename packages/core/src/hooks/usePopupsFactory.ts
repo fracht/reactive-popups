@@ -3,10 +3,7 @@ import { useCallback } from 'react';
 import { usePopupsContext } from './usePopupsContext';
 import { DEFAULT_GROUP_SYMBOL } from '../constants';
 import { PopupComponent } from '../types/PopupComponent';
-
-type OptionalParamFunction<T, R> = keyof T extends never
-    ? () => R
-    : (props: T) => R;
+import { OptionalParamFunction } from '../utils/OptionalParamFunction';
 
 export type UsePopupsFactoryBag<T> = [
     create: OptionalParamFunction<T, number>,
@@ -38,13 +35,15 @@ export const usePopupsFactory = <P, K extends keyof P>(
                 group,
                 {
                     visible: true,
-                },
-                true
+                    close: () => {
+                        remove(id, group);
+                    },
+                }
             );
 
             return id;
         },
-        [PopupComponent, add, props, group]
+        [add, PopupComponent, props, group, remove]
     );
 
     return [create, destroy];

@@ -7,6 +7,7 @@ import {
 
 import { Component } from './Component';
 import { PopupsFactory } from './PopupsFactory';
+import { ResponsePopup } from './ResponsePopup';
 
 const PopupsWrapper = ({ children }: PropsWithChildren<{}>) => {
     const { empty } = usePopupsContext();
@@ -52,8 +53,9 @@ export const App = () => {
 
     return (
         <div>
-            <Component userId={1} />
-            <PopupsFactory group={snackbarGroup} />
+            {/* <Component userId={1} />
+            <PopupsFactory group={snackbarGroup} /> */}
+            <ResponsePopup />
 
             <PopupsWrapper>
                 <PopupsRenderer />

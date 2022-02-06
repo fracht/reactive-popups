@@ -8,8 +8,7 @@ export type PopupsBag = {
         PopupComponent: PopupComponent<P>,
         props: P,
         group?: symbol,
-        customProps?: Partial<PopupProps>,
-        destroyOnClose?: boolean
+        customProps?: Partial<PopupProps>
     ) => number;
     open: (id: number, group?: symbol) => void;
     remove: (id: number, group?: symbol) => void;

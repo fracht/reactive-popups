@@ -36,8 +36,7 @@ export const usePopupsBag = (): PopupsBag => {
             PopupComponent: PopupComponent<P>,
             props: P,
             group = DEFAULT_GROUP_SYMBOL,
-            customProps?: Partial<PopupProps>,
-            destroyOnClose = false
+            customProps?: Partial<PopupProps>
         ) => {
             const id = uuid();
 
@@ -46,8 +45,7 @@ export const usePopupsBag = (): PopupsBag => {
                 props,
                 id,
                 visible: false,
-                close: () =>
-                    destroyOnClose ? remove(id, group) : close(id, group),
+                close: () => close(id, group),
                 ...customProps,
             };
 
@@ -61,7 +59,7 @@ export const usePopupsBag = (): PopupsBag => {
 
             return id;
         },
-        [close, remove]
+        [close]
     );
 
     const open = useCallback((id: number, group = DEFAULT_GROUP_SYMBOL) => {
