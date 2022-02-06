@@ -2,12 +2,13 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
 import { PopupComponent } from '../types/PopupComponent';
-import { PopupController } from '../types/PopupController';
+
+export type UsePopupBag = [open: () => void, close: () => void];
 
 export const usePopup = <P>(
     PopupComponent: PopupComponent<P>,
     props: P
-): PopupController => {
+): UsePopupBag => {
     const {
         open: openPopup,
         close: closePopup,
