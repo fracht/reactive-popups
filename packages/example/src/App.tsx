@@ -6,7 +6,7 @@ export const App = () => {
     console.log('Rerender whole application');
     return (
         <div>
-            <Component />
+            <Component userId={1} />
         </div>
     );
 };

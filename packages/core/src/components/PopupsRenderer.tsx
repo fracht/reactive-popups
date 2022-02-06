@@ -8,11 +8,13 @@ export const PopupsRenderer = () => {
     return Object.keys(popups).length > 0 ? (
         <React.Fragment>
             {Object.values(popups).map(
-                ({ PopupComponent, props, id, visible }) => {
+                ({ PopupComponent, props, ...popupProps }) => {
                     return (
-                        visible && (
-                            <PopupComponent {...props} key={id} id={id} />
-                        )
+                        <PopupComponent
+                            {...props}
+                            key={popupProps.id}
+                            {...popupProps}
+                        />
                     );
                 }
             )}

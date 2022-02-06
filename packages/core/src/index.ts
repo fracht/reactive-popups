@@ -8,8 +8,8 @@ export * from './hooks/usePopupsContext';
 export * from './hooks/usePopupsBag';
 
 // types
-export * from './types/ExcludedPropsType';
 export * from './types/Popup';
+export * from './types/PopupComponent';
 export * from './types/PopupController';
 export * from './types/PopupProps';
 export * from './types/PopupsBag';

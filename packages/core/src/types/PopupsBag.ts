@@ -1,19 +1,10 @@
-import { ComponentType } from 'react';
-
-import { ExcludedPropsType } from './ExcludedPropsType';
-import { PopupProps } from './PopupProps';
+import { PopupComponent } from './PopupComponent';
 import { PopupsRegistry } from './PopupsRegistry';
 
 export type PopupsBag = {
     popups: PopupsRegistry;
-    add: <K extends object, P extends K & PopupProps>(
-        PopupComponent: ComponentType<P>,
-        props: K
-    ) => number;
-    open: <K extends object, P extends K>(
-        id: number,
-        excludedProps?: ExcludedPropsType<K, P>
-    ) => void;
+    add: <P>(PopupComponent: PopupComponent<P>, props: P) => number;
+    open: (id: number) => void;
     remove: (id: number) => void;
     close: (id: number) => void;
     empty: () => boolean;
