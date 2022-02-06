@@ -15,8 +15,8 @@ const Snackbar = ({ message, id, close }: SnackBarProps) => {
 
 const emptyObj = {};
 
-export const PopupsFactory = () => {
-    const [create, destroy] = usePopupsFactory(Snackbar, emptyObj);
+export const PopupsFactory = ({ group }: { group: symbol }) => {
+    const [create, destroy] = usePopupsFactory(Snackbar, emptyObj, group);
 
     return (
         <div

@@ -7,6 +7,7 @@ export * from './hooks/usePopup';
 export * from './hooks/usePopupsFactory';
 export * from './hooks/usePopupsContext';
 export * from './hooks/usePopupsBag';
+export * from './hooks/usePopupGroup';
 
 // types
 export * from './types/Popup';
