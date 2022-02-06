@@ -1,52 +1,77 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { PopupProps, usePopup } from '@reactive-popups/core';
 
-type PopupComponentProps = {
-    message: string;
-    data: number;
+const mockServer = async (name: string, amount: number): Promise<void> => {
+    return new Promise<void>((res) => {
+        setTimeout(() => {
+            console.log('Manipulations on server:', name, amount);
+            res();
+        }, 2000);
+    });
+};
+
+type SubscriptionFormPopupProps = {
+    userId: number;
 } & PopupProps;
 
-const PopupComponent: React.FC<PopupComponentProps> = ({
-    message,
+const SubscriptionFormPopup = ({
+    userId,
     id,
-}: PopupComponentProps) => {
-    console.log(message, id);
+    close,
+}: SubscriptionFormPopupProps) => {
+    const [name, setName] = useState('');
+    const [amount, setAmount] = useState(0);
+
+    const submit = () => {
+        mockServer(name, amount).then(close);
+    };
 
     return (
-        <div>
-            {message}:{id}
+        <div style={{ background: 'white', width: 300, height: 300 }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <button style={{ margin: 10 }} onClick={close}>
+                    CLOSE
+                </button>
+            </div>
+            <form>
+                <label htmlFor="name">User name:</label>
+                <input
+                    id="name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+                <label htmlFor="amount">Amount of donation ($):</label>
+                <input
+                    id="amount"
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(+e.target.value)}
+                />
+
+                <div>Popup id: {id}</div>
+                <div>User id: {userId}</div>
+            </form>
+            <div>
+                <button style={{ margin: 10 }} onClick={submit}>
+                    Submit
+                </button>
+            </div>
         </div>
     );
 };
 
-const props = {
-    message: 'hello',
+type ComponentProps = {
+    userId: number;
 };
 
-const props2 = {
-    message: 'world',
-};
-
-export const Component = () => {
-    const [open, close] = usePopup<typeof props, PopupComponentProps>(
-        PopupComponent,
-        props
-    );
-    const [open2, close2] = usePopup(PopupComponent, props2);
+export const Component = ({ userId }: ComponentProps) => {
+    const popupProps = useMemo(() => ({ userId }), [userId]);
+    const [open] = usePopup(SubscriptionFormPopup, popupProps);
 
     return (
         <div>
-            <button
-                onClick={() => {
-                    open({ data: 123 });
-                }}
-            >
-                open
-            </button>
-            <button onClick={close}>close</button>
-
-            <button onClick={open2}>open2</button>
-            <button onClick={close2}>close2</button>
+            <button onClick={open}>Subscribe</button>
         </div>
     );
 };

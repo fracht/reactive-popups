@@ -1,9 +1,7 @@
-import { ComponentType } from 'react';
-
+import { PopupComponent } from './PopupComponent';
 import { PopupProps } from './PopupProps';
 
-export type Popup<P extends PopupProps> = {
-    PopupComponent: ComponentType<P>;
-    props: Omit<P, keyof PopupProps>;
-    visible: boolean;
+export type Popup<P> = {
+    PopupComponent: PopupComponent<P>;
+    props: P;
 } & PopupProps;
