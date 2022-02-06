@@ -29,12 +29,30 @@ const PopupsWrapper = ({ children }: PropsWithChildren<{}>) => {
     );
 };
 
+const SnackbarsWrapper = ({ children }: PropsWithChildren<{}>) => {
+    // const { empty } = usePopupsContext();
+
+    return (
+        <div
+            style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                display: 'flex',
+                flexDirection: 'column',
+            }}
+        >
+            {children}
+        </div>
+    );
+};
+
 ReactDOM.render(
     <PopupsContextProvider>
         <App />
-        <PopupsWrapper>
+        <SnackbarsWrapper>
             <PopupsRenderer />
-        </PopupsWrapper>
+        </SnackbarsWrapper>
     </PopupsContextProvider>,
     document.getElementById('root')
 );

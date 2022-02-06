@@ -29,15 +29,21 @@ export const usePopupsBag = (): PopupsBag => {
     }, []);
 
     const add = useCallback(
-        <P>(PopupComponent: PopupComponent<P>, props: P) => {
+        <P>(
+            PopupComponent: PopupComponent<P>,
+            props: P,
+            customProps?: Partial<PopupProps>,
+            destroyOnClose = false
+        ) => {
             const id = uuid();
 
             const newPopup: Popup<P> = {
                 PopupComponent,
                 props,
                 id,
-                visible: false,
-                close: () => close(id),
+                visible: true,
+                close: () => (destroyOnClose ? remove(id) : close(id)),
+                ...customProps,
             };
 
             setPopups((registry) => {
@@ -49,7 +55,7 @@ export const usePopupsBag = (): PopupsBag => {
 
             return id;
         },
-        [close]
+        [close, remove]
     );
 
     const open = useCallback((id: number) => {
