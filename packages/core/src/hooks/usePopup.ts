@@ -4,7 +4,11 @@ import { usePopupsContext } from './usePopupsContext';
 import { DEFAULT_GROUP_SYMBOL } from '../constants';
 import { PopupComponent } from '../types/PopupComponent';
 
-export type UsePopupBag = [open: () => void, close: () => void];
+export type UsePopupBag = [
+    show: () => void,
+    hide: () => void,
+    unmount: () => void
+];
 
 export const usePopup = <P>(
     PopupComponent: PopupComponent<P>,
@@ -12,24 +16,30 @@ export const usePopup = <P>(
     group = DEFAULT_GROUP_SYMBOL
 ): UsePopupBag => {
     const {
-        open: openPopup,
-        close: closePopup,
+        show: showPopup,
+        hide: hidePopup,
         mount,
         unmount,
     } = usePopupsContext();
     const id = useRef<number | null>(null);
 
-    const open = useCallback(() => {
+    const show = useCallback(() => {
         if (id.current) {
-            openPopup(id.current, group);
+            showPopup(id.current, group);
         }
-    }, [openPopup, group]);
+    }, [showPopup, group]);
 
-    const close = useCallback(() => {
+    const hide = useCallback(() => {
         if (id.current) {
-            closePopup(id.current, group);
+            hidePopup(id.current, group);
         }
-    }, [closePopup, group]);
+    }, [hidePopup, group]);
+
+    const unmountPopup = useCallback(() => {
+        if (id.current) {
+            unmount(id.current, group);
+        }
+    }, [group, unmount]);
 
     useEffect(() => {
         id.current = mount(PopupComponent, props, group);
@@ -38,5 +48,5 @@ export const usePopup = <P>(
         };
     }, [PopupComponent, mount, props, unmount, group]);
 
-    return [open, close];
+    return [show, hide, unmountPopup];
 };

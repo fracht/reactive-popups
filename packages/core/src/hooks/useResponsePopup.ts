@@ -1,14 +1,16 @@
 import { useCallback } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
+import { usePopupsFactory } from './usePopupsFactory';
 import { DEFAULT_GROUP_SYMBOL } from '../constants';
 import { PopupComponent } from '../types/PopupComponent';
+import { PopupProps } from '../types/PopupProps';
 import { OptionalParamFunction } from '../utils/OptionalParamFunction';
 
 export type ResponsePopupProps<R> = {
     resolve: (value: R) => void;
     reject: (reason?: unknown) => void;
-};
+} & PopupProps;
 
 export type UseResponsePopupBag<T, R> = OptionalParamFunction<T, Promise<R>>;
 
@@ -17,38 +19,32 @@ export const useResponsePopup = <P, K extends keyof P, R>(
     props: Pick<P, K>,
     group = DEFAULT_GROUP_SYMBOL
 ): UseResponsePopupBag<Omit<P, K | keyof ResponsePopupProps<R>>, R> => {
-    const { mount, unmount } = usePopupsContext();
+    const { unmount } = usePopupsContext();
 
-    const open = useCallback(
-        (omittedProps?: Omit<P, K | keyof ResponsePopupProps<R>>) => {
-            return new Promise<R>((resolve, reject) => {
-                const id = mount(
-                    PopupComponent,
-                    {
-                        ...props,
-                        ...omittedProps,
-                        resolve: (value) => {
-                            resolve(value);
-                            unmount(id, group);
-                        },
-                        reject: (reason?: unknown) => {
-                            reject(reason);
-                            unmount(id, group);
-                        },
-                    } as P & ResponsePopupProps<R>,
-                    group,
-                    {
-                        visible: true,
-                        close: () => {
-                            reject();
-                            unmount(id, group);
-                        },
-                    }
-                );
-            });
-        },
-        [PopupComponent, mount, group, props, unmount]
+    const [create] = usePopupsFactory<P, K>(
+        PopupComponent as PopupComponent<P>,
+        props,
+        group
     );
 
-    return open;
+    const waitResponse = useCallback(
+        (omittedProps?: Omit<P, K | keyof ResponsePopupProps<R>>) => {
+            return new Promise<R>((resolve, reject) => {
+                const id = create({
+                    ...omittedProps,
+                    resolve: (value) => {
+                        resolve(value);
+                        unmount(id, group);
+                    },
+                    reject: (reason?: unknown) => {
+                        reject(reason);
+                        unmount(id, group);
+                    },
+                } as P & ResponsePopupProps<R>);
+            });
+        },
+        [create, unmount, group]
+    );
+
+    return waitResponse;
 };

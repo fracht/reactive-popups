@@ -7,9 +7,10 @@ import { OptionalParamFunction } from '../utils/OptionalParamFunction';
 
 export type UsePopupsFactoryBag<T> = [
     create: OptionalParamFunction<T, number>,
-    remove: (id: number) => void
+    destroy: (id: number) => void
 ];
 
+// FIXME usePopupsFactory does not handle the situation when created popup hides - there is no way to show it again.
 export const usePopupsFactory = <P, K extends keyof P>(
     PopupComponent: PopupComponent<P>,
     props: Pick<P, K>,
@@ -35,15 +36,12 @@ export const usePopupsFactory = <P, K extends keyof P>(
                 group,
                 {
                     visible: true,
-                    close: () => {
-                        unmount(id, group);
-                    },
                 }
             );
 
             return id;
         },
-        [mount, PopupComponent, props, group, unmount]
+        [mount, PopupComponent, props, group]
     );
 
     return [create, destroy];

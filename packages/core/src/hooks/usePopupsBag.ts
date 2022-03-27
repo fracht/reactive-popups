@@ -22,7 +22,7 @@ export const usePopupsBag = (): PopupsBag => {
         });
     }, []);
 
-    const close = useCallback((id: number, group = DEFAULT_GROUP_SYMBOL) => {
+    const hide = useCallback((id: number, group = DEFAULT_GROUP_SYMBOL) => {
         setPopups((registry) => {
             registry[group][id].visible = false;
             return {
@@ -45,7 +45,8 @@ export const usePopupsBag = (): PopupsBag => {
                 props,
                 id,
                 visible: false,
-                close: () => close(id, group),
+                hide: () => hide(id, group),
+                unmountPopup: () => unmount(id, group),
                 ...customProps,
             };
 
@@ -59,10 +60,10 @@ export const usePopupsBag = (): PopupsBag => {
 
             return id;
         },
-        [close]
+        [hide, unmount]
     );
 
-    const open = useCallback((id: number, group = DEFAULT_GROUP_SYMBOL) => {
+    const show = useCallback((id: number, group = DEFAULT_GROUP_SYMBOL) => {
         setPopups((registry) => {
             registry[group][id].visible = true;
             return {
@@ -72,13 +73,17 @@ export const usePopupsBag = (): PopupsBag => {
     }, []);
 
     const empty = (group = DEFAULT_GROUP_SYMBOL) => {
+        if (!popups[group] || Object.keys(popups[group]).length === 0) {
+            return true;
+        }
+
         return Object.values(popups[group]).every(({ visible }) => !visible);
     };
 
     return {
         mount,
-        open,
-        close,
+        show,
+        hide,
         unmount,
         popups,
         empty,
