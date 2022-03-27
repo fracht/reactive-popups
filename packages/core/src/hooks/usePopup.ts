@@ -4,11 +4,7 @@ import { usePopupsContext } from './usePopupsContext';
 import { DEFAULT_GROUP_SYMBOL } from '../constants';
 import { PopupComponent } from '../types/PopupComponent';
 
-export type UsePopupBag = [
-    show: () => void,
-    hide: () => void,
-    unmount: () => void
-];
+export type UsePopupBag = [show: () => void, hide: () => void];
 
 export const usePopup = <P>(
     PopupComponent: PopupComponent<P>,
@@ -35,12 +31,6 @@ export const usePopup = <P>(
         }
     }, [hidePopup, group]);
 
-    const unmountPopup = useCallback(() => {
-        if (id.current) {
-            unmount(id.current, group);
-        }
-    }, [group, unmount]);
-
     useEffect(() => {
         id.current = mount(PopupComponent, props, group);
         return () => {
@@ -48,5 +38,5 @@ export const usePopup = <P>(
         };
     }, [PopupComponent, mount, props, unmount, group]);
 
-    return [show, hide, unmountPopup];
+    return [show, hide];
 };

@@ -5,10 +5,10 @@ type SnackBarProps = {
     message: string;
 } & PopupProps;
 
-const Snackbar = ({ message, id, unmountPopup }: SnackBarProps) => {
+const Snackbar = ({ message, id, close }: SnackBarProps) => {
     return (
         <h1 style={{ color: 'red', padding: 10 }}>
-            {message}:{id} <button onClick={unmountPopup}>X</button>
+            {message}:{id} <button onClick={close}>X</button>
         </h1>
     );
 };

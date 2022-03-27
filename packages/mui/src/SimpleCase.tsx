@@ -18,15 +18,14 @@ type MyDialogProps = {
     data: string;
 } & PopupProps;
 
-const MyDialog = ({ visible, hide, data, unmountPopup }: MyDialogProps) => {
-    console.log(data);
+const MyDialog = ({ visible, data, close, id }: MyDialogProps) => {
+    console.log(data, id);
 
     return (
-        <Modal open={visible} onClose={hide} draggable>
+        <Modal open={visible} onClose={close} draggable>
             <Box sx={style}>
                 <Typography>hello world</Typography>
-                <Button onClick={hide}>hide</Button>
-                <Button onClick={unmountPopup}>unmount</Button>
+                <Button onClick={close}>close</Button>
             </Box>
         </Modal>
     );

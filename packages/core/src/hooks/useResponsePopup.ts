@@ -19,9 +19,7 @@ export const useResponsePopup = <P, K extends keyof P, R>(
     props: Pick<P, K>,
     group = DEFAULT_GROUP_SYMBOL
 ): UseResponsePopupBag<Omit<P, K | keyof ResponsePopupProps<R>>, R> => {
-    const { unmount } = usePopupsContext();
-
-    const [create] = usePopupsFactory<P, K>(
+    const [create, destroy] = usePopupsFactory<P, K>(
         PopupComponent as PopupComponent<P>,
         props,
         group
@@ -34,16 +32,16 @@ export const useResponsePopup = <P, K extends keyof P, R>(
                     ...omittedProps,
                     resolve: (value) => {
                         resolve(value);
-                        unmount(id, group);
+                        destroy(id);
                     },
                     reject: (reason?: unknown) => {
                         reject(reason);
-                        unmount(id, group);
+                        destroy(id);
                     },
                 } as P & ResponsePopupProps<R>);
             });
         },
-        [create, unmount, group]
+        [create, destroy]
     );
 
     return waitResponse;

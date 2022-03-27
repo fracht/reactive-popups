@@ -17,19 +17,19 @@ type SubscriptionFormPopupProps = {
 const SubscriptionFormPopup = ({
     userId,
     id,
-    hide,
+    close,
 }: SubscriptionFormPopupProps) => {
     const [name, setName] = useState('');
     const [amount, setAmount] = useState(0);
 
     const submit = () => {
-        mockServer(name, amount).then(hide);
+        mockServer(name, amount).then(close);
     };
 
     return (
         <div style={{ background: 'white', width: 300, height: 300 }}>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <button style={{ margin: 10 }} onClick={hide}>
+                <button style={{ margin: 10 }} onClick={close}>
                     CLOSE
                 </button>
             </div>
