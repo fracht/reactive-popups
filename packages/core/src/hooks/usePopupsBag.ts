@@ -45,8 +45,7 @@ export const usePopupsBag = (): PopupsBag => {
                 props,
                 id,
                 visible: false,
-                hide: () => hide(id, group),
-                unmountPopup: () => unmount(id, group),
+                close: () => hide(id, group),
                 ...customProps,
             };
 
@@ -60,7 +59,7 @@ export const usePopupsBag = (): PopupsBag => {
 
             return id;
         },
-        [hide, unmount]
+        [hide]
     );
 
     const show = useCallback((id: number, group = DEFAULT_GROUP_SYMBOL) => {

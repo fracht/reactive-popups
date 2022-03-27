@@ -10,7 +10,6 @@ export type UsePopupsFactoryBag<T> = [
     destroy: (id: number) => void
 ];
 
-// FIXME usePopupsFactory does not handle the situation when created popup hides - there is no way to show it again.
 export const usePopupsFactory = <P, K extends keyof P>(
     PopupComponent: PopupComponent<P>,
     props: Pick<P, K>,
@@ -36,12 +35,15 @@ export const usePopupsFactory = <P, K extends keyof P>(
                 group,
                 {
                     visible: true,
+                    close: () => {
+                        destroy(id);
+                    },
                 }
             );
 
             return id;
         },
-        [mount, PopupComponent, props, group]
+        [mount, PopupComponent, props, group, destroy]
     );
 
     return [create, destroy];
