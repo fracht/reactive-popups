@@ -3,7 +3,9 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "start": "webpack serve"
+        "start": "webpack serve",
+        "build": "webpack",
+        "lint": "eslint ."
     },
     "keywords": [],
     "author": "Aleksandras Šukelovič",
