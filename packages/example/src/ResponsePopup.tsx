@@ -10,17 +10,13 @@ type ConfirmPopupProps = {
 } & ResponsePopupProps<boolean> &
     PopupProps;
 
-const ConfirmPopup = ({
-    message,
-    resolve,
-    unmountPopup,
-}: ConfirmPopupProps) => {
+const ConfirmPopup = ({ message, resolve, close }: ConfirmPopupProps) => {
     return (
         <div>
             <h1>{message}</h1>
             <button onClick={() => resolve(true)}>OK</button>
             <button onClick={() => resolve(false)}>CANCEL</button>
-            <button onClick={unmountPopup}>CLOSE</button>
+            <button onClick={close}>CLOSE</button>
         </div>
     );
 };
