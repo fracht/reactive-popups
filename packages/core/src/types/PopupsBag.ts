@@ -10,8 +10,8 @@ export type PopupsBag = {
         group?: symbol,
         customProps?: Partial<PopupProps>
     ) => number;
-    open: (id: number, group?: symbol) => void;
+    show: (id: number, group?: symbol) => void;
     unmount: (id: number, group?: symbol) => void;
-    close: (id: number, group?: symbol) => void;
+    hide: (id: number, group?: symbol) => void;
     empty: (group?: symbol) => boolean;
 };

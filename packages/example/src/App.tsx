@@ -1,6 +1,9 @@
 import React, { PropsWithChildren } from 'react';
 import { PopupsRenderer, usePopupsContext } from '@reactive-popups/core';
 
+import { Component } from './Component';
+import { PopupsFactory } from './PopupsFactory';
+import { PopupWithAnchor } from './PopupWithAnchor';
 import { ResponsePopup } from './ResponsePopup';
 
 const PopupsWrapper = ({ children }: PropsWithChildren<{}>) => {
@@ -47,9 +50,10 @@ export const App = () => {
 
     return (
         <div>
-            {/* <Component userId={1} />
-            <PopupsFactory group={snackbarGroup} /> */}
-            <ResponsePopup />
+            {/* <Component userId={1} /> */}
+            <PopupsFactory group={snackbarGroup} />
+            {/* <ResponsePopup /> */}
+            {/* <PopupWithAnchor /> */}
 
             <PopupsWrapper>
                 <PopupsRenderer />

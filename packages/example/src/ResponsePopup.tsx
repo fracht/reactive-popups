@@ -2,7 +2,6 @@ import React from 'react';
 import {
     PopupProps,
     ResponsePopupProps,
-    usePopup,
     useResponsePopup,
 } from '@reactive-popups/core';
 
@@ -11,13 +10,17 @@ type ConfirmPopupProps = {
 } & ResponsePopupProps<boolean> &
     PopupProps;
 
-const ConfirmPopup = ({ message, resolve, close }: ConfirmPopupProps) => {
+const ConfirmPopup = ({
+    message,
+    resolve,
+    unmountPopup,
+}: ConfirmPopupProps) => {
     return (
         <div>
             <h1>{message}</h1>
             <button onClick={() => resolve(true)}>OK</button>
             <button onClick={() => resolve(false)}>CANCEL</button>
-            <button onClick={close}>CLOSE</button>
+            <button onClick={unmountPopup}>CLOSE</button>
         </div>
     );
 };
