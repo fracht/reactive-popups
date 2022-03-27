@@ -13,7 +13,7 @@ export const usePopupsBag = (): PopupsBag => {
         [DEFAULT_GROUP_SYMBOL]: {},
     });
 
-    const remove = useCallback((id: number, group = DEFAULT_GROUP_SYMBOL) => {
+    const unmount = useCallback((id: number, group = DEFAULT_GROUP_SYMBOL) => {
         setPopups((registry) => {
             delete registry[group][id];
             return {
@@ -31,7 +31,7 @@ export const usePopupsBag = (): PopupsBag => {
         });
     }, []);
 
-    const add = useCallback(
+    const mount = useCallback(
         <P>(
             PopupComponent: PopupComponent<P>,
             props: P,
@@ -76,10 +76,10 @@ export const usePopupsBag = (): PopupsBag => {
     };
 
     return {
-        add,
+        mount,
         open,
         close,
-        remove,
+        unmount,
         popups,
         empty,
     };

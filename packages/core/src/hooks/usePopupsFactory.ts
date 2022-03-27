@@ -15,18 +15,18 @@ export const usePopupsFactory = <P, K extends keyof P>(
     props: Pick<P, K>,
     group = DEFAULT_GROUP_SYMBOL
 ): UsePopupsFactoryBag<Omit<P, K>> => {
-    const { add, remove } = usePopupsContext();
+    const { mount, unmount } = usePopupsContext();
 
     const destroy = useCallback(
         (id: number) => {
-            remove(id, group);
+            unmount(id, group);
         },
-        [remove, group]
+        [unmount, group]
     );
 
     const create = useCallback(
         (omittedProps?: Omit<P, K>) => {
-            const id = add<P>(
+            const id = mount<P>(
                 PopupComponent,
                 {
                     ...props,
@@ -36,14 +36,14 @@ export const usePopupsFactory = <P, K extends keyof P>(
                 {
                     visible: true,
                     close: () => {
-                        remove(id, group);
+                        unmount(id, group);
                     },
                 }
             );
 
             return id;
         },
-        [add, PopupComponent, props, group, remove]
+        [mount, PopupComponent, props, group, unmount]
     );
 
     return [create, destroy];

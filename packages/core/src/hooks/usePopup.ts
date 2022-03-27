@@ -14,8 +14,8 @@ export const usePopup = <P>(
     const {
         open: openPopup,
         close: closePopup,
-        add,
-        remove,
+        mount,
+        unmount,
     } = usePopupsContext();
     const id = useRef<number | null>(null);
 
@@ -32,11 +32,11 @@ export const usePopup = <P>(
     }, [closePopup, group]);
 
     useEffect(() => {
-        id.current = add(PopupComponent, props, group);
+        id.current = mount(PopupComponent, props, group);
         return () => {
-            remove(id.current!, group);
+            unmount(id.current!, group);
         };
-    }, [PopupComponent, add, props, remove, group]);
+    }, [PopupComponent, mount, props, unmount, group]);
 
     return [open, close];
 };

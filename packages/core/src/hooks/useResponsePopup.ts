@@ -10,51 +10,44 @@ export type ResponsePopupProps<R> = {
     reject: (reason?: unknown) => void;
 };
 
-export type UseResponsePopupBag<T, R> = OptionalParamFunction<T, R>;
+export type UseResponsePopupBag<T, R> = OptionalParamFunction<T, Promise<R>>;
 
 export const useResponsePopup = <P, K extends keyof P, R>(
     PopupComponent: PopupComponent<P & ResponsePopupProps<R>>,
     props: Pick<P, K>,
     group = DEFAULT_GROUP_SYMBOL
 ): UseResponsePopupBag<Omit<P, K | keyof ResponsePopupProps<R>>, R> => {
-    const { add, remove } = usePopupsContext();
-
-    const unmountPopup = useCallback(
-        (id: number) => {
-            remove(id, group);
-        },
-        [group, remove]
-    );
+    const { mount, unmount } = usePopupsContext();
 
     const open = useCallback(
         (omittedProps?: Omit<P, K | keyof ResponsePopupProps<R>>) => {
             return new Promise<R>((resolve, reject) => {
-                const id = add(
+                const id = mount(
                     PopupComponent,
                     {
                         ...props,
                         ...omittedProps,
                         resolve: (value) => {
                             resolve(value);
-                            unmountPopup(id);
+                            unmount(id, group);
                         },
                         reject: (reason?: unknown) => {
                             reject(reason);
-                            unmountPopup(id);
+                            unmount(id, group);
                         },
                     } as P & ResponsePopupProps<R>,
                     group,
                     {
                         visible: true,
                         close: () => {
-                            reject('Response popup has been unmounted.');
-                            unmountPopup(id);
+                            reject();
+                            unmount(id, group);
                         },
                     }
                 );
             });
         },
-        [PopupComponent, add, group, props, unmountPopup]
+        [PopupComponent, mount, group, props, unmount]
     );
 
     return open;

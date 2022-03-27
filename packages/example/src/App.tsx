@@ -1,12 +1,6 @@
 import React, { PropsWithChildren } from 'react';
-import {
-    PopupsRenderer,
-    usePopupGroup,
-    usePopupsContext,
-} from '@reactive-popups/core';
+import { PopupsRenderer, usePopupsContext } from '@reactive-popups/core';
 
-import { Component } from './Component';
-import { PopupsFactory } from './PopupsFactory';
 import { ResponsePopup } from './ResponsePopup';
 
 const PopupsWrapper = ({ children }: PropsWithChildren<{}>) => {
@@ -46,10 +40,10 @@ const SnackbarsWrapper = ({ children }: PropsWithChildren<{}>) => {
     );
 };
 
+const snackbarGroup = Symbol('Popup group for snackbars');
+
 export const App = () => {
     console.log('Rerender whole application');
-
-    const snackbarGroup = usePopupGroup();
 
     return (
         <div>
