@@ -4,31 +4,13 @@ on:
         branches: [main]
     workflow_dispatch:
 jobs:
-    generate_matrix:
-        name: Get changed packages
-        runs-on: ubuntu-latest
-        outputs:
-            names: ${{ steps.changed_packages.outputs.names }}
-            paths: ${{ steps.changed_packages.outputs.paths }}
-            empty: ${{ steps.changed_packages.outputs.empty }}
-        steps:
-            - name: Checkout repo
-              uses: actions/checkout@v2
-            - name: Find changed workspaces
-              id: changed_packages
-              uses: AlexShukel/get-changed-workspaces-action@v1.0.0
-            - run: echo "${{ steps.changed_packages.outputs.names }}"
-
     build:
-        needs: [generate_matrix]
-        if: ${{ !fromJson(needs.generate_matrix.outputs.empty) }}
         name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
                 node: ['14.x', '16.x']
                 os: [ubuntu-latest]
-                name: ${{ fromJson(needs.generate_matrix.outputs.names) }}
 
         steps:
             - name: Checkout repo
@@ -45,5 +27,11 @@ jobs:
             - name: Install global dependencies
               run: npm install
 
-            - name: Build, lint and test in ${{ matrix.name }}
-              run: npx turbo run build test lint --scope=${{ matrix.name }} --include-dependencies --no-deps
+            - name: Build
+              run: npm run build
+
+            - name: Lint
+              run: npm run lint
+
+            - name: Test
+              run: npm run test

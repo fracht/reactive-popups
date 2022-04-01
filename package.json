@@ -1,12 +1,23 @@
 {
     "name": "reactive-popups",
-    "version": "1.0.0",
+    "version": "0.0.0",
     "description": "Easy popup management with React",
-    "main": "dist/index.js",
+    "files": [
+        "dist"
+    ],
+    "main": "./dist/index.js",
+    "types": "./dist/reactive-popups.d.ts",
+    "module": "./dist/reactive-popups.esm.js",
     "scripts": {
-        "build": "turbo run build --scope=@reactive-popups/*",
-        "test": "turbo run test --scope=@reactive-popups/*",
-        "lint": "eslint ."
+        "build": "aqu build",
+        "start": "aqu watch",
+        "lint": "aqu lint",
+        "lint:fix": "aqu lint --fix",
+        "test": "aqu test --passWithNoTests",
+        "test:watch": "aqu test --passWithNoTests --watch",
+        "test:coverage": "aqu test --coverage --json --silent --ci --outputFile=\"report.json\"",
+        "test:log-coverage": "aqu test --coverage --silent --ci --coverageReporters=text",
+        "publish": "np"
     },
     "repository": {
         "type": "git",
@@ -19,35 +30,25 @@
         "url": "https://github.com/AlexShukel/reactive-popups/issues"
     },
     "homepage": "https://github.com/AlexShukel/reactive-popups#readme",
-    "workspaces": [
-        "packages/*",
-        "tools/*"
-    ],
     "devDependencies": {
-        "@reactive-tools/eslint-config": "*",
-        "turbo": "^1.0.25"
+        "@types/jest": "^27.4.0",
+        "@types/react": "^17.0.38",
+        "@typescript-eslint/eslint-plugin": "^4.33.0",
+        "aqu": "^0.3.2",
+        "eslint": "^7.32.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^3.4.1",
+        "eslint-plugin-react": "^7.29.4",
+        "eslint-plugin-react-hooks": "^4.4.0",
+        "eslint-plugin-simple-import-sort": "^7.0.0",
+        "np": "^7.6.1",
+        "react": "^17.0.2",
+        "typescript": "^4.5.4"
     },
-    "turbo": {
-        "baseBranch": "origin/main",
-        "pipeline": {
-            "build": {
-                "dependsOn": [
-                    "^build"
-                ],
-                "outputs": [
-                    "dist/**"
-                ],
-                "cache": true
-            },
-            "test": {
-                "dependsOn": [
-                    "^build"
-                ],
-                "outputs": []
-            },
-            "lint": {
-                "outputs": []
-            }
-        }
+    "dependencies": {
+        "tiny-invariant": "^1.2.0"
+    },
+    "peerDependencies": {
+        "react": ">=16"
     }
 }

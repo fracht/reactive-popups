@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 
-import { usePopupsContext } from './usePopupsContext';
 import { usePopupsFactory } from './usePopupsFactory';
 import { DEFAULT_GROUP_SYMBOL } from '../constants';
 import { PopupComponent } from '../types/PopupComponent';
