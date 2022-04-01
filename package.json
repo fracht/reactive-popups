@@ -1,6 +1,6 @@
 {
     "name": "reactive-popups",
-    "version": "1.0.0",
+    "version": "0.0.0",
     "description": "Easy popup management with React",
     "files": [
         "dist"
@@ -31,13 +31,18 @@
     },
     "homepage": "https://github.com/AlexShukel/reactive-popups#readme",
     "devDependencies": {
-        "@testing-library/react-hooks": "^7.0.2",
         "@types/jest": "^27.4.0",
         "@types/react": "^17.0.38",
+        "@typescript-eslint/eslint-plugin": "^4.33.0",
         "aqu": "^0.3.2",
+        "eslint": "^7.32.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^3.4.1",
+        "eslint-plugin-react": "^7.29.4",
+        "eslint-plugin-react-hooks": "^4.4.0",
+        "eslint-plugin-simple-import-sort": "^7.0.0",
         "np": "^7.6.1",
         "react": "^17.0.2",
-        "react-test-renderer": "^17.0.2",
         "typescript": "^4.5.4"
     },
     "dependencies": {
