@@ -16,7 +16,8 @@
         "test": "aqu test --passWithNoTests",
         "test:watch": "aqu test --passWithNoTests --watch",
         "test:coverage": "aqu test --coverage --json --silent --ci --outputFile=\"report.json\"",
-        "test:log-coverage": "aqu test --coverage --silent --ci --coverageReporters=text"
+        "test:log-coverage": "aqu test --coverage --silent --ci --coverageReporters=text",
+        "publish": "np"
     },
     "repository": {
         "type": "git",
@@ -34,6 +35,7 @@
         "@types/jest": "^27.4.0",
         "@types/react": "^17.0.38",
         "aqu": "^0.3.2",
+        "np": "^7.6.1",
         "react": "^17.0.2",
         "react-test-renderer": "^17.0.2",
         "typescript": "^4.5.4"
