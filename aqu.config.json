@@ -1,0 +1,8 @@
+{
+    "dtsBundleGeneratorOptions": {
+        "libraries": {
+            "importedLibraries": ["react"],
+            "allowedTypesLibraries": []
+        }
+    }
+}
