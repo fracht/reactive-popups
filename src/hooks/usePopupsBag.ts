@@ -71,20 +71,22 @@ export const usePopupsBag = (): PopupsBag => {
         });
     }, []);
 
-    const empty = (group = DEFAULT_GROUP_SYMBOL) => {
-        if (!popups[group] || Object.keys(popups[group]).length === 0) {
-            return true;
-        }
+    const getPopupsByGroup = useCallback(
+        (group: symbol = DEFAULT_GROUP_SYMBOL) => {
+            if (!popups[group]) {
+                return [];
+            }
 
-        return Object.values(popups[group]).every(({ visible }) => !visible);
-    };
+            return Object.values(popups[group]);
+        },
+        [popups]
+    );
 
     return {
         mount,
         show,
         hide,
         unmount,
-        popups,
-        empty,
+        getPopupsByGroup,
     };
 };
