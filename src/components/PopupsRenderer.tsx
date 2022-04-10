@@ -10,22 +10,14 @@ export type PopupsRendererProps = {
 export const PopupsRenderer = ({
     group = DEFAULT_GROUP_SYMBOL,
 }: PopupsRendererProps) => {
-    const { popups } = usePopupsContext();
-
-    if (!popups[group] || Object.keys(popups[group]).length === 0) {
-        return null;
-    }
+    const { getPopupsByGroup } = usePopupsContext();
 
     return (
         <React.Fragment>
-            {Object.values(popups[group]).map(
-                ({ PopupComponent, props, ...popupProps }) => {
+            {getPopupsByGroup(group).map(
+                ({ PopupComponent, props, id, ...popupProps }) => {
                     return (
-                        <PopupComponent
-                            {...props}
-                            key={popupProps.id}
-                            {...popupProps}
-                        />
+                        <PopupComponent {...props} key={id} {...popupProps} />
                     );
                 }
             )}
