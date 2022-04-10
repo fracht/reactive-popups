@@ -17,8 +17,8 @@
         "test:watch": "aqu test --passWithNoTests --watch",
         "test:coverage": "aqu test --coverage --json --silent --ci --outputFile=\"report.json\"",
         "test:log-coverage": "aqu test --coverage --silent --ci --coverageReporters=text",
-        "publish": "np",
-        "prepublish": "npm run build"
+        "release": "np",
+        "prepublishOnly": "aqu build"
     },
     "repository": {
         "type": "git",

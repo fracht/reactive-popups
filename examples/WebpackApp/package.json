@@ -12,7 +12,7 @@
     "dependencies": {
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
-        "reactive-popups": "file:../.."
+        "reactive-popups": "^0.0.6"
     },
     "devDependencies": {
         "@types/react": "^17.0.43",
