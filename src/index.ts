@@ -1,5 +1,6 @@
 // components
 export * from './components/PopupsContextProvider';
+export * from './components/PopupGroup';
 
 // hooks
 export * from './hooks/usePopup';
