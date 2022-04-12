@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { DEFAULT_GROUP_SYMBOL } from '../constants';
+import { PopupGroup } from '../components/PopupGroup';
 import { Popup } from '../types/Popup';
 import { PopupComponent } from '../types/PopupComponent';
 import { PopupProps } from '../types/PopupProps';
@@ -9,22 +9,20 @@ import { PopupsRegistry } from '../types/PopupsRegistry';
 import { uuid } from '../utils/uuid';
 
 export const usePopupsBag = (): PopupsBag => {
-    const [popups, setPopups] = useState<PopupsRegistry>({
-        [DEFAULT_GROUP_SYMBOL]: {},
-    });
+    const [popups, setPopups] = useState<PopupsRegistry>({});
 
-    const unmount = useCallback((id: number, group = DEFAULT_GROUP_SYMBOL) => {
+    const unmount = useCallback((id: number, group: PopupGroup) => {
         setPopups((registry) => {
-            delete registry[group][id];
+            delete registry[group.groupId][id];
             return {
                 ...registry,
             };
         });
     }, []);
 
-    const hide = useCallback((id: number, group = DEFAULT_GROUP_SYMBOL) => {
+    const hide = useCallback((id: number, group: PopupGroup) => {
         setPopups((registry) => {
-            registry[group][id].visible = false;
+            registry[group.groupId][id].visible = false;
             return {
                 ...registry,
             };
@@ -35,7 +33,7 @@ export const usePopupsBag = (): PopupsBag => {
         <P>(
             PopupComponent: PopupComponent<P>,
             props: P,
-            group = DEFAULT_GROUP_SYMBOL,
+            group: PopupGroup,
             customProps?: Partial<PopupProps>
         ) => {
             const id = uuid();
@@ -50,8 +48,9 @@ export const usePopupsBag = (): PopupsBag => {
             };
 
             setPopups((registry) => {
-                if (!registry[group]) registry[group] = {};
-                registry[group][id] = newPopup as unknown as Popup<PopupProps>;
+                if (!registry[group.groupId]) registry[group.groupId] = {};
+                registry[group.groupId][id] =
+                    newPopup as unknown as Popup<PopupProps>;
                 return {
                     ...registry,
                 };
@@ -62,9 +61,9 @@ export const usePopupsBag = (): PopupsBag => {
         [hide]
     );
 
-    const show = useCallback((id: number, group = DEFAULT_GROUP_SYMBOL) => {
+    const show = useCallback((id: number, group: PopupGroup) => {
         setPopups((registry) => {
-            registry[group][id].visible = true;
+            registry[group.groupId][id].visible = true;
             return {
                 ...registry,
             };
@@ -72,12 +71,12 @@ export const usePopupsBag = (): PopupsBag => {
     }, []);
 
     const getPopupsByGroup = useCallback(
-        (group: symbol = DEFAULT_GROUP_SYMBOL) => {
-            if (!popups[group]) {
+        (group: PopupGroup) => {
+            if (!popups[group.groupId]) {
                 return [];
             }
 
-            return Object.values(popups[group]);
+            return Object.values(popups[group.groupId]);
         },
         [popups]
     );

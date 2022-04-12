@@ -1,6 +1,5 @@
 // components
 export * from './components/PopupsContextProvider';
-export * from './components/PopupsRenderer';
 
 // hooks
 export * from './hooks/usePopup';
@@ -15,5 +14,3 @@ export * from './types/PopupComponent';
 export * from './types/PopupProps';
 export * from './types/PopupsBag';
 export * from './types/PopupsRegistry';
-
-export { PopupsContext } from './PopupsContext';
