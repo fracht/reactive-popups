@@ -1,15 +1,13 @@
 import React from 'react';
 
-import { DEFAULT_GROUP_SYMBOL } from '../constants';
 import { usePopupsContext } from '../hooks/usePopupsContext';
+import { PopupGroup } from './PopupGroup';
 
 export type PopupsRendererProps = {
-    group?: symbol;
+    group: PopupGroup;
 };
 
-export const PopupsRenderer = ({
-    group = DEFAULT_GROUP_SYMBOL,
-}: PopupsRendererProps) => {
+export const PopupsRenderer = ({ group }: PopupsRendererProps) => {
     const { getPopupsByGroup } = usePopupsContext();
 
     return (

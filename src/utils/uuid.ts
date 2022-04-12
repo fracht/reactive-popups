@@ -1,5 +1,3 @@
-import { INITIAL_ID } from '../constants';
-
-let currentUUID = INITIAL_ID;
+let currentUUID = 0;
 
 export const uuid = () => currentUUID++;

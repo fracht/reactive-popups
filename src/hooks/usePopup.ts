@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
-import { DEFAULT_GROUP_SYMBOL } from '../constants';
 import { PopupComponent } from '../types/PopupComponent';
+import { PopupGroup } from '../components/PopupGroup';
 
 export type UsePopupBag = [show: () => void, hide: () => void];
 
 export const usePopup = <P>(
     PopupComponent: PopupComponent<P>,
     props: P,
-    group = DEFAULT_GROUP_SYMBOL
+    group: PopupGroup
 ): UsePopupBag => {
     const {
         show: showPopup,
@@ -20,21 +20,24 @@ export const usePopup = <P>(
     const id = useRef<number | null>(null);
 
     const show = useCallback(() => {
-        if (id.current) {
+        if (id.current !== null) {
             showPopup(id.current, group);
         }
     }, [showPopup, group]);
 
     const hide = useCallback(() => {
-        if (id.current) {
+        if (id.current !== null) {
             hidePopup(id.current, group);
         }
     }, [hidePopup, group]);
 
     useEffect(() => {
-        id.current = mount(PopupComponent, props, group);
+        const currentId = mount(PopupComponent, props, group);
+
+        id.current = currentId;
+
         return () => {
-            unmount(id.current!, group);
+            unmount(currentId, group);
         };
     }, [PopupComponent, mount, props, unmount, group]);
 

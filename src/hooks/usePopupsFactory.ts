@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
-import { DEFAULT_GROUP_SYMBOL } from '../constants';
 import { PopupComponent } from '../types/PopupComponent';
 import { OptionalParamFunction } from '../utils/OptionalParamFunction';
+import { PopupGroup } from '../components/PopupGroup';
 
 export type UsePopupsFactoryBag<T> = [
     create: OptionalParamFunction<T, number>,
@@ -13,7 +13,7 @@ export type UsePopupsFactoryBag<T> = [
 export const usePopupsFactory = <P, K extends keyof P>(
     PopupComponent: PopupComponent<P>,
     props: Pick<P, K>,
-    group = DEFAULT_GROUP_SYMBOL
+    group: PopupGroup
 ): UsePopupsFactoryBag<Omit<P, K>> => {
     const { mount, unmount } = usePopupsContext();
 
