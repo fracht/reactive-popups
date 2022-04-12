@@ -1,4 +1,5 @@
-import React, { ComponentType } from 'react';
+import React, { ComponentType, FunctionComponent } from 'react';
+
 import { PopupsRenderer } from './PopupsRenderer';
 
 export type PopupGroup = ComponentType<{}> & {
@@ -6,9 +7,9 @@ export type PopupGroup = ComponentType<{}> & {
 };
 
 export const createPopupGroup = (): PopupGroup => {
-    const group: PopupGroup = (({}) => {
+    const group: PopupGroup = (() => {
         return <PopupsRenderer group={group} />;
-    }) as PopupGroup;
+    }) as FunctionComponent<{}> as PopupGroup;
 
     group.groupId = Symbol();
 

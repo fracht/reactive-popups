@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { usePopupsContext } from '../hooks/usePopupsContext';
 import { PopupGroup } from './PopupGroup';
+import { usePopupsContext } from '../hooks/usePopupsContext';
 
 export type PopupsRendererProps = {
     group: PopupGroup;

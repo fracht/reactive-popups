@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
-import { PopupComponent } from '../types/PopupComponent';
 import { PopupGroup } from '../components/PopupGroup';
+import { PopupComponent } from '../types/PopupComponent';
 
 export type UsePopupBag = [show: () => void, hide: () => void];
 

@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 
 import { usePopupsFactory } from './usePopupsFactory';
+import { PopupGroup } from '../components/PopupGroup';
 import { PopupComponent } from '../types/PopupComponent';
 import { PopupProps } from '../types/PopupProps';
 import { OptionalParamFunction } from '../utils/OptionalParamFunction';
-import { PopupGroup } from '../components/PopupGroup';
 
 export type ResponsePopupProps<R> = {
     resolve: (value: R) => void;

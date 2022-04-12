@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
-import { PopupGroup } from '../components/PopupGroup';
 
+import { PopupGroup } from '../components/PopupGroup';
 import { Popup } from '../types/Popup';
 import { PopupComponent } from '../types/PopupComponent';
 import { PopupProps } from '../types/PopupProps';

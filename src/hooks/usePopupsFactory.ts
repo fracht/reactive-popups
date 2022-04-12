@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
+import { PopupGroup } from '../components/PopupGroup';
 import { PopupComponent } from '../types/PopupComponent';
 import { OptionalParamFunction } from '../utils/OptionalParamFunction';
-import { PopupGroup } from '../components/PopupGroup';
 
 export type UsePopupsFactoryBag<T> = [
     create: OptionalParamFunction<T, number>,

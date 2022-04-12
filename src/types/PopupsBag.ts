@@ -1,7 +1,7 @@
-import { PopupGroup } from '../components/PopupGroup';
 import { Popup } from './Popup';
 import { PopupComponent } from './PopupComponent';
 import { PopupProps } from './PopupProps';
+import { PopupGroup } from '../components/PopupGroup';
 
 export type PopupsBag = {
     mount: <P>(
