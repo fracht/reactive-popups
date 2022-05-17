@@ -1,19 +1,26 @@
 import React from 'react';
 import { usePopupsFactory } from 'reactive-popups';
 
-import { Snackbar } from './Snackbar';
-import { snackbarGroup } from './SnackbarRenderer';
+import { SnackbarPopup } from './SnackbarPopup';
+import { SnackbarGroup } from '.';
 
 const snackbarProps = {
-    message: 'hello',
+    message: 'bye',
 };
 
 export const App = () => {
-    const [open] = usePopupsFactory(Snackbar, snackbarProps, snackbarGroup);
+    const open = usePopupsFactory(SnackbarPopup, snackbarProps, SnackbarGroup);
 
     return (
         <div>
-            <button onClick={open}>test snacks</button>
+            <button
+                onClick={() => {
+                    const close = open();
+                    setTimeout(close, 1000);
+                }}
+            >
+                test snacks
+            </button>
         </div>
     );
 };

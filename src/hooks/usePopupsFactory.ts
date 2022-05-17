@@ -5,46 +5,32 @@ import { PopupGroup } from '../components/PopupGroup';
 import { PopupComponent } from '../types/PopupComponent';
 import { OptionalParamFunction } from '../utils/OptionalParamFunction';
 
-export type UsePopupsFactoryBag<T> = [
-    create: OptionalParamFunction<T, number>,
-    destroy: (id: number) => void
-];
+export type UsePopupsFactoryBag<T> = OptionalParamFunction<T, () => void>;
 
 export const usePopupsFactory = <P, K extends keyof P>(
     PopupComponent: PopupComponent<P>,
     props: Pick<P, K>,
     group: PopupGroup
 ): UsePopupsFactoryBag<Omit<P, K>> => {
-    const { mount, unmount } = usePopupsContext();
-
-    const destroy = useCallback(
-        (id: number) => {
-            unmount(id, group);
-        },
-        [unmount, group]
-    );
+    const { mount, close } = usePopupsContext();
 
     const create = useCallback(
         (omittedProps?: Omit<P, K>) => {
-            const id = mount<P>(
+            const identifier = mount<P>(
                 PopupComponent,
                 {
                     ...props,
                     ...omittedProps,
                 } as P,
-                group,
-                {
-                    visible: true,
-                    close: () => {
-                        destroy(id);
-                    },
-                }
+                group
             );
 
-            return id;
+            return () => {
+                close(identifier);
+            };
         },
-        [mount, PopupComponent, props, group, destroy]
+        [mount, PopupComponent, props, group, close]
     );
 
-    return [create, destroy];
+    return create;
 };
