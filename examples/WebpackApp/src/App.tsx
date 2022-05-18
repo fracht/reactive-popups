@@ -1,25 +1,28 @@
 import React from 'react';
-import { usePopupsFactory } from 'reactive-popups';
+import { useResponsePopup } from 'reactive-popups';
 
-import { SnackbarPopup } from './SnackbarPopup';
-import { SnackbarGroup } from '.';
-
-const snackbarProps = {
-    message: 'bye',
-};
+import { ConfirmPopup } from './ConfirmPopup';
+import { DefaultPopupGroup } from '.';
 
 export const App = () => {
-    const open = usePopupsFactory(SnackbarPopup, snackbarProps, SnackbarGroup);
+    const confirm = useResponsePopup(ConfirmPopup, {}, DefaultPopupGroup);
 
     return (
         <div>
             <button
-                onClick={() => {
-                    const close = open();
-                    setTimeout(close, 1000);
+                onClick={async () => {
+                    try {
+                        if (await confirm({ message: 'Do you agree?' })) {
+                            console.log('Agreed');
+                        } else {
+                            console.log('Disagreed');
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
                 }}
             >
-                test snacks
+                confirm
             </button>
         </div>
     );

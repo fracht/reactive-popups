@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from './App';
 
 export const SnackbarGroup = createPopupGroup();
+export const DefaultPopupGroup = createPopupGroup();
 
 const container = document.getElementById('root');
 
@@ -14,5 +15,6 @@ root.render(
     <PopupsContextProvider>
         <App />
         <SnackbarGroup />
+        <DefaultPopupGroup />
     </PopupsContextProvider>
 );
