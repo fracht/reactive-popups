@@ -33,7 +33,7 @@
     "homepage": "https://github.com/AlexShukel/reactive-popups#readme",
     "devDependencies": {
         "@types/jest": "^27.4.0",
-        "@types/react": "^17.0.38",
+        "@types/react": "^18.0.9",
         "@typescript-eslint/eslint-plugin": "^4.33.0",
         "aqu": "^0.3.2",
         "eslint": "^7.32.0",

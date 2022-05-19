@@ -1,4 +1,6 @@
+import { PopupIdentifier } from './PopupIdentifier';
+
 export type PopupProps = {
-    visible: boolean;
-    close: () => void;
+    unmount: () => void;
+    popupIdentifier: PopupIdentifier;
 };

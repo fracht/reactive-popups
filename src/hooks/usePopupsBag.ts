@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { PopupGroup } from '../components/PopupGroup';
 import { Popup } from '../types/Popup';
 import { PopupComponent } from '../types/PopupComponent';
+import { PopupIdentifier } from '../types/PopupIdentifier';
 import { PopupProps } from '../types/PopupProps';
 import { PopupsBag } from '../types/PopupsBag';
 import { PopupsRegistry } from '../types/PopupsRegistry';
@@ -10,6 +11,28 @@ import { uuid } from '../utils/uuid';
 
 export const usePopupsBag = (): PopupsBag => {
     const [popups, setPopups] = useState<PopupsRegistry>({});
+
+    const close = useCallback(
+        ({ id, groupId }: PopupIdentifier) => {
+            const popup = popups[groupId][id];
+            if (popup.close) {
+                popup.close();
+            }
+        },
+        [popups]
+    );
+
+    const setPopupCloseCallback = useCallback(
+        ({ id, groupId }: PopupIdentifier, close: () => void) => {
+            setPopups((prevPopups) => {
+                prevPopups[groupId][id].close = close;
+                return {
+                    ...prevPopups,
+                };
+            });
+        },
+        []
+    );
 
     const unmount = useCallback((id: number, group: PopupGroup) => {
         setPopups((registry) => {
@@ -20,55 +43,41 @@ export const usePopupsBag = (): PopupsBag => {
         });
     }, []);
 
-    const hide = useCallback((id: number, group: PopupGroup) => {
-        setPopups((registry) => {
-            registry[group.groupId][id].visible = false;
-            return {
-                ...registry,
-            };
-        });
-    }, []);
-
     const mount = useCallback(
-        <P>(
-            PopupComponent: PopupComponent<P>,
-            props: P,
-            group: PopupGroup,
-            customProps?: Partial<PopupProps>
-        ) => {
+        <P>(PopupComponent: PopupComponent<P>, props: P, group: PopupGroup) => {
             const id = uuid();
+
+            const popupIdentifier: PopupIdentifier = {
+                id,
+                groupId: group.groupId,
+            };
 
             const newPopup: Popup<P> = {
                 PopupComponent,
                 props,
-                id,
-                visible: false,
-                close: () => hide(id, group),
-                ...customProps,
+                popupIdentifier,
+                unmount: () => {
+                    unmount(id, group);
+                },
             };
 
             setPopups((registry) => {
-                if (!registry[group.groupId]) registry[group.groupId] = {};
+                if (!registry[group.groupId]) {
+                    registry[group.groupId] = {};
+                }
+
                 registry[group.groupId][id] =
                     newPopup as unknown as Popup<PopupProps>;
+
                 return {
                     ...registry,
                 };
             });
 
-            return id;
+            return popupIdentifier;
         },
-        [hide]
+        [unmount]
     );
-
-    const show = useCallback((id: number, group: PopupGroup) => {
-        setPopups((registry) => {
-            registry[group.groupId][id].visible = true;
-            return {
-                ...registry,
-            };
-        });
-    }, []);
 
     const getPopupsByGroup = useCallback(
         (group: PopupGroup) => {
@@ -82,10 +91,9 @@ export const usePopupsBag = (): PopupsBag => {
     );
 
     return {
+        close,
         mount,
-        show,
-        hide,
-        unmount,
         getPopupsByGroup,
+        setPopupCloseCallback,
     };
 };

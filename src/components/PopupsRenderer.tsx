@@ -13,9 +13,21 @@ export const PopupsRenderer = ({ group }: PopupsRendererProps) => {
     return (
         <React.Fragment>
             {getPopupsByGroup(group).map(
-                ({ PopupComponent, props, id, ...popupProps }) => {
+                ({
+                    PopupComponent,
+                    props,
+                    popupIdentifier,
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    close,
+                    ...popupProps
+                }) => {
                     return (
-                        <PopupComponent {...props} key={id} {...popupProps} />
+                        <PopupComponent
+                            {...props}
+                            key={popupIdentifier.id}
+                            popupIdentifier={popupIdentifier}
+                            {...popupProps}
+                        />
                     );
                 }
             )}

@@ -18,7 +18,7 @@ export const useResponsePopup = <P, K extends keyof P, R>(
     props: Pick<P, K>,
     group: PopupGroup
 ): UseResponsePopupBag<Omit<P, K | keyof ResponsePopupProps<R>>, R> => {
-    const [create, destroy] = usePopupsFactory<P, K>(
+    const create = usePopupsFactory<P, K>(
         PopupComponent as PopupComponent<P>,
         props,
         group
@@ -27,20 +27,20 @@ export const useResponsePopup = <P, K extends keyof P, R>(
     const waitResponse = useCallback(
         (omittedProps?: Omit<P, K | keyof ResponsePopupProps<R>>) => {
             return new Promise<R>((resolve, reject) => {
-                const id = create({
+                const destroy = create({
                     ...omittedProps,
                     resolve: (value) => {
                         resolve(value);
-                        destroy(id);
+                        destroy();
                     },
                     reject: (reason?: unknown) => {
                         reject(reason);
-                        destroy(id);
+                        destroy();
                     },
                 } as P & ResponsePopupProps<R>);
             });
         },
-        [create, destroy]
+        [create]
     );
 
     return waitResponse;
