@@ -2,6 +2,7 @@ import React from 'react';
 
 import { PopupGroup } from './PopupGroup';
 import { usePopupsContext } from '../hooks/usePopupsContext';
+import { PopupIdentifierProvider } from '../utils/PopupIdentifierContext';
 
 export type PopupsRendererProps = {
     group: PopupGroup;
@@ -22,12 +23,12 @@ export const PopupsRenderer = ({ group }: PopupsRendererProps) => {
                     ...popupProps
                 }) => {
                     return (
-                        <PopupComponent
-                            {...props}
+                        <PopupIdentifierProvider
                             key={popupIdentifier.id}
                             popupIdentifier={popupIdentifier}
-                            {...popupProps}
-                        />
+                        >
+                            <PopupComponent {...props} {...popupProps} />
+                        </PopupIdentifierProvider>
                     );
                 }
             )}
