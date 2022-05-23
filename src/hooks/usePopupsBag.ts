@@ -22,8 +22,8 @@ export const usePopupsBag = (): PopupsBag => {
         [popups]
     );
 
-    const setPopupCloseCallback = useCallback(
-        ({ id, groupId }: PopupIdentifier, close: () => void) => {
+    const setBeforeUnmount = useCallback(
+        ({ id, groupId }: PopupIdentifier, close?: () => void) => {
             setPopups((prevPopups) => {
                 prevPopups[groupId][id].close = close;
                 return {
@@ -94,6 +94,6 @@ export const usePopupsBag = (): PopupsBag => {
         close,
         mount,
         getPopupsByGroup,
-        setPopupCloseCallback,
+        setBeforeUnmount,
     };
 };
