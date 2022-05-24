@@ -1,11 +1,11 @@
-import { useCallback, useState } from 'react';
+import { ComponentType, useCallback, useState } from 'react';
 
 import { PopupGroup } from '../components/PopupGroup';
 import { Popup } from '../types/Popup';
-import { PopupComponent } from '../types/PopupComponent';
 import { PopupIdentifier } from '../types/PopupIdentifier';
 import { PopupsBag } from '../types/PopupsBag';
 import { PopupsRegistry } from '../types/PopupsRegistry';
+import { ResponsePopupContextType } from '../utils/ResponsePopupContext';
 import { uuid } from '../utils/uuid';
 
 export const usePopupsBag = (): PopupsBag => {
@@ -43,7 +43,12 @@ export const usePopupsBag = (): PopupsBag => {
     }, []);
 
     const mount = useCallback(
-        <P>(PopupComponent: PopupComponent<P>, props: P, group: PopupGroup) => {
+        <P>(
+            PopupComponent: ComponentType<P>,
+            props: P,
+            group: PopupGroup,
+            handler?: ResponsePopupContextType
+        ) => {
             const id = uuid();
 
             const popupIdentifier: PopupIdentifier = {
@@ -55,6 +60,8 @@ export const usePopupsBag = (): PopupsBag => {
                 PopupComponent,
                 props,
                 popupIdentifier,
+                resolve: handler?.resolve,
+                reject: handler?.reject,
             };
 
             setPopups((registry) => {

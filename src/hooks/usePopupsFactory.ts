@@ -1,14 +1,13 @@
-import { useCallback } from 'react';
+import { ComponentType, useCallback } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
 import { PopupGroup } from '../components/PopupGroup';
-import { PopupComponent } from '../types/PopupComponent';
 import { OptionalParamFunction } from '../utils/OptionalParamFunction';
 
 export type UsePopupsFactoryBag<T> = OptionalParamFunction<T, () => void>;
 
 export const usePopupsFactory = <P, K extends keyof P>(
-    PopupComponent: PopupComponent<P>,
+    PopupComponent: ComponentType<P>,
     props: Pick<P, K>,
     group: PopupGroup
 ): UsePopupsFactoryBag<Omit<P, K>> => {
