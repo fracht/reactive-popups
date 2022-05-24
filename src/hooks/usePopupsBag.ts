@@ -5,33 +5,12 @@ import { Popup } from '../types/Popup';
 import { PopupIdentifier } from '../types/PopupIdentifier';
 import { PopupsBag } from '../types/PopupsBag';
 import { PopupsRegistry } from '../types/PopupsRegistry';
+import { isPromise } from '../utils/isPromise';
 import { ResponsePopupContextType } from '../utils/ResponsePopupContext';
 import { uuid } from '../utils/uuid';
 
 export const usePopupsBag = (): PopupsBag => {
     const [popups, setPopups] = useState<PopupsRegistry>({});
-
-    const close = useCallback(
-        ({ id, groupId }: PopupIdentifier) => {
-            const popup = popups[groupId][id];
-            if (popup.close) {
-                popup.close();
-            }
-        },
-        [popups]
-    );
-
-    const setBeforeUnmount = useCallback(
-        ({ id, groupId }: PopupIdentifier, close?: () => void) => {
-            setPopups((prevPopups) => {
-                prevPopups[groupId][id].close = close;
-                return {
-                    ...prevPopups,
-                };
-            });
-        },
-        []
-    );
 
     const unmount = useCallback(({ groupId, id }: PopupIdentifier) => {
         setPopups((registry) => {
@@ -69,8 +48,7 @@ export const usePopupsBag = (): PopupsBag => {
                     registry[group.groupId] = {};
                 }
 
-                registry[group.groupId][id] =
-                    newPopup as unknown as Popup<unknown>;
+                registry[group.groupId][id] = newPopup as Popup<unknown>;
 
                 return {
                     ...registry,
@@ -78,6 +56,35 @@ export const usePopupsBag = (): PopupsBag => {
             });
 
             return popupIdentifier;
+        },
+        []
+    );
+
+    const close = useCallback(
+        (popupIdentifier: PopupIdentifier) => {
+            const { groupId, id } = popupIdentifier;
+            const popup = popups[groupId][id];
+            if (popup.close) {
+                const possiblePromise = popup.close();
+
+                if (isPromise(possiblePromise)) {
+                    possiblePromise.then(() => {
+                        unmount(popupIdentifier);
+                    });
+                }
+            }
+        },
+        [popups, unmount]
+    );
+
+    const setCloseHandler = useCallback(
+        ({ id, groupId }: PopupIdentifier, close?: () => void) => {
+            setPopups((prevPopups) => {
+                prevPopups[groupId][id].close = close;
+                return {
+                    ...prevPopups,
+                };
+            });
         },
         []
     );
@@ -94,10 +101,10 @@ export const usePopupsBag = (): PopupsBag => {
     );
 
     return {
-        close,
         mount,
         unmount,
         getPopupsByGroup,
-        setBeforeUnmount,
+        close,
+        setCloseHandler,
     };
 };

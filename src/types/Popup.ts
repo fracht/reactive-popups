@@ -7,5 +7,5 @@ export type Popup<P> = {
     PopupComponent: ComponentType<P>;
     props: P;
     popupIdentifier: PopupIdentifier;
-    close?: () => void;
+    close?: () => void | Promise<void>;
 } & Partial<ResponsePopupContextType>;

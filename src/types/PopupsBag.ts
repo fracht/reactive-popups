@@ -15,7 +15,7 @@ export type PopupsBag = {
     unmount: (popupIdentifier: PopupIdentifier) => void;
     getPopupsByGroup: (group: PopupGroup) => Array<Popup<unknown>>;
     close: (popupIdentifier: PopupIdentifier) => void;
-    setBeforeUnmount: (
+    setCloseHandler: (
         popupIdentifier: PopupIdentifier,
         close?: () => void
     ) => void;
