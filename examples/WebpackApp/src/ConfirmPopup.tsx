@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { ResponsePopupProps, useCloseHandler } from 'reactive-popups';
+import { useCloseHandler, useResponseHandler } from 'reactive-popups';
 import {
     Button,
     Dialog,
@@ -8,15 +8,11 @@ import {
     DialogTitle,
 } from '@mui/material';
 
-export type ConfirmPopupProps = ResponsePopupProps<boolean> & {
+export type ConfirmPopupProps = {
     message: string;
 };
 
-export const ConfirmPopup = ({
-    message,
-    resolve,
-    reject,
-}: ConfirmPopupProps) => {
+export const ConfirmPopup = ({ message }: ConfirmPopupProps) => {
     const [open, setOpen] = useState(true);
 
     const close = useCallback(() => {
@@ -24,6 +20,7 @@ export const ConfirmPopup = ({
     }, []);
 
     const unmount = useCloseHandler(close);
+    const { reject, resolve } = useResponseHandler()!;
 
     return (
         <Dialog

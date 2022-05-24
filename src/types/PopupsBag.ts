@@ -1,13 +1,16 @@
+import { ComponentType } from 'react';
+
 import { Popup } from './Popup';
-import { PopupComponent } from './PopupComponent';
 import { PopupIdentifier } from './PopupIdentifier';
 import { PopupGroup } from '../components/PopupGroup';
+import { ResponsePopupContextType } from '../utils/ResponsePopupContext';
 
 export type PopupsBag = {
     mount: <P>(
-        PopupComponent: PopupComponent<P>,
+        PopupComponent: ComponentType<P>,
         props: P,
-        group: PopupGroup
+        group: PopupGroup,
+        handler?: ResponsePopupContextType
     ) => PopupIdentifier;
     unmount: (popupIdentifier: PopupIdentifier) => void;
     getPopupsByGroup: (group: PopupGroup) => Array<Popup<unknown>>;
