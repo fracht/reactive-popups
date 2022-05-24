@@ -4,7 +4,6 @@ import { PopupGroup } from '../components/PopupGroup';
 import { Popup } from '../types/Popup';
 import { PopupComponent } from '../types/PopupComponent';
 import { PopupIdentifier } from '../types/PopupIdentifier';
-import { PopupProps } from '../types/PopupProps';
 import { PopupsBag } from '../types/PopupsBag';
 import { PopupsRegistry } from '../types/PopupsRegistry';
 import { uuid } from '../utils/uuid';
@@ -34,9 +33,9 @@ export const usePopupsBag = (): PopupsBag => {
         []
     );
 
-    const unmount = useCallback((id: number, group: PopupGroup) => {
+    const unmount = useCallback(({ groupId, id }: PopupIdentifier) => {
         setPopups((registry) => {
-            delete registry[group.groupId][id];
+            delete registry[groupId][id];
             return {
                 ...registry,
             };
@@ -56,9 +55,6 @@ export const usePopupsBag = (): PopupsBag => {
                 PopupComponent,
                 props,
                 popupIdentifier,
-                unmount: () => {
-                    unmount(id, group);
-                },
             };
 
             setPopups((registry) => {
@@ -67,7 +63,7 @@ export const usePopupsBag = (): PopupsBag => {
                 }
 
                 registry[group.groupId][id] =
-                    newPopup as unknown as Popup<PopupProps>;
+                    newPopup as unknown as Popup<unknown>;
 
                 return {
                     ...registry,
@@ -76,7 +72,7 @@ export const usePopupsBag = (): PopupsBag => {
 
             return popupIdentifier;
         },
-        [unmount]
+        []
     );
 
     const getPopupsByGroup = useCallback(
@@ -93,6 +89,7 @@ export const usePopupsBag = (): PopupsBag => {
     return {
         close,
         mount,
+        unmount,
         getPopupsByGroup,
         setBeforeUnmount,
     };
