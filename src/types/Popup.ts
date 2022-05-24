@@ -8,4 +8,4 @@ export type Popup<P> = {
     props: P;
     popupIdentifier: PopupIdentifier;
     close?: () => void;
-} & ResponsePopupContextType;
+} & Partial<ResponsePopupContextType>;
