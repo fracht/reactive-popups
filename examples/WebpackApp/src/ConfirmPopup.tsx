@@ -14,7 +14,6 @@ export type ConfirmPopupProps = ResponsePopupProps<boolean> & {
 
 export const ConfirmPopup = ({
     message,
-    unmount,
     resolve,
     reject,
 }: ConfirmPopupProps) => {
@@ -24,7 +23,7 @@ export const ConfirmPopup = ({
         setOpen(false);
     }, []);
 
-    useCloseHandler(close);
+    const unmount = useCloseHandler(close);
 
     return (
         <Dialog

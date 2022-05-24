@@ -1,7 +1,6 @@
 import { Popup } from './Popup';
 import { PopupComponent } from './PopupComponent';
 import { PopupIdentifier } from './PopupIdentifier';
-import { PopupProps } from './PopupProps';
 import { PopupGroup } from '../components/PopupGroup';
 
 export type PopupsBag = {
@@ -10,7 +9,8 @@ export type PopupsBag = {
         props: P,
         group: PopupGroup
     ) => PopupIdentifier;
-    getPopupsByGroup: (group: PopupGroup) => Array<Popup<PopupProps>>;
+    unmount: (popupIdentifier: PopupIdentifier) => void;
+    getPopupsByGroup: (group: PopupGroup) => Array<Popup<unknown>>;
     close: (popupIdentifier: PopupIdentifier) => void;
     setBeforeUnmount: (
         popupIdentifier: PopupIdentifier,
