@@ -11,10 +11,15 @@ const container = document.getElementById('root');
 
 const root = createRoot(container as HTMLElement);
 
+const Hello = React.memo(() => {
+    console.log('rerender');
+    return <DefaultPopupGroup />;
+});
+
 root.render(
     <PopupsContextProvider>
         <App />
         <SnackbarGroup />
-        <DefaultPopupGroup />
+        <Hello />
     </PopupsContextProvider>
 );

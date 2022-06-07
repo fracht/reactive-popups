@@ -7,5 +7,6 @@ export type Popup<P> = {
     PopupComponent: ComponentType<P>;
     props: P;
     popupIdentifier: PopupIdentifier;
+    isSettled: boolean;
     close?: () => void | Promise<void>;
 } & Partial<ResponseHandler>;

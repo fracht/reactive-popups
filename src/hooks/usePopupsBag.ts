@@ -1,7 +1,8 @@
-import { ComponentType, useCallback, useReducer } from 'react';
+import { ComponentType, useCallback, useEffect, useReducer } from 'react';
 
 import { ResponseHandler } from './useResponseHandler';
 import { PopupGroup } from '../components/PopupGroup';
+import { PROMISE_NOT_SETTLED } from '../constants';
 import { Popup } from '../types/Popup';
 import { PopupIdentifier } from '../types/PopupIdentifier';
 import { PopupsBag } from '../types/PopupsBag';
@@ -10,6 +11,7 @@ import { popupsReducer } from '../utils/popupsReducer';
 import { uuid } from '../utils/uuid';
 
 export const usePopupsBag = (): PopupsBag => {
+    // TODO fix this
     const [{ popups }, dispatch] = useReducer(popupsReducer, { popups: {} });
 
     const getPopupsByGroup = useCallback(
@@ -30,9 +32,18 @@ export const usePopupsBag = (): PopupsBag => {
         [popups]
     );
 
-    const unmount = useCallback((popupIdentifier: PopupIdentifier) => {
-        dispatch({ type: 'remove', popupIdentifier });
-    }, []);
+    const unmount = useCallback(
+        (popupIdentifier: PopupIdentifier) => {
+            const popup = getPopup(popupIdentifier);
+
+            if (!popup.isSettled) {
+                throw new Error(PROMISE_NOT_SETTLED);
+            }
+
+            dispatch({ type: 'remove', popupIdentifier });
+        },
+        [getPopup]
+    );
 
     const mount = useCallback(
         <P>(
@@ -52,6 +63,7 @@ export const usePopupsBag = (): PopupsBag => {
                 PopupComponent,
                 props,
                 popupIdentifier,
+                isSettled: !handler,
                 ...handler,
             };
 
@@ -92,6 +104,10 @@ export const usePopupsBag = (): PopupsBag => {
         []
     );
 
+    const settlePopup = useCallback((popupIdentifier: PopupIdentifier) => {
+        dispatch({ type: 'settlePopup', popupIdentifier });
+    }, []);
+
     return {
         mount,
         unmount,
@@ -99,5 +115,6 @@ export const usePopupsBag = (): PopupsBag => {
         getPopup,
         close,
         setCloseHandler,
+        settlePopup,
     };
 };

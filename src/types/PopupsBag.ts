@@ -22,4 +22,6 @@ export type PopupsBag = {
         popupIdentifier: PopupIdentifier,
         close?: () => void | Promise<void>
     ) => void;
+
+    settlePopup: (popupIdentifier: PopupIdentifier) => void;
 };

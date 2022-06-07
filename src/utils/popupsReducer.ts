@@ -19,7 +19,16 @@ type SetCloseHandlerAction = {
     close?: () => void | Promise<void>;
 };
 
-type PopupsAction = AddAction | RemoveAction | SetCloseHandlerAction;
+type SettlePopupAction = {
+    type: 'settlePopup';
+    popupIdentifier: PopupIdentifier;
+};
+
+type PopupsAction =
+    | AddAction
+    | RemoveAction
+    | SetCloseHandlerAction
+    | SettlePopupAction;
 
 export const popupsReducer = (
     { popups }: { popups: PopupsRegistry },
@@ -56,6 +65,16 @@ export const popupsReducer = (
         const { groupId, id } = action.popupIdentifier;
 
         popups[groupId][id].close = action.close;
+
+        return {
+            popups,
+        };
+    }
+
+    if (action.type === 'settlePopup') {
+        const { groupId, id } = action.popupIdentifier;
+
+        popups[groupId][id].isSettled = true;
 
         return {
             popups,

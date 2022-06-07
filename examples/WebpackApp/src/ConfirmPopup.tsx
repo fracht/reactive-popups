@@ -41,6 +41,7 @@ export const ConfirmPopup = ({ message }: ConfirmPopupProps) => {
                 <Button onClick={() => resolve(true)} autoFocus>
                     OK
                 </Button>
+                <Button onClick={close}>BREAK</Button>
             </DialogActions>
         </Dialog>
     );

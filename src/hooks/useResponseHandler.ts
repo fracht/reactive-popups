@@ -1,7 +1,8 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
 import { RESPONSE_HANDLER_ERROR } from '../constants';
+import { Popup } from '../types/Popup';
 import { usePopupIdentifier } from '../utils/PopupIdentifierContext';
 
 export type ResponseHandler = {
@@ -13,32 +14,33 @@ export const useResponseHandler = (): ResponseHandler => {
     const { getPopup, close } = usePopupsContext();
     const popupIdentifier = usePopupIdentifier();
 
-    const popup = useMemo(() => {
-        const popup = getPopup(popupIdentifier);
-
-        // TODO add prop to identify response popup type
-        if (!popup.resolve || !popup.reject) {
-            throw new Error(RESPONSE_HANDLER_ERROR);
-        }
-
-        return popup;
-    }, [getPopup, popupIdentifier]);
+    const popupRef = useRef<Popup<unknown> | null>(null);
 
     const resolve = useCallback(
         (value: unknown) => {
-            popup.resolve!(value);
+            popupRef.current!.resolve!(value);
             close(popupIdentifier);
         },
-        [close, popup.resolve, popupIdentifier]
+        [close, popupIdentifier]
     );
 
     const reject = useCallback(
         (reason?: unknown) => {
-            popup.reject!(reason);
+            popupRef.current!.reject!(reason);
             close(popupIdentifier);
         },
-        [close, popup.reject, popupIdentifier]
+        [close, popupIdentifier]
     );
+
+    useEffect(() => {
+        const popup = getPopup(popupIdentifier);
+
+        if (popup.isSettled) {
+            throw new Error(RESPONSE_HANDLER_ERROR);
+        }
+
+        popupRef.current = popup;
+    }, [getPopup, popupIdentifier]);
 
     return { resolve, reject };
 };
