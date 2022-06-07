@@ -3,20 +3,23 @@ import { ComponentType } from 'react';
 import { Popup } from './Popup';
 import { PopupIdentifier } from './PopupIdentifier';
 import { PopupGroup } from '../components/PopupGroup';
-import { ResponsePopupContextType } from '../utils/ResponsePopupContext';
+import { ResponseHandler } from '../hooks/useResponseHandler';
 
 export type PopupsBag = {
     mount: <P>(
         PopupComponent: ComponentType<P>,
         props: P,
         group: PopupGroup,
-        handler?: ResponsePopupContextType
+        handler?: ResponseHandler
     ) => PopupIdentifier;
     unmount: (popupIdentifier: PopupIdentifier) => void;
+
     getPopupsByGroup: (group: PopupGroup) => Array<Popup<unknown>>;
+    getPopup: (popupIdentifier: PopupIdentifier) => Popup<unknown>;
+
     close: (popupIdentifier: PopupIdentifier) => void;
     setCloseHandler: (
         popupIdentifier: PopupIdentifier,
-        close?: () => void
+        close?: () => void | Promise<void>
     ) => void;
 };

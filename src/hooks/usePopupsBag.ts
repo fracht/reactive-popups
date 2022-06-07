@@ -1,12 +1,12 @@
 import { ComponentType, useCallback, useState } from 'react';
 
+import { ResponseHandler } from './useResponseHandler';
 import { PopupGroup } from '../components/PopupGroup';
 import { Popup } from '../types/Popup';
 import { PopupIdentifier } from '../types/PopupIdentifier';
 import { PopupsBag } from '../types/PopupsBag';
 import { PopupsRegistry } from '../types/PopupsRegistry';
 import { isPromise } from '../utils/isPromise';
-import { ResponsePopupContextType } from '../utils/ResponsePopupContext';
 import { uuid } from '../utils/uuid';
 
 export const usePopupsBag = (): PopupsBag => {
@@ -26,7 +26,7 @@ export const usePopupsBag = (): PopupsBag => {
             PopupComponent: ComponentType<P>,
             props: P,
             group: PopupGroup,
-            handler?: ResponsePopupContextType
+            handler?: ResponseHandler
         ) => {
             const id = uuid();
 
@@ -78,7 +78,10 @@ export const usePopupsBag = (): PopupsBag => {
     );
 
     const setCloseHandler = useCallback(
-        ({ id, groupId }: PopupIdentifier, close?: () => void) => {
+        (
+            { id, groupId }: PopupIdentifier,
+            close?: () => void | Promise<void>
+        ) => {
             setPopups((prevPopups) => {
                 prevPopups[groupId][id].close = close;
                 return {
@@ -100,10 +103,18 @@ export const usePopupsBag = (): PopupsBag => {
         [popups]
     );
 
+    const getPopup = useCallback(
+        ({ groupId, id }: PopupIdentifier) => {
+            return popups[groupId][id];
+        },
+        [popups]
+    );
+
     return {
         mount,
         unmount,
         getPopupsByGroup,
+        getPopup,
         close,
         setCloseHandler,
     };

@@ -20,7 +20,7 @@ export const ConfirmPopup = ({ message }: ConfirmPopupProps) => {
     }, []);
 
     const unmount = useCloseHandler(close);
-    const { reject, resolve } = useResponseHandler()!;
+    const { reject, resolve } = useResponseHandler();
 
     return (
         <Dialog
