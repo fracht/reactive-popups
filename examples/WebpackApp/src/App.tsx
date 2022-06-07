@@ -2,6 +2,7 @@ import React from 'react';
 import { useResponsePopup } from 'reactive-popups';
 
 import { ConfirmPopup } from './ConfirmPopup';
+import { FalsyResponsePopup } from './FalsyResponsePopup';
 import { DefaultPopupGroup } from '.';
 
 export const App = () => {
@@ -24,6 +25,7 @@ export const App = () => {
             >
                 confirm
             </button>
+            {/* <FalsyResponsePopup /> */}
         </div>
     );
 };
