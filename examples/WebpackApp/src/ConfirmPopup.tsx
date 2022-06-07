@@ -15,7 +15,10 @@ export type ConfirmPopupProps = {
 export const ConfirmPopup = ({ message }: ConfirmPopupProps) => {
     const [open, setOpen] = useState(true);
 
-    const close = useCallback(() => {
+    const close = useCallback(async () => {
+        // console.log('before');
+        // await new Promise((res) => setTimeout(res, 2000));
+        // console.log('after');
         setOpen(false);
     }, []);
 

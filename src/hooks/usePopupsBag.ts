@@ -1,24 +1,36 @@
-import { ComponentType, useCallback, useState } from 'react';
+import { ComponentType, useCallback, useReducer } from 'react';
 
 import { ResponseHandler } from './useResponseHandler';
 import { PopupGroup } from '../components/PopupGroup';
 import { Popup } from '../types/Popup';
 import { PopupIdentifier } from '../types/PopupIdentifier';
 import { PopupsBag } from '../types/PopupsBag';
-import { PopupsRegistry } from '../types/PopupsRegistry';
-import { isPromise } from '../utils/isPromise';
+import { popupsReducer } from '../utils/popupsReducer';
 import { uuid } from '../utils/uuid';
 
 export const usePopupsBag = (): PopupsBag => {
-    const [popups, setPopups] = useState<PopupsRegistry>({});
+    const [{ popups }, dispatch] = useReducer(popupsReducer, { popups: {} });
 
-    const unmount = useCallback(({ groupId, id }: PopupIdentifier) => {
-        setPopups((registry) => {
-            delete registry[groupId][id];
-            return {
-                ...registry,
-            };
-        });
+    const getPopupsByGroup = useCallback(
+        (group: PopupGroup) => {
+            if (!popups[group.groupId]) {
+                return [];
+            }
+
+            return Object.values(popups[group.groupId]);
+        },
+        [popups]
+    );
+
+    const getPopup = useCallback(
+        ({ groupId, id }: PopupIdentifier) => {
+            return popups[groupId][id];
+        },
+        [popups]
+    );
+
+    const unmount = useCallback((popupIdentifier: PopupIdentifier) => {
+        dispatch({ type: 'remove', popupIdentifier });
     }, []);
 
     const mount = useCallback(
@@ -39,20 +51,13 @@ export const usePopupsBag = (): PopupsBag => {
                 PopupComponent,
                 props,
                 popupIdentifier,
-                resolve: handler?.resolve,
-                reject: handler?.reject,
+                ...handler,
             };
 
-            setPopups((registry) => {
-                if (!registry[group.groupId]) {
-                    registry[group.groupId] = {};
-                }
-
-                registry[group.groupId][id] = newPopup as Popup<unknown>;
-
-                return {
-                    ...registry,
-                };
+            dispatch({
+                type: 'add',
+                popupIdentifier,
+                popup: newPopup as Popup<unknown>,
             });
 
             return popupIdentifier;
@@ -61,53 +66,25 @@ export const usePopupsBag = (): PopupsBag => {
     );
 
     const close = useCallback(
-        (popupIdentifier: PopupIdentifier) => {
-            const { groupId, id } = popupIdentifier;
-            const popup = popups[groupId][id];
+        async (popupIdentifier: PopupIdentifier) => {
+            const popup = getPopup(popupIdentifier);
             if (popup.close) {
-                const possiblePromise = popup.close();
+                await popup.close();
 
-                if (isPromise(possiblePromise)) {
-                    possiblePromise.then(() => {
-                        unmount(popupIdentifier);
-                    });
-                }
+                unmount(popupIdentifier);
             }
         },
-        [popups, unmount]
+        [unmount, getPopup]
     );
 
     const setCloseHandler = useCallback(
         (
-            { id, groupId }: PopupIdentifier,
+            popupIdentifier: PopupIdentifier,
             close?: () => void | Promise<void>
         ) => {
-            setPopups((prevPopups) => {
-                prevPopups[groupId][id].close = close;
-                return {
-                    ...prevPopups,
-                };
-            });
+            dispatch({ type: 'setCloseHandler', popupIdentifier, close });
         },
         []
-    );
-
-    const getPopupsByGroup = useCallback(
-        (group: PopupGroup) => {
-            if (!popups[group.groupId]) {
-                return [];
-            }
-
-            return Object.values(popups[group.groupId]);
-        },
-        [popups]
-    );
-
-    const getPopup = useCallback(
-        ({ groupId, id }: PopupIdentifier) => {
-            return popups[groupId][id];
-        },
-        [popups]
     );
 
     return {
