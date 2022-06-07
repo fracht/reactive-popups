@@ -11,12 +11,12 @@ export const useResponsePopup = <P, K extends keyof P, R>(
     props: Pick<P, K>,
     group: PopupGroup
 ): UseResponsePopupBag<Omit<P, K>, R> => {
-    const { mount, close } = usePopupsContext();
+    const { mount } = usePopupsContext();
 
     const waitResponse = useCallback(
         (omittedProps?: Omit<P, K>) => {
             return new Promise<R>((resolve, reject) => {
-                const identifier = mount(
+                mount(
                     PopupComponent,
                     {
                         ...props,
@@ -24,19 +24,15 @@ export const useResponsePopup = <P, K extends keyof P, R>(
                     } as P,
                     group,
                     {
-                        resolve: (value: unknown) => {
-                            resolve(value as R);
-                            close(identifier);
-                        },
-                        reject: (reason: unknown) => {
-                            reject(reason);
-                            close(identifier);
-                        },
+                        resolve: resolve as (
+                            value: unknown | PromiseLike<unknown>
+                        ) => void,
+                        reject,
                     }
                 );
             });
         },
-        [PopupComponent, close, group, mount, props]
+        [PopupComponent, group, mount, props]
     );
 
     return waitResponse;
