@@ -5,12 +5,12 @@ import { RESPONSE_HANDLER_ERROR } from '../constants';
 import { usePopupIdentifier } from '../utils/PopupIdentifierContext';
 
 export type ResponseHandler = {
-    resolve: (value: unknown) => void;
+    resolve: (value: unknown | PromiseLike<unknown>) => void;
     reject: (reason?: unknown) => void;
 };
 
 export const useResponseHandler = (): ResponseHandler => {
-    const { getPopup } = usePopupsContext();
+    const { getPopup, close } = usePopupsContext();
     const popupIdentifier = usePopupIdentifier();
 
     const popup = useMemo(() => {
@@ -27,15 +27,17 @@ export const useResponseHandler = (): ResponseHandler => {
     const resolve = useCallback(
         (value: unknown) => {
             popup.resolve!(value);
+            close(popupIdentifier);
         },
-        [popup]
+        [close, popup.resolve, popupIdentifier]
     );
 
     const reject = useCallback(
         (reason?: unknown) => {
             popup.reject!(reason);
+            close(popupIdentifier);
         },
-        [popup]
+        [close, popup.reject, popupIdentifier]
     );
 
     return { resolve, reject };

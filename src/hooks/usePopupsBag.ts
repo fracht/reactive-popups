@@ -5,6 +5,7 @@ import { PopupGroup } from '../components/PopupGroup';
 import { Popup } from '../types/Popup';
 import { PopupIdentifier } from '../types/PopupIdentifier';
 import { PopupsBag } from '../types/PopupsBag';
+import { isPromise } from '../utils/isPromise';
 import { popupsReducer } from '../utils/popupsReducer';
 import { uuid } from '../utils/uuid';
 
@@ -66,12 +67,16 @@ export const usePopupsBag = (): PopupsBag => {
     );
 
     const close = useCallback(
-        async (popupIdentifier: PopupIdentifier) => {
+        (popupIdentifier: PopupIdentifier) => {
             const popup = getPopup(popupIdentifier);
             if (popup.close) {
-                await popup.close();
+                const possiblePromise = popup.close();
 
-                unmount(popupIdentifier);
+                if (isPromise(possiblePromise)) {
+                    possiblePromise.then(() => {
+                        unmount(popupIdentifier);
+                    });
+                }
             }
         },
         [unmount, getPopup]
