@@ -4,24 +4,32 @@ import { PopupsRegistry } from '../types/PopupsRegistry';
 
 type AddAction = {
     type: 'add';
-    popupIdentifier: PopupIdentifier;
-    popup: Popup<unknown>;
+    payload: {
+        popupIdentifier: PopupIdentifier;
+        popup: Popup<unknown>;
+    };
 };
 
 type RemoveAction = {
     type: 'remove';
-    popupIdentifier: PopupIdentifier;
+    payload: {
+        popupIdentifier: PopupIdentifier;
+    };
 };
 
 type SetCloseHandlerAction = {
     type: 'setCloseHandler';
-    popupIdentifier: PopupIdentifier;
-    close?: () => void | Promise<void>;
+    payload: {
+        popupIdentifier: PopupIdentifier;
+        close?: () => void | Promise<void>;
+    };
 };
 
 type SettlePopupAction = {
     type: 'settlePopup';
-    popupIdentifier: PopupIdentifier;
+    payload: {
+        popupIdentifier: PopupIdentifier;
+    };
 };
 
 type PopupsAction =
@@ -34,52 +42,59 @@ export const popupsReducer = (
     { popups }: { popups: PopupsRegistry },
     action: PopupsAction
 ) => {
-    if (action.type === 'add') {
-        const {
-            popup,
-            popupIdentifier: { groupId, id },
-        } = action;
+    switch (action.type) {
+        case 'add': {
+            const {
+                popup,
+                popupIdentifier: { groupId, id },
+            } = action.payload;
 
-        if (!popups[groupId]) {
-            popups[groupId] = {};
+            if (!popups[groupId]) {
+                popups[groupId] = {};
+            }
+
+            popups[groupId][id] = popup;
+
+            return {
+                popups,
+            };
         }
 
-        popups[groupId][id] = popup;
+        case 'remove': {
+            const { groupId, id } = action.payload.popupIdentifier;
 
-        return {
-            popups,
-        };
+            delete popups[groupId][id];
+
+            return {
+                popups,
+            };
+        }
+
+        case 'setCloseHandler': {
+            const {
+                popupIdentifier: { groupId, id },
+                close,
+            } = action.payload;
+
+            popups[groupId][id].close = close;
+
+            return {
+                popups,
+            };
+        }
+
+        case 'settlePopup': {
+            const { groupId, id } = action.payload.popupIdentifier;
+
+            popups[groupId][id].isSettled = true;
+
+            return {
+                popups,
+            };
+        }
+
+        default: {
+            throw new Error();
+        }
     }
-
-    if (action.type === 'remove') {
-        const { groupId, id } = action.popupIdentifier;
-
-        delete popups[groupId][id];
-
-        return {
-            popups,
-        };
-    }
-
-    if (action.type === 'setCloseHandler') {
-        const { groupId, id } = action.popupIdentifier;
-
-        popups[groupId][id].close = action.close;
-
-        return {
-            popups,
-        };
-    }
-
-    if (action.type === 'settlePopup') {
-        const { groupId, id } = action.popupIdentifier;
-
-        popups[groupId][id].isSettled = true;
-
-        return {
-            popups,
-        };
-    }
-
-    throw new Error();
 };

@@ -1,4 +1,4 @@
-import { ComponentType, useCallback, useEffect, useReducer } from 'react';
+import { ComponentType, useCallback, useReducer } from 'react';
 
 import { ResponseHandler } from './useResponseHandler';
 import { PopupGroup } from '../components/PopupGroup';
@@ -11,25 +11,24 @@ import { popupsReducer } from '../utils/popupsReducer';
 import { uuid } from '../utils/uuid';
 
 export const usePopupsBag = (): PopupsBag => {
-    // TODO fix this
-    const [{ popups }, dispatch] = useReducer(popupsReducer, { popups: {} });
+    const [popupsState, dispatch] = useReducer(popupsReducer, { popups: {} });
 
     const getPopupsByGroup = useCallback(
         (group: PopupGroup) => {
-            if (!popups[group.groupId]) {
+            if (!popupsState.popups[group.groupId]) {
                 return [];
             }
 
-            return Object.values(popups[group.groupId]);
+            return Object.values(popupsState.popups[group.groupId]);
         },
-        [popups]
+        [popupsState]
     );
 
     const getPopup = useCallback(
         ({ groupId, id }: PopupIdentifier) => {
-            return popups[groupId][id];
+            return popupsState.popups[groupId][id];
         },
-        [popups]
+        [popupsState]
     );
 
     const unmount = useCallback(
@@ -40,7 +39,7 @@ export const usePopupsBag = (): PopupsBag => {
                 throw new Error(PROMISE_NOT_SETTLED);
             }
 
-            dispatch({ type: 'remove', popupIdentifier });
+            dispatch({ type: 'remove', payload: { popupIdentifier } });
         },
         [getPopup]
     );
@@ -69,8 +68,10 @@ export const usePopupsBag = (): PopupsBag => {
 
             dispatch({
                 type: 'add',
-                popupIdentifier,
-                popup: newPopup as Popup<unknown>,
+                payload: {
+                    popupIdentifier,
+                    popup: newPopup as Popup<unknown>,
+                },
             });
 
             return popupIdentifier;
@@ -99,13 +100,24 @@ export const usePopupsBag = (): PopupsBag => {
             popupIdentifier: PopupIdentifier,
             close?: () => void | Promise<void>
         ) => {
-            dispatch({ type: 'setCloseHandler', popupIdentifier, close });
+            dispatch({
+                type: 'setCloseHandler',
+                payload: {
+                    popupIdentifier,
+                    close,
+                },
+            });
         },
         []
     );
 
     const settlePopup = useCallback((popupIdentifier: PopupIdentifier) => {
-        dispatch({ type: 'settlePopup', popupIdentifier });
+        dispatch({
+            type: 'settlePopup',
+            payload: {
+                popupIdentifier,
+            },
+        });
     }, []);
 
     return {
