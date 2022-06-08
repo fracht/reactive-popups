@@ -4,7 +4,9 @@ import { usePopupsFactory, useResponseHandler } from 'reactive-popups';
 import { DefaultPopupGroup } from '.';
 
 const Popup = () => {
-    const errorBehaviour = useResponseHandler();
+    const errorBehaviour = useResponseHandler(() => {
+        //
+    });
 
     return <div>hello</div>;
 };

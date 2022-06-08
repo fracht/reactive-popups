@@ -1,12 +1,14 @@
 import { useCallback, useEffect } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
+import { CLOSE_HANDLER_BAD_USE } from '../constants';
+import { isDefaultPopup } from '../types/DefaultPopup';
 import { usePopupIdentifier } from '../utils/PopupIdentifierContext';
 
 export const useCloseHandler = (
-    close?: () => void | Promise<void>
+    close: () => void | Promise<void>
 ): (() => void) => {
-    const { setCloseHandler, unmount } = usePopupsContext();
+    const { getPopup, unmount } = usePopupsContext();
 
     const popupIdentifier = usePopupIdentifier();
 
@@ -15,8 +17,14 @@ export const useCloseHandler = (
     }, [popupIdentifier, unmount]);
 
     useEffect(() => {
-        setCloseHandler(popupIdentifier, close);
-    }, [setCloseHandler, popupIdentifier, close]);
+        const popup = getPopup(popupIdentifier);
+
+        if (!isDefaultPopup(popup)) {
+            throw new Error(CLOSE_HANDLER_BAD_USE);
+        }
+
+        popup.setCloseHandler(close);
+    }, [popupIdentifier, close, getPopup]);
 
     return unmountPopup;
 };

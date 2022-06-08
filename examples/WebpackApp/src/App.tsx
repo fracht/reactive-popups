@@ -1,9 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import {
-    useCloseHandler,
-    useResponseHandler,
-    useResponsePopup,
-} from 'reactive-popups';
+import { useResponseHandler, useResponsePopup } from 'reactive-popups';
 import {
     Button,
     Dialog,
@@ -26,8 +22,7 @@ const AnotherPopup = () => {
         setOpen(false);
     }, []);
 
-    const unmount = useCloseHandler(close);
-    const { reject, resolve } = useResponseHandler();
+    const { reject, resolve, unmount } = useResponseHandler(close);
 
     return (
         <Dialog

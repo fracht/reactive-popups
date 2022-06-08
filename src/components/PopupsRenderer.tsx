@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { PopupGroup } from './PopupGroup';
 import { usePopupsContext } from '../hooks/usePopupsContext';

@@ -1,46 +1,60 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
-import { RESPONSE_HANDLER_ERROR } from '../constants';
-import { Popup } from '../types/Popup';
+import { PROMISE_NOT_SETTLED, RESPONSE_HANDLER_BAD_USE } from '../constants';
+import { isResponsePopup, ResponsePopup } from '../types/ResponsePopup';
 import { usePopupIdentifier } from '../utils/PopupIdentifierContext';
 
 export type ResponseHandler = {
     resolve: (value: unknown | PromiseLike<unknown>) => void;
     reject: (reason?: unknown) => void;
+    unmount: () => void;
 };
 
-export const useResponseHandler = (): ResponseHandler => {
-    const { getPopup, close } = usePopupsContext();
+export const useResponseHandler = (close: () => void): ResponseHandler => {
+    const {
+        getPopup,
+        close: closePopup,
+        unmount: unmountPopup,
+    } = usePopupsContext();
     const popupIdentifier = usePopupIdentifier();
 
-    const popupRef = useRef<Popup<unknown> | null>(null);
+    const popupRef = useRef<ResponsePopup<unknown, unknown> | null>(null);
 
     const resolve = useCallback(
         (value: unknown) => {
             popupRef.current!.resolve!(value);
-            close(popupIdentifier);
+            closePopup(popupIdentifier);
         },
-        [close, popupIdentifier]
+        [closePopup, popupIdentifier]
     );
 
     const reject = useCallback(
         (reason?: unknown) => {
             popupRef.current!.reject!(reason);
-            close(popupIdentifier);
+            closePopup(popupIdentifier);
         },
-        [close, popupIdentifier]
+        [closePopup, popupIdentifier]
     );
+
+    const unmount = useCallback(() => {
+        if (!popupRef.current!.isSettled!) {
+            throw new Error(PROMISE_NOT_SETTLED);
+        }
+
+        unmountPopup(popupIdentifier);
+    }, [popupIdentifier, unmountPopup]);
 
     useEffect(() => {
         const popup = getPopup(popupIdentifier);
 
-        if (popup.isSettled) {
-            throw new Error(RESPONSE_HANDLER_ERROR);
+        if (!isResponsePopup(popup)) {
+            throw new Error(RESPONSE_HANDLER_BAD_USE);
         }
 
+        popup.setCloseHandler(close);
         popupRef.current = popup;
-    }, [getPopup, popupIdentifier]);
+    }, [getPopup, popupIdentifier, close]);
 
-    return { resolve, reject };
+    return { resolve, reject, unmount };
 };
