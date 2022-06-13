@@ -13,7 +13,7 @@
         "start": "aqu watch",
         "lint": "aqu lint",
         "lint:fix": "aqu lint --fix",
-        "test": "jest",
+        "test": "aqu test --passWithNoTests",
         "test:watch": "aqu test --passWithNoTests --watch",
         "test:coverage": "aqu test --coverage --json --silent --ci --outputFile=\"report.json\"",
         "test:log-coverage": "aqu test --coverage --silent --ci --coverageReporters=text",
@@ -32,6 +32,8 @@
     },
     "homepage": "https://github.com/AlexShukel/reactive-popups#readme",
     "devDependencies": {
+        "@babel/preset-react": "^7.17.12",
+        "@babel/preset-typescript": "^7.17.12",
         "@testing-library/react": "^13.3.0",
         "@types/jest": "^27.4.0",
         "@types/react": "^18.0.9",
@@ -51,6 +53,6 @@
         "tiny-invariant": "^1.2.0"
     },
     "peerDependencies": {
-      "react": ">=16"
-  }
+        "react": ">=16"
+    }
 }
