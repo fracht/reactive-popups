@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, Button, Icon, IconButton, Snackbar } from '@mui/material';
 
 import { SnackbarGroup } from '.';
-import {
-    useCloseHandler,
-    usePopupsFactory,
-} from '../../../dist/reactive-popups';
+import { useCloseHandler, usePopupsFactory } from 'reactive-popups';
 
-export const SnackbarPopup = ({ message }: { message: string }) => {
+export const SnackbarPopup: React.FC<{ message: string }> = ({ message }) => {
     const [open, setOpen] = useState(true);
 
     const close = () => {
@@ -22,7 +19,11 @@ export const SnackbarPopup = ({ message }: { message: string }) => {
             TransitionProps={{ onExited: unmount }}
             onClose={close}
         >
-            <Alert severity="success">{message}</Alert>
+            <div>
+                <Alert severity="success" onClick={close}>
+                    {message}
+                </Alert>
+            </div>
         </Snackbar>
     );
 };
