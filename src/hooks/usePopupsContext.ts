@@ -1,14 +1,8 @@
-import { useContext } from 'react';
-import invariant from 'tiny-invariant';
+import { useSafeContext } from '@sirse-dev/safe-context';
 
-import { CONTEXT_NOT_FOUND_ERROR } from '../constants';
 import { PopupsContext } from '../PopupsContext';
 import { PopupsBag } from '../types/PopupsBag';
 
 export const usePopupsContext = (): PopupsBag => {
-    const context = useContext(PopupsContext);
-
-    invariant(context, CONTEXT_NOT_FOUND_ERROR);
-
-    return context;
+    return useSafeContext(PopupsContext);
 };

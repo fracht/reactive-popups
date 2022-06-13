@@ -1,5 +1,5 @@
-import { createContext } from 'react';
+import { createSafeContext } from '@sirse-dev/safe-context';
 
 import { PopupsBag } from './types/PopupsBag';
 
-export const PopupsContext = createContext<PopupsBag | undefined>(undefined);
+export const PopupsContext = createSafeContext<PopupsBag>();

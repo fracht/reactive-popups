@@ -1,5 +1,3 @@
-export const CONTEXT_NOT_FOUND_ERROR =
-    'PopupsContext was not found. Please, wrap your application with PopupsContextProvider.';
 export const PROMISE_NOT_SETTLED =
     'Promise from ResponsePopup was not settled (memory leak).';
 export const RESPONSE_HANDLER_BAD_USE =
