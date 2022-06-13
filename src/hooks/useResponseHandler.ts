@@ -1,44 +1,60 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
-import { RESPONSE_HANDLER_ERROR } from '../constants';
+import { PROMISE_NOT_SETTLED, RESPONSE_HANDLER_BAD_USE } from '../constants';
+import { isResponsePopup, ResponsePopup } from '../types/ResponsePopup';
 import { usePopupIdentifier } from '../utils/PopupIdentifierContext';
 
 export type ResponseHandler = {
     resolve: (value: unknown | PromiseLike<unknown>) => void;
     reject: (reason?: unknown) => void;
+    unmount: () => void;
 };
 
-export const useResponseHandler = (): ResponseHandler => {
-    const { getPopup, close } = usePopupsContext();
+export const useResponseHandler = (close: () => void): ResponseHandler => {
+    const {
+        getPopup,
+        close: closePopup,
+        unmount: unmountPopup,
+    } = usePopupsContext();
     const popupIdentifier = usePopupIdentifier();
 
-    const popup = useMemo(() => {
-        const popup = getPopup(popupIdentifier);
-
-        // TODO add prop to identify response popup type
-        if (!popup.resolve || !popup.reject) {
-            throw new Error(RESPONSE_HANDLER_ERROR);
-        }
-
-        return popup;
-    }, [getPopup, popupIdentifier]);
+    const popupRef = useRef<ResponsePopup<unknown, unknown> | null>(null);
 
     const resolve = useCallback(
         (value: unknown) => {
-            popup.resolve!(value);
-            close(popupIdentifier);
+            popupRef.current!.resolve!(value);
+            closePopup(popupIdentifier);
         },
-        [close, popup.resolve, popupIdentifier]
+        [closePopup, popupIdentifier]
     );
 
     const reject = useCallback(
         (reason?: unknown) => {
-            popup.reject!(reason);
-            close(popupIdentifier);
+            popupRef.current!.reject!(reason);
+            closePopup(popupIdentifier);
         },
-        [close, popup.reject, popupIdentifier]
+        [closePopup, popupIdentifier]
     );
 
-    return { resolve, reject };
+    const unmount = useCallback(() => {
+        if (!popupRef.current!.isSettled!) {
+            throw new Error(PROMISE_NOT_SETTLED);
+        }
+
+        unmountPopup(popupIdentifier);
+    }, [popupIdentifier, unmountPopup]);
+
+    useEffect(() => {
+        const popup = getPopup(popupIdentifier);
+
+        if (!isResponsePopup(popup)) {
+            throw new Error(RESPONSE_HANDLER_BAD_USE);
+        }
+
+        popup.setCloseHandler(close);
+        popupRef.current = popup;
+    }, [getPopup, popupIdentifier, close]);
+
+    return { resolve, reject, unmount };
 };

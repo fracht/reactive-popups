@@ -2,65 +2,56 @@ import { Popup } from '../types/Popup';
 import { PopupIdentifier } from '../types/PopupIdentifier';
 import { PopupsRegistry } from '../types/PopupsRegistry';
 
-type AddAction = {
-    type: 'add';
-    popupIdentifier: PopupIdentifier;
-    popup: Popup<unknown>;
+type MountAction = {
+    type: 'mount';
+    payload: {
+        popup: Popup<unknown>;
+    };
 };
 
-type RemoveAction = {
-    type: 'remove';
-    popupIdentifier: PopupIdentifier;
+type UnmountAction = {
+    type: 'unmount';
+    payload: {
+        popupIdentifier: PopupIdentifier;
+    };
 };
 
-type SetCloseHandlerAction = {
-    type: 'setCloseHandler';
-    popupIdentifier: PopupIdentifier;
-    close?: () => void | Promise<void>;
-};
-
-type PopupsAction = AddAction | RemoveAction | SetCloseHandlerAction;
+export type PopupsAction = MountAction | UnmountAction;
 
 export const popupsReducer = (
     { popups }: { popups: PopupsRegistry },
     action: PopupsAction
 ) => {
-    if (action.type === 'add') {
-        const {
-            popup,
-            popupIdentifier: { groupId, id },
-        } = action;
+    switch (action.type) {
+        case 'mount': {
+            const { popup } = action.payload;
+            const {
+                popupIdentifier: { groupId, id },
+            } = popup;
 
-        if (!popups[groupId]) {
-            popups[groupId] = {};
+            if (!popups[groupId]) {
+                popups[groupId] = {};
+            }
+
+            popups[groupId][id] = popup;
+
+            return {
+                popups,
+            };
         }
 
-        popups[groupId][id] = popup;
+        case 'unmount': {
+            const { groupId, id } = action.payload.popupIdentifier;
 
-        return {
-            popups,
-        };
+            delete popups[groupId][id];
+
+            return {
+                popups,
+            };
+        }
+
+        default: {
+            throw new Error();
+        }
     }
-
-    if (action.type === 'remove') {
-        const { groupId, id } = action.popupIdentifier;
-
-        delete popups[groupId][id];
-
-        return {
-            popups,
-        };
-    }
-
-    if (action.type === 'setCloseHandler') {
-        const { groupId, id } = action.popupIdentifier;
-
-        popups[groupId][id].close = action.close;
-
-        return {
-            popups,
-        };
-    }
-
-    throw new Error();
 };

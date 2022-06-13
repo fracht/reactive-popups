@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useCloseHandler, useResponseHandler } from 'reactive-popups';
+import { useResponseHandler } from 'reactive-popups';
 import {
     Button,
     Dialog,
@@ -22,8 +22,7 @@ export const ConfirmPopup = ({ message }: ConfirmPopupProps) => {
         setOpen(false);
     }, []);
 
-    const unmount = useCloseHandler(close);
-    const { reject, resolve } = useResponseHandler();
+    const { reject, resolve, unmount } = useResponseHandler(close);
 
     return (
         <Dialog
@@ -41,6 +40,7 @@ export const ConfirmPopup = ({ message }: ConfirmPopupProps) => {
                 <Button onClick={() => resolve(true)} autoFocus>
                     OK
                 </Button>
+                <Button onClick={unmount}>BREAK</Button>
             </DialogActions>
         </Dialog>
     );

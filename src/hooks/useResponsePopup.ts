@@ -2,7 +2,9 @@ import { ComponentType, useCallback } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
 import { PopupGroup } from '../components/PopupGroup';
+import { ResponsePopup } from '../types/ResponsePopup';
 import { OptionalParamFunction } from '../utils/OptionalParamFunction';
+import { uuid } from '../utils/uuid';
 
 export type UseResponsePopupBag<T, R> = OptionalParamFunction<T, Promise<R>>;
 
@@ -15,22 +17,32 @@ export const useResponsePopup = <P, K extends keyof P, R>(
 
     const waitResponse = useCallback(
         (omittedProps?: Omit<P, K>) => {
-            return new Promise<R>((resolve, reject) => {
-                mount(
+            const id = uuid();
+            let popup: ResponsePopup<P, R> | null = null;
+
+            const promise = new Promise<R>((resolve, reject) => {
+                popup = new ResponsePopup(
                     PopupComponent,
                     {
                         ...props,
                         ...omittedProps,
                     } as P,
-                    group,
                     {
-                        resolve: resolve as (
-                            value: unknown | PromiseLike<unknown>
-                        ) => void,
-                        reject,
-                    }
+                        id,
+                        groupId: group.groupId,
+                    },
+                    resolve,
+                    reject
                 );
+
+                mount(popup);
             });
+
+            promise.finally(() => {
+                popup!.isSettled = true;
+            });
+
+            return promise;
         },
         [PopupComponent, group, mount, props]
     );
