@@ -1,12 +1,9 @@
 import React from 'react';
 import { act, renderHook, screen } from '@testing-library/react';
 
-import { createPopupGroup } from '../../src/components/PopupGroup';
-import { PopupsContextProvider } from '../../src/components/PopupsContextProvider';
-import { PopupsRenderer } from '../../src/components/PopupsRenderer';
+import { group, TestHookWrapper } from './TestHookWrapper';
 import { usePopupsFactory } from '../../src/hooks/usePopupsFactory';
 
-const group = createPopupGroup();
 const SimplePopupComponent: React.FC = jest.fn(() => <div>simple popup</div>);
 const PopupComponentWithProps: React.FC<{
     prop1: number;
@@ -18,12 +15,7 @@ describe('usePopupsFactory', () => {
         const { result } = renderHook(
             () => usePopupsFactory(SimplePopupComponent, {}, group),
             {
-                wrapper: ({ children }) => (
-                    <PopupsContextProvider>
-                        {children}
-                        <PopupsRenderer group={group} />
-                    </PopupsContextProvider>
-                ),
+                wrapper: TestHookWrapper,
             }
         );
 
@@ -39,12 +31,7 @@ describe('usePopupsFactory', () => {
         const { result } = renderHook(
             () => usePopupsFactory(SimplePopupComponent, {}, group),
             {
-                wrapper: ({ children }) => (
-                    <PopupsContextProvider>
-                        {children}
-                        <PopupsRenderer group={group} />
-                    </PopupsContextProvider>
-                ),
+                wrapper: TestHookWrapper,
             }
         );
 
@@ -63,12 +50,7 @@ describe('usePopupsFactory', () => {
             () =>
                 usePopupsFactory(PopupComponentWithProps, { prop1: 42 }, group),
             {
-                wrapper: ({ children }) => (
-                    <PopupsContextProvider>
-                        {children}
-                        <PopupsRenderer group={group} />
-                    </PopupsContextProvider>
-                ),
+                wrapper: TestHookWrapper,
             }
         );
 
