@@ -2,8 +2,8 @@ import { ComponentType, useCallback } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
 import { PopupGroup } from '../components/PopupGroup';
+import { OptionalParamFunction } from '../types/OptionalParamFunction';
 import { ResponsePopup } from '../types/ResponsePopup';
-import { OptionalParamFunction } from '../utils/OptionalParamFunction';
 import { uuid } from '../utils/uuid';
 
 export type UseResponsePopupBag<T, R> = OptionalParamFunction<T, Promise<R>>;
