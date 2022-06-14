@@ -5,7 +5,6 @@ import { Popup } from '../types/Popup';
 import { PopupIdentifier } from '../types/PopupIdentifier';
 import { PopupsBag } from '../types/PopupsBag';
 import { callIfPromiseReturned } from '../utils/callIfPromiseReturned';
-import { isPromise } from '../utils/isPromise';
 import { popupsReducer } from '../utils/popupsReducer';
 
 export const usePopupsBag = (): PopupsBag => {
