@@ -4,7 +4,7 @@ import { PopupGroup } from '../components/PopupGroup';
 import { Popup } from '../types/Popup';
 import { PopupIdentifier } from '../types/PopupIdentifier';
 import { PopupsBag } from '../types/PopupsBag';
-import { isPromise } from '../utils/isPromise';
+import { callIfPromiseReturned } from '../utils/callIfPromiseReturned';
 import { popupsReducer } from '../utils/popupsReducer';
 
 export const usePopupsBag = (): PopupsBag => {
@@ -47,13 +47,9 @@ export const usePopupsBag = (): PopupsBag => {
         (popupIdentifier: PopupIdentifier) => {
             const popup = getPopup(popupIdentifier);
             if (popup.close) {
-                const possiblePromise = popup.close();
-
-                if (isPromise(possiblePromise)) {
-                    possiblePromise.then(() => {
-                        unmount(popupIdentifier);
-                    });
-                }
+                callIfPromiseReturned(popup.close, () =>
+                    unmount(popupIdentifier)
+                );
             }
         },
         [unmount, getPopup]

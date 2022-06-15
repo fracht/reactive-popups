@@ -3,7 +3,7 @@ import { ComponentType, useCallback } from 'react';
 import { usePopupsContext } from './usePopupsContext';
 import { PopupGroup } from '../components/PopupGroup';
 import { DefaultPopup } from '../types/DefaultPopup';
-import { OptionalParamFunction } from '../utils/OptionalParamFunction';
+import { OptionalParamFunction } from '../types/OptionalParamFunction';
 import { uuid } from '../utils/uuid';
 
 export type UsePopupsFactoryBag<T> = OptionalParamFunction<T, () => void>;

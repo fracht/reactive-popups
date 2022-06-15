@@ -6,7 +6,7 @@ import { isDefaultPopup } from '../types/DefaultPopup';
 import { usePopupIdentifier } from '../utils/PopupIdentifierContext';
 
 export const useCloseHandler = (
-    close: () => void | Promise<void>
+    close?: () => void | Promise<void>
 ): (() => void) => {
     const { getPopup, unmount } = usePopupsContext();
 
@@ -23,7 +23,9 @@ export const useCloseHandler = (
             throw new Error(CLOSE_HANDLER_BAD_USE);
         }
 
-        popup.setCloseHandler(close);
+        if (close) {
+            popup.setCloseHandler(close);
+        }
     }, [popupIdentifier, close, getPopup]);
 
     return unmountPopup;
