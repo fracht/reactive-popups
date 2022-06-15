@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { useResponsePopup } from 'reactive-popups';
 
+import { AlertTrigger } from './Alert';
 import { ConfirmPopup } from './ConfirmPopup';
 import { FalsyResponsePopup } from './FalsyResponsePopup';
-import { SnackbarTrigger } from './Snackbar';
 import { DefaultPopupGroup } from '.';
 
 export const App = () => {
@@ -25,7 +25,7 @@ export const App = () => {
         <div>
             <button onClick={openConfirmPopup}>confirm</button>
             {/* <FalsyResponsePopup /> */}
-            <SnackbarTrigger />
+            <AlertTrigger />
         </div>
     );
 };
