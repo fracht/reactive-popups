@@ -1,13 +1,11 @@
-import { ReactElement } from 'react';
-
 import { usePopupsContext } from './usePopupsContext';
 import { PopupGroup } from '../components/PopupGroup';
-import { renderPopups } from '../utils/renderPopups';
+import { Popup } from '../types/Popup';
 
-export const usePopupsByGroup = (group: PopupGroup): ReactElement[] => {
+export const usePopupsByGroup = (group: PopupGroup): Popup<unknown>[] => {
     const { getPopupsByGroup } = usePopupsContext();
 
     const popups = getPopupsByGroup(group);
 
-    return renderPopups(popups);
+    return popups;
 };
