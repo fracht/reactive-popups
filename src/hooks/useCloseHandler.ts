@@ -26,7 +26,9 @@ export const useCloseHandler = (
         if (close) {
             popup.setCloseHandler(close);
         }
-    }, [popupIdentifier, close, getPopup]);
+        // BUG with throwing error if getPopup is in dependency list
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [popupIdentifier, close]);
 
     return unmountPopup;
 };
