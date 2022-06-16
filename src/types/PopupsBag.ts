@@ -1,5 +1,3 @@
-import { ComponentType, Dispatch } from 'react';
-
 import { Popup } from './Popup';
 import { PopupIdentifier } from './PopupIdentifier';
 import { PopupGroup } from '../components/PopupGroup';
