@@ -1,9 +1,9 @@
 import React from 'react';
-import { TransitionGroup } from 'react-transition-group';
 import { createPopupGroup, PopupsContextProvider } from 'reactive-popups';
 import { createRoot } from 'react-dom/client';
 
 import { App } from './App';
+import { SnackbarContainer } from './SnackbarContainer';
 
 export const SnackbarGroup = createPopupGroup();
 export const DefaultPopupGroup = createPopupGroup();
@@ -20,15 +20,7 @@ const Hello = React.memo(() => {
 root.render(
     <PopupsContextProvider>
         <App />
-        <TransitionGroup
-            style={{
-                position: 'fixed',
-                top: 14,
-                left: 20,
-            }}
-        >
-            <SnackbarGroup />
-        </TransitionGroup>
+        <SnackbarContainer />
         <Hello />
     </PopupsContextProvider>
 );

@@ -1,34 +1,28 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useCloseHandler, usePopupsFactory } from 'reactive-popups';
-import {
-    Alert,
-    AlertColor,
-    AlertProps,
-    Collapse,
-    Slide,
-    SlideProps,
-} from '@mui/material';
+import { Alert, AlertColor, AlertProps, Collapse, Slide } from '@mui/material';
 
 import { SnackbarGroup } from '.';
 
-export const DEFAULT_AUTOHIDE_DURATION = 4000;
+const DEFAULT_AUTOHIDE_DURATION = 4000;
 
-export type AlertPopupProps = {
-    slideProps?: SlideProps;
+type SnackbarPopupTemplateProps = {
     autoHideDuration?: number;
-    message: string;
-} & AlertProps;
+    children: (handleClose: () => void) => React.ReactElement;
+};
 
-export const AlertPopup: React.FunctionComponent<AlertPopupProps> = ({
-    slideProps,
-    message,
-    autoHideDuration = DEFAULT_AUTOHIDE_DURATION,
-    ...alertProps
-}) => {
-    const [open, setOpen] = useState(true);
+const SnackbarPopupTemplate: React.FunctionComponent<
+    SnackbarPopupTemplateProps
+> = ({ autoHideDuration = DEFAULT_AUTOHIDE_DURATION, children }) => {
+    const [slided, setSlided] = useState(true);
+    const [collapsed, setCollapsed] = useState(true);
 
     const handleClose = useCallback(() => {
-        setOpen(false);
+        setSlided(false);
+    }, []);
+
+    const handleCollapse = useCallback(() => {
+        setCollapsed(false);
     }, []);
 
     const unmount = useCloseHandler(handleClose);
@@ -38,26 +32,43 @@ export const AlertPopup: React.FunctionComponent<AlertPopupProps> = ({
     }, [autoHideDuration, handleClose]);
 
     return (
-        <Collapse in={open} enter={false} orientation="vertical">
-            <Slide
-                {...slideProps}
-                direction="right"
-                in={open}
-                onExited={unmount}
-            >
-                <Alert
-                    {...alertProps}
-                    onClose={handleClose}
-                    style={{
-                        margin: 5,
-                    }}
-                >
-                    {message}
-                </Alert>
+        <Collapse
+            in={collapsed}
+            enter={false}
+            orientation="vertical"
+            onExited={unmount}
+        >
+            <Slide direction="right" in={slided} onExited={handleCollapse}>
+                {children(handleClose)}
             </Slide>
         </Collapse>
     );
 };
+
+type AlertPopupProps = {
+    message: string;
+} & AlertProps &
+    Omit<SnackbarPopupTemplateProps, 'children'>;
+
+const AlertPopup: React.FunctionComponent<AlertPopupProps> = ({
+    message,
+    autoHideDuration,
+    ...alertProps
+}) => (
+    <SnackbarPopupTemplate autoHideDuration={autoHideDuration}>
+        {(handleClose) => (
+            <Alert
+                {...alertProps}
+                onClose={handleClose}
+                style={{
+                    margin: '5px 0',
+                }}
+            >
+                {message}
+            </Alert>
+        )}
+    </SnackbarPopupTemplate>
+);
 
 export const useAlert = () => {
     const enqueueAlert = usePopupsFactory(AlertPopup, {}, SnackbarGroup);
