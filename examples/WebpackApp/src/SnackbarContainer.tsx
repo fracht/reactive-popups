@@ -1,6 +1,6 @@
 import React from 'react';
 import { TransitionGroup } from 'react-transition-group';
-import { renderPopups, usePopupsByGroup } from 'reactive-popups';
+import { usePopupsByGroup } from 'reactive-popups';
 
 import { SnackbarGroup } from '.';
 
@@ -23,7 +23,7 @@ export const SnackbarContainer = () => {
                     left: 20,
                 }}
             >
-                {renderPopups(popups)}
+                <SnackbarGroup />
             </TransitionGroup>
         </React.Fragment>
     );
