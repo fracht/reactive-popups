@@ -1,6 +1,6 @@
 import React from 'react';
 import { TransitionGroup } from 'react-transition-group';
-import { usePopupsByGroup } from 'reactive-popups';
+import { renderPopups, usePopupsByGroup } from 'reactive-popups';
 
 import { SnackbarGroup } from '.';
 
@@ -8,14 +8,23 @@ export const SnackbarContainer = () => {
     const popups = usePopupsByGroup(SnackbarGroup);
 
     return (
-        <TransitionGroup
-            style={{
-                position: 'fixed',
-                top: 14,
-                left: 20,
-            }}
-        >
-            {popups}
-        </TransitionGroup>
+        <React.Fragment>
+            <button
+                onClick={() => {
+                    popups[popups.length - 1].close();
+                }}
+            >
+                close last popup
+            </button>
+            <TransitionGroup
+                style={{
+                    position: 'fixed',
+                    top: 14,
+                    left: 20,
+                }}
+            >
+                {renderPopups(popups)}
+            </TransitionGroup>
+        </React.Fragment>
     );
 };
