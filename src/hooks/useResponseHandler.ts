@@ -19,7 +19,7 @@ export const useResponseHandler = (close: () => void): ResponseHandler => {
     } = usePopupsContext();
     const popupIdentifier = usePopupIdentifier();
 
-    const popupRef = useRef<ResponsePopup<unknown, unknown> | null>(null);
+    const popupRef = useRef<ResponsePopup<object, unknown> | null>(null);
 
     const resolve = useCallback(
         (value: unknown) => {

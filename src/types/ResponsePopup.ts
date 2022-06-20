@@ -20,5 +20,5 @@ export class ResponsePopup<P, R> extends Popup<P> {
 }
 
 export const isResponsePopup = (
-    popup: Popup<unknown>
-): popup is ResponsePopup<unknown, unknown> => isSettledKey in popup;
+    popup: Popup<object>
+): popup is ResponsePopup<object, unknown> => isSettledKey in popup;

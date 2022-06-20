@@ -18,5 +18,5 @@ export class DefaultPopup<P> extends Popup<P> {
 }
 
 export const isDefaultPopup = (
-    popup: Popup<unknown>
-): popup is DefaultPopup<unknown> => uniqueKey in popup;
+    popup: Popup<object>
+): popup is DefaultPopup<object> => uniqueKey in popup;

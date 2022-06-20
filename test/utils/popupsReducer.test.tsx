@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import { act, renderHook } from '@testing-library/react';
 
-import { createPopupGroup, PopupGroup } from '../../src/components/PopupGroup';
+import { createPopupGroup } from '../../src/components/PopupGroup';
 import { DefaultPopup } from '../../src/types/DefaultPopup';
 import { Popup } from '../../src/types/Popup';
 import { PopupIdentifier } from '../../src/types/PopupIdentifier';
@@ -48,9 +48,9 @@ describe('State reducer of popups', () => {
             useReducer(popupsReducer, {
                 popups: {
                     [group.groupId]: {
-                        0: {} as Popup<unknown>,
-                        1: {} as Popup<unknown>,
-                        2: {} as Popup<unknown>,
+                        0: {} as Popup<object>,
+                        1: {} as Popup<object>,
+                        2: {} as Popup<object>,
                     },
                 },
             })

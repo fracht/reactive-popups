@@ -5,7 +5,7 @@ import { PopupsRegistry } from '../types/PopupsRegistry';
 type MountAction = {
     type: 'mount';
     payload: {
-        popup: Popup<unknown>;
+        popup: Popup<object>;
     };
 };
 
