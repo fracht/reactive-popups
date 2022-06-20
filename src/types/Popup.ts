@@ -3,9 +3,7 @@ import { ComponentType } from 'react';
 import { PopupIdentifier } from './PopupIdentifier';
 import { CLOSE_NOT_IMPLEMENTED } from '../constants';
 
-export abstract class Popup<P> {
-    public isClosing = false;
-
+export abstract class Popup<P = {}> {
     constructor(
         public PopupComponent: ComponentType<P>,
         public props: P,
@@ -19,9 +17,6 @@ export abstract class Popup<P> {
     public setCloseHandler: (close: () => void | Promise<void>) => void = (
         close
     ) => {
-        this.close = () => {
-            this.isClosing = true;
-            return close();
-        };
+        this.close = close;
     };
 }

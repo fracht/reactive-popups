@@ -3,7 +3,6 @@ import { act, renderHook, screen } from '@testing-library/react';
 
 import { group, TestHookWrapper } from './TestHookWrapper';
 import { useResponsePopup } from '../../src/hooks/useResponsePopup';
-import { isPromise } from '../../src/utils/isPromise';
 
 const ConfirmPopup: React.FC = jest.fn(() => <div>Confirm popup</div>);
 
@@ -20,7 +19,8 @@ describe('useResponsePopup', () => {
         );
 
         act(() => {
-            expect(isPromise(result.current() as unknown as void)).toBeTruthy();
+            // It must return promise
+            expect(result.current()['then']).toBeDefined();
         });
     });
 

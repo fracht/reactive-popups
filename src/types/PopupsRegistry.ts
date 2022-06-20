@@ -1,3 +1,3 @@
 import { Popup } from './Popup';
 
-export type PopupsRegistry = Record<symbol, Record<number, Popup<unknown>>>;
+export type PopupsRegistry = Record<symbol, Record<number, Popup<object>>>;
