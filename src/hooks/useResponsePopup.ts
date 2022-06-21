@@ -6,13 +6,17 @@ import { OptionalParamFunction } from '../types/OptionalParamFunction';
 import { ResponsePopup } from '../types/ResponsePopup';
 import { uuid } from '../utils/uuid';
 
-export type UseResponsePopupBag<T, R> = OptionalParamFunction<T, Promise<R>>;
+export type UseResponsePopupBag<
+    P,
+    K extends keyof P,
+    R
+> = OptionalParamFunction<Omit<P, K>, Promise<R>>;
 
 export const useResponsePopup = <P, K extends keyof P, R>(
     PopupComponent: ComponentType<P>,
     props: Pick<P, K>,
     group: PopupGroup
-): UseResponsePopupBag<Omit<P, K>, R> => {
+): UseResponsePopupBag<P, K, R> => {
     const { mount } = usePopupsContext();
 
     const waitResponse = useCallback(
