@@ -6,13 +6,16 @@ import { DefaultPopup } from '../types/DefaultPopup';
 import { OptionalParamFunction } from '../types/OptionalParamFunction';
 import { uuid } from '../utils/uuid';
 
-export type UsePopupsFactoryBag<T> = OptionalParamFunction<T, () => void>;
+export type UsePopupsFactoryBag<P, K extends keyof P> = OptionalParamFunction<
+    Omit<P, K>,
+    () => void
+>;
 
 export const usePopupsFactory = <P, K extends keyof P>(
     PopupComponent: ComponentType<P>,
     props: Pick<P, K>,
     group: PopupGroup
-): UsePopupsFactoryBag<Omit<P, K>> => {
+): UsePopupsFactoryBag<P, K> => {
     const { mount, close } = usePopupsContext();
 
     const create = useCallback(
