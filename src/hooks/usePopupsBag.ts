@@ -22,6 +22,13 @@ export const usePopupsBag = (): PopupsBag => {
 
     const getPopup = useCallback(
         ({ groupId, id }: PopupIdentifier) => {
+            if (
+                !popupsState.popups[groupId] ||
+                !popupsState.popups[groupId][id]
+            ) {
+                return null;
+            }
+
             return popupsState.popups[groupId][id];
         },
         [popupsState]
@@ -45,7 +52,7 @@ export const usePopupsBag = (): PopupsBag => {
     const close = useCallback(
         (popupIdentifier: PopupIdentifier) => {
             const popup = getPopup(popupIdentifier);
-            popup.close();
+            popup?.close();
         },
         [getPopup]
     );

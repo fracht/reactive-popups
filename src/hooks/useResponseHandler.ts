@@ -48,7 +48,7 @@ export const useResponseHandler = (close: () => void): ResponseHandler => {
     useEffect(() => {
         const popup = getPopup(popupIdentifier);
 
-        if (!isResponsePopup(popup)) {
+        if (!isResponsePopup(popup!)) {
             throw new Error(RESPONSE_HANDLER_BAD_USE);
         }
 
