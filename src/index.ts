@@ -8,6 +8,7 @@ export * from './hooks/useResponsePopup';
 export * from './hooks/useCloseHandler';
 export * from './hooks/useResponseHandler';
 export * from './hooks/usePopupsByGroup';
+export * from './hooks/usePopup';
 
 // types
 export * from './types/Popup';
