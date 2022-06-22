@@ -7,7 +7,7 @@ export type PopupsBag = {
     unmount: (popupIdentifier: PopupIdentifier) => void;
 
     getPopupsByGroup: (group: PopupGroup) => Array<Popup<object>>;
-    getPopup: (popupIdentifier: PopupIdentifier) => Popup<object>;
+    getPopup: (popupIdentifier: PopupIdentifier) => Popup<object> | null;
 
     close: (popupIdentifier: PopupIdentifier) => void;
 };

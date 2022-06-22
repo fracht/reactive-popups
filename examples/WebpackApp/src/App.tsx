@@ -1,13 +1,19 @@
 import React, { useCallback } from 'react';
-import { useResponsePopup } from 'reactive-popups';
+import { usePopup, useResponsePopup } from 'reactive-popups';
 
 import { AlertTrigger } from './Alert';
 import { ConfirmPopup } from './ConfirmPopup';
 import { FalsyResponsePopup } from './FalsyResponsePopup';
+import { MuiPopup } from './MuiPopup';
 import { DefaultPopupGroup } from '.';
 
 export const App = () => {
     const confirm = useResponsePopup(ConfirmPopup, {}, DefaultPopupGroup);
+    const [open, close] = usePopup(
+        MuiPopup,
+        { content: 'Single popup example using usePopup hook' },
+        DefaultPopupGroup
+    );
 
     const openConfirmPopup = useCallback(async () => {
         try {
@@ -23,7 +29,15 @@ export const App = () => {
 
     return (
         <div>
-            <button onClick={openConfirmPopup}>confirm</button>
+            <button onClick={openConfirmPopup}>useResponsePopup</button>
+            <button
+                onClick={() => {
+                    open();
+                    setTimeout(close, 5000);
+                }}
+            >
+                usePopup
+            </button>
             {/* <FalsyResponsePopup /> */}
             <AlertTrigger />
         </div>

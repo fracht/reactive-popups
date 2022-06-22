@@ -19,7 +19,7 @@ export const useCloseHandler = (
     useEffect(() => {
         const popup = getPopup(popupIdentifier);
 
-        if (!isDefaultPopup(popup)) {
+        if (!isDefaultPopup(popup!)) {
             throw new Error(CLOSE_HANDLER_BAD_USE);
         }
 
