@@ -1,6 +1,6 @@
 {
     "name": "reactive-popups",
-    "version": "0.2.11",
+    "version": "0.2.12",
     "description": "Easy popup management with React",
     "files": [
         "dist"
