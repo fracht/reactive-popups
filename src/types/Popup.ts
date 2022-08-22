@@ -19,4 +19,8 @@ export abstract class Popup<P = {}> {
     ) => {
         this.close = close;
     };
+
+    public setProps = (props: P) => {
+        this.props = props;
+    };
 }

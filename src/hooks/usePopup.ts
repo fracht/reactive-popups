@@ -26,15 +26,16 @@ export const usePopup = <P, K extends keyof P>(
 
     const open = useCallback<OptionalParamFunction<Omit<P, K>, void>>(
         (omittedProps?: Omit<P, K>) => {
-            if (!getPopup(popupIdentifier.current)) {
-                const popup = new DefaultPopup(
-                    PopupComponent,
-                    { ...props, ...omittedProps } as P,
+            const popup =
+                getPopup(popupIdentifier.current) ??
+                new DefaultPopup(
+                    PopupComponent as ComponentType<{}>,
+                    {},
                     popupIdentifier.current
                 );
+            popup.setProps({ ...props, ...omittedProps });
 
-                mount(popup);
-            }
+            mount(popup!);
         },
         [PopupComponent, mount, props, getPopup]
     );
