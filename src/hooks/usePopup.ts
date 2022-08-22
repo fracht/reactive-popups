@@ -35,7 +35,7 @@ export const usePopup = <P, K extends keyof P>(
                 );
             popup.setProps({ ...props, ...omittedProps });
 
-            mount(popup!);
+            mount(popup);
         },
         [PopupComponent, mount, props, getPopup]
     );
