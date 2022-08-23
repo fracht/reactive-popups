@@ -12,6 +12,11 @@ const SimplePopupComponent: React.FC = jest.fn(() => {
 
     return <div>simple popup</div>;
 });
+
+const CustomizablePopupComponent: React.FC<{ message: string }> = jest.fn(
+    ({ message }) => <div>{message}</div>
+);
+
 const PopupComponentWithProps: React.FC<{
     prop1: number;
     prop2: string;
@@ -58,6 +63,30 @@ describe('usePopup', () => {
         });
 
         expect(() => screen.getByText('simple popup')).toThrow();
+    });
+
+    it('should update popup', () => {
+        const initialMessage = 'initial message';
+        const updatedMessage = 'updated message';
+
+        const { result } = renderHook(
+            () => usePopup(CustomizablePopupComponent, {}, group),
+            { wrapper: TestHookWrapper }
+        );
+
+        act(() => {
+            result.current[0]({ message: initialMessage });
+        });
+
+        expect(screen.getByText(initialMessage)).toBeDefined();
+
+        act(() => {
+            result.current[0]({ message: updatedMessage });
+        });
+
+        expect(screen.queryByText(initialMessage)).toBeNull();
+
+        expect(screen.getByText(updatedMessage)).toBeDefined();
     });
 
     it('should merge props', () => {
