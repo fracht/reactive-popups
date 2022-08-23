@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, renderHook, screen } from '@testing-library/react';
+import { act, renderHook, screen } from '@testing-library/react';
 
 import { group, TestHookWrapper } from './TestHookWrapper';
 import { useCloseHandler } from '../../src/hooks/useCloseHandler';
