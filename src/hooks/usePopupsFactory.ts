@@ -4,11 +4,12 @@ import { usePopupsContext } from './usePopupsContext';
 import { PopupGroup } from '../components/PopupGroup';
 import { DefaultPopup } from '../types/DefaultPopup';
 import { OptionalParamFunction } from '../types/OptionalParamFunction';
+import { PopupIdentifier } from '../types/PopupIdentifier';
 import { uuid } from '../utils/uuid';
 
 export type UsePopupsFactoryBag<P, K extends keyof P> = OptionalParamFunction<
     Omit<P, K>,
-    () => void
+    PopupIdentifier
 >;
 
 export const usePopupsFactory = <P, K extends keyof P>(
@@ -16,11 +17,20 @@ export const usePopupsFactory = <P, K extends keyof P>(
     props: Pick<P, K>,
     group: PopupGroup
 ): UsePopupsFactoryBag<P, K> => {
-    const { mount, close } = usePopupsContext();
+    const { mount, unmount } = usePopupsContext();
 
     const create = useCallback(
         (omittedProps?: Omit<P, K>) => {
             const id = uuid();
+
+            const popupIdentifier: PopupIdentifier = {
+                id,
+                groupId: group.groupId,
+            };
+
+            const defaultClose = () => {
+                unmount(popupIdentifier);
+            };
 
             const popup = new DefaultPopup(
                 PopupComponent,
@@ -28,19 +38,15 @@ export const usePopupsFactory = <P, K extends keyof P>(
                     ...props,
                     ...omittedProps,
                 } as P,
-                {
-                    id,
-                    groupId: group.groupId,
-                }
+                popupIdentifier,
+                defaultClose
             );
 
-            const identifier = mount<P>(popup);
+            mount<P>(popup);
 
-            return () => {
-                close(identifier);
-            };
+            return popupIdentifier;
         },
-        [mount, PopupComponent, props, group, close]
+        [group.groupId, PopupComponent, props, mount, unmount]
     );
 
     return create;

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
-import { PROMISE_NOT_SETTLED, RESPONSE_HANDLER_BAD_USE } from '../constants';
 import { isResponsePopup, ResponsePopup } from '../types/ResponsePopup';
 import { usePopupIdentifier } from '../utils/PopupIdentifierContext';
 
@@ -39,7 +38,9 @@ export const useResponseHandler = (close: () => void): ResponseHandler => {
 
     const unmount = useCallback(() => {
         if (!popupRef.current!.isSettled!) {
-            throw new Error(PROMISE_NOT_SETTLED);
+            throw new Error(
+                'Promise from ResponsePopup was not settled (memory leak).'
+            );
         }
 
         unmountPopup(popupIdentifier);
@@ -49,7 +50,9 @@ export const useResponseHandler = (close: () => void): ResponseHandler => {
         const popup = getPopup(popupIdentifier);
 
         if (!isResponsePopup(popup!)) {
-            throw new Error(RESPONSE_HANDLER_BAD_USE);
+            throw new Error(
+                'useResponseHandler hook must be used only in popups created with useResponsePopup.'
+            );
         }
 
         popup.setCloseHandler(close);

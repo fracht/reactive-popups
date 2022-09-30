@@ -3,8 +3,8 @@ import { usePopup, useResponsePopup } from 'reactive-popups';
 
 import { AlertTrigger } from './Alert';
 import { ConfirmPopup } from './ConfirmPopup';
-import { FalsyResponsePopup } from './FalsyResponsePopup';
 import { MuiPopup } from './MuiPopup';
+import { TestComponent } from './TestComponent';
 import { DefaultPopupGroup } from '.';
 
 export const App = () => {
@@ -40,6 +40,7 @@ export const App = () => {
             </button>
             {/* <FalsyResponsePopup /> */}
             <AlertTrigger />
+            <TestComponent />
         </div>
     );
 };

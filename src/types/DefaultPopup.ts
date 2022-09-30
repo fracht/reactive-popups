@@ -11,9 +11,10 @@ export class DefaultPopup<P> extends Popup<P> {
     constructor(
         PopupComponent: ComponentType<P>,
         props: P,
-        popupIdentifier: PopupIdentifier
+        popupIdentifier: PopupIdentifier,
+        close: () => void | Promise<void>
     ) {
-        super(PopupComponent, props, popupIdentifier);
+        super(PopupComponent, props, popupIdentifier, close);
     }
 }
 

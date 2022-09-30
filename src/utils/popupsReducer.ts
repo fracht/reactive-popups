@@ -2,15 +2,20 @@ import { Popup } from '../types/Popup';
 import { PopupIdentifier } from '../types/PopupIdentifier';
 import { PopupsRegistry } from '../types/PopupsRegistry';
 
+export enum ActionType {
+    MOUNT,
+    UNMOUNT,
+}
+
 type MountAction = {
-    type: 'mount';
+    type: ActionType.MOUNT;
     payload: {
         popup: Popup<object>;
     };
 };
 
 type UnmountAction = {
-    type: 'unmount';
+    type: ActionType.UNMOUNT;
     payload: {
         popupIdentifier: PopupIdentifier;
     };
@@ -23,7 +28,7 @@ export const popupsReducer = (
     action: PopupsAction
 ) => {
     switch (action.type) {
-        case 'mount': {
+        case ActionType.MOUNT: {
             const { popup } = action.payload;
             const {
                 popupIdentifier: { groupId, id },
@@ -40,7 +45,7 @@ export const popupsReducer = (
             };
         }
 
-        case 'unmount': {
+        case ActionType.UNMOUNT: {
             const { groupId, id } = action.payload.popupIdentifier;
 
             delete popups[groupId][id];

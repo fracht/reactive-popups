@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
-import { CLOSE_HANDLER_BAD_USE } from '../constants';
 import { isDefaultPopup } from '../types/DefaultPopup';
 import { usePopupIdentifier } from '../utils/PopupIdentifierContext';
 
@@ -20,7 +19,9 @@ export const useCloseHandler = (
         const popup = getPopup(popupIdentifier);
 
         if (!isDefaultPopup(popup!)) {
-            throw new Error(CLOSE_HANDLER_BAD_USE);
+            throw new Error(
+                'useCloseHandler hook must be used only in popups created with usePopupsFactory.'
+            );
         }
 
         if (close) {

@@ -70,8 +70,9 @@ const AlertPopup: React.FunctionComponent<AlertPopupProps> = ({
     </SnackbarPopupTemplate>
 );
 
+const props = {};
 export const useAlert = () => {
-    const enqueueAlert = usePopupsFactory(AlertPopup, {}, SnackbarGroup);
+    const enqueueAlert = usePopupsFactory(AlertPopup, props, SnackbarGroup);
 
     const showAlert = useCallback(
         (message: string, severity: AlertColor) => {
