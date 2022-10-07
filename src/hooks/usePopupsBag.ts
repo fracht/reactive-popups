@@ -1,46 +1,33 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useReducer, useRef } from 'react';
 
-import { PopupGroup } from '../components/PopupGroup';
 import { Popup } from '../types/Popup';
 import { PopupIdentifier } from '../types/PopupIdentifier';
 import { PopupsBag } from '../types/PopupsBag';
-import { popupsReducer } from '../utils/popupsReducer';
+import { ActionType, popupsReducer } from '../utils/popupsReducer';
 
 export const usePopupsBag = (): PopupsBag => {
     const [popupsState, dispatch] = useReducer(popupsReducer, { popups: {} });
 
-    const getPopupsByGroup = useCallback(
-        (group: PopupGroup) => {
-            if (!popupsState.popups[group.groupId]) {
-                return [];
-            }
+    const popupsStateRef = useRef(popupsState);
+    popupsStateRef.current = popupsState;
 
-            return Object.values(popupsState.popups[group.groupId]);
-        },
-        [popupsState]
-    );
+    const getPopup = useCallback(({ groupId, id }: PopupIdentifier) => {
+        const popups = popupsStateRef.current.popups;
 
-    const getPopup = useCallback(
-        ({ groupId, id }: PopupIdentifier) => {
-            if (
-                !popupsState.popups[groupId] ||
-                !popupsState.popups[groupId][id]
-            ) {
-                return null;
-            }
+        if (!popups[groupId] || !popups[groupId][id]) {
+            return null;
+        }
 
-            return popupsState.popups[groupId][id];
-        },
-        [popupsState]
-    );
+        return popups[groupId][id];
+    }, []);
 
     const unmount = useCallback((popupIdentifier: PopupIdentifier) => {
-        dispatch({ type: 'unmount', payload: { popupIdentifier } });
+        dispatch({ type: ActionType.UNMOUNT, payload: { popupIdentifier } });
     }, []);
 
     const mount = useCallback(<P = {}>(popup: Popup<P>) => {
         dispatch({
-            type: 'mount',
+            type: ActionType.MOUNT,
             payload: {
                 popup: popup as unknown as Popup<object>,
             },
@@ -60,8 +47,8 @@ export const usePopupsBag = (): PopupsBag => {
     return {
         mount,
         unmount,
-        getPopupsByGroup,
         getPopup,
         close,
+        popupsState,
     };
 };

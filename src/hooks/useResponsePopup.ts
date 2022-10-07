@@ -1,8 +1,9 @@
-import { ComponentType, useCallback } from 'react';
+import { ComponentType, useCallback, useRef } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
 import { PopupGroup } from '../components/PopupGroup';
 import { OptionalParamFunction } from '../types/OptionalParamFunction';
+import { PopupIdentifier } from '../types/PopupIdentifier';
 import { ResponsePopup } from '../types/ResponsePopup';
 import { uuid } from '../utils/uuid';
 
@@ -17,11 +18,19 @@ export const useResponsePopup = <P, K extends keyof P, R>(
     props: Pick<P, K>,
     group: PopupGroup
 ): UseResponsePopupBag<P, K, R> => {
-    const { mount } = usePopupsContext();
+    const { mount, unmount } = usePopupsContext();
+
+    const popupIdentifierRef = useRef<PopupIdentifier>({
+        id: uuid(),
+        groupId: group.groupId,
+    });
+
+    const defaultClose = useCallback(() => {
+        unmount(popupIdentifierRef.current);
+    }, [unmount]);
 
     const waitResponse = useCallback(
         (omittedProps?: Omit<P, K>) => {
-            const id = uuid();
             let popup: ResponsePopup<P, R> | null = null;
 
             const promise = new Promise<R>((resolve, reject) => {
@@ -31,10 +40,8 @@ export const useResponsePopup = <P, K extends keyof P, R>(
                         ...props,
                         ...omittedProps,
                     } as P,
-                    {
-                        id,
-                        groupId: group.groupId,
-                    },
+                    popupIdentifierRef.current,
+                    defaultClose,
                     resolve,
                     reject
                 );
@@ -48,7 +55,7 @@ export const useResponsePopup = <P, K extends keyof P, R>(
 
             return promise;
         },
-        [PopupComponent, group, mount, props]
+        [PopupComponent, defaultClose, mount, props]
     );
 
     return waitResponse;

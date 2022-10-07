@@ -1,17 +1,18 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import { usePopupsContext } from './usePopupsContext';
-import { PROMISE_NOT_SETTLED, RESPONSE_HANDLER_BAD_USE } from '../constants';
 import { isResponsePopup, ResponsePopup } from '../types/ResponsePopup';
 import { usePopupIdentifier } from '../utils/PopupIdentifierContext';
 
-export type ResponseHandler = {
-    resolve: (value: unknown | PromiseLike<unknown>) => void;
+export type ResponseHandler<R> = {
+    resolve: (value: R | PromiseLike<R>) => void;
     reject: (reason?: unknown) => void;
     unmount: () => void;
 };
 
-export const useResponseHandler = (close: () => void): ResponseHandler => {
+export const useResponseHandler = <R>(
+    close: () => void
+): ResponseHandler<R> => {
     const {
         getPopup,
         close: closePopup,
@@ -19,10 +20,10 @@ export const useResponseHandler = (close: () => void): ResponseHandler => {
     } = usePopupsContext();
     const popupIdentifier = usePopupIdentifier();
 
-    const popupRef = useRef<ResponsePopup<object, unknown> | null>(null);
+    const popupRef = useRef<ResponsePopup<object, R> | null>(null);
 
     const resolve = useCallback(
-        (value: unknown) => {
+        (value: R | PromiseLike<R>) => {
             popupRef.current!.resolve!(value);
             closePopup(popupIdentifier);
         },
@@ -38,8 +39,10 @@ export const useResponseHandler = (close: () => void): ResponseHandler => {
     );
 
     const unmount = useCallback(() => {
-        if (!popupRef.current!.isSettled!) {
-            throw new Error(PROMISE_NOT_SETTLED);
+        if (!popupRef.current!.isSettled) {
+            throw new Error(
+                'Promise from ResponsePopup was not settled (memory leak).'
+            );
         }
 
         unmountPopup(popupIdentifier);
@@ -49,7 +52,9 @@ export const useResponseHandler = (close: () => void): ResponseHandler => {
         const popup = getPopup(popupIdentifier);
 
         if (!isResponsePopup(popup!)) {
-            throw new Error(RESPONSE_HANDLER_BAD_USE);
+            throw new Error(
+                'useResponseHandler hook must be used only in popups created with useResponsePopup.'
+            );
         }
 
         popup.setCloseHandler(close);

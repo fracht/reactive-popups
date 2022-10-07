@@ -17,7 +17,7 @@ export const usePopup = <P, K extends keyof P>(
     props: Pick<P, K>,
     group: PopupGroup
 ): UsePopupBag<P, K> => {
-    const { mount, close: closePopup } = usePopupsContext();
+    const { mount, close: closePopup, unmount } = usePopupsContext();
 
     const popupIdentifier = useRef<PopupIdentifier>({
         id: uuid(),
@@ -26,15 +26,20 @@ export const usePopup = <P, K extends keyof P>(
 
     const open = useCallback<OptionalParamFunction<Omit<P, K>, void>>(
         (omittedProps?: Omit<P, K>) => {
+            const defaultClose = () => {
+                unmount(popupIdentifier.current);
+            };
+
             const popup = new DefaultPopup(
                 PopupComponent as ComponentType<{}>,
                 { ...props, ...omittedProps },
-                popupIdentifier.current
+                popupIdentifier.current,
+                defaultClose
             );
 
             mount(popup);
         },
-        [PopupComponent, mount, props]
+        [PopupComponent, mount, props, unmount]
     );
 
     const close = useCallback(() => {

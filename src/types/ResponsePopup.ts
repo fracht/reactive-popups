@@ -12,10 +12,11 @@ export class ResponsePopup<P, R> extends Popup<P> {
         PopupComponent: ComponentType<P>,
         props: P,
         popupIdentifier: PopupIdentifier,
+        close: () => void | Promise<void>,
         public resolve: (value: R | PromiseLike<R>) => void,
         public reject: (reason?: unknown) => void
     ) {
-        super(PopupComponent, props, popupIdentifier);
+        super(PopupComponent, props, popupIdentifier, close);
     }
 }
 
