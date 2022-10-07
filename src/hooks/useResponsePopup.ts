@@ -18,18 +18,16 @@ export const useResponsePopup = <P, K extends keyof P, R>(
     props: Pick<P, K>,
     group: PopupGroup
 ): UseResponsePopupBag<P, K, R> => {
-    const { mount } = usePopupsContext();
+    const { mount, unmount } = usePopupsContext();
 
-    const popupIdentifier = useRef<PopupIdentifier>({
+    const popupIdentifierRef = useRef<PopupIdentifier>({
         id: uuid(),
         groupId: group.groupId,
     });
 
     const defaultClose = useCallback(() => {
-        throw new Error(
-            'useResponseHandler hook must be used in ResponsePopup, because it is mandatory to settle promise.'
-        );
-    }, []);
+        unmount(popupIdentifierRef.current);
+    }, [unmount]);
 
     const waitResponse = useCallback(
         (omittedProps?: Omit<P, K>) => {
@@ -42,7 +40,7 @@ export const useResponsePopup = <P, K extends keyof P, R>(
                         ...props,
                         ...omittedProps,
                     } as P,
-                    popupIdentifier.current,
+                    popupIdentifierRef.current,
                     defaultClose,
                     resolve,
                     reject

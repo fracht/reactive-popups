@@ -9,7 +9,7 @@ import { uuid } from '../utils/uuid';
 
 export type UsePopupsFactoryBag<P, K extends keyof P> = OptionalParamFunction<
     Omit<P, K>,
-    PopupIdentifier
+    () => void
 >;
 
 export const usePopupsFactory = <P, K extends keyof P>(
@@ -44,7 +44,9 @@ export const usePopupsFactory = <P, K extends keyof P>(
 
             mount<P>(popup);
 
-            return popupIdentifier;
+            return () => {
+                unmount(popupIdentifier);
+            };
         },
         [group.groupId, PopupComponent, props, mount, unmount]
     );

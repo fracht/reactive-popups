@@ -23,8 +23,10 @@ type UnmountAction = {
 
 export type PopupsAction = MountAction | UnmountAction;
 
+export type PopupsState = { popups: PopupsRegistry };
+
 export const popupsReducer = (
-    { popups }: { popups: PopupsRegistry },
+    { popups }: PopupsState,
     action: PopupsAction
 ) => {
     switch (action.type) {
@@ -56,7 +58,7 @@ export const popupsReducer = (
         }
 
         default: {
-            throw new Error();
+            throw new Error('Action type is not valid');
         }
     }
 };

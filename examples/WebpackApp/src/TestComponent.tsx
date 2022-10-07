@@ -6,7 +6,7 @@ export const TestComponent = () => {
     const show = useAlert();
 
     useEffect(() => {
-        show('hello', 'error');
+        show('Show this message on mount!', 'success');
     }, [show]);
 
     return <div>test</div>;

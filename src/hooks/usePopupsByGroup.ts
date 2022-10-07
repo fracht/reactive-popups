@@ -3,9 +3,11 @@ import { PopupGroup } from '../components/PopupGroup';
 import { Popup } from '../types/Popup';
 
 export const usePopupsByGroup = (group: PopupGroup): Popup<object>[] => {
-    const { getPopupsByGroup } = usePopupsContext();
+    const { popupsState } = usePopupsContext();
 
-    const popups = getPopupsByGroup(group);
+    if (!popupsState.popups[group.groupId]) {
+        return [];
+    }
 
-    return popups;
+    return Object.values(popupsState.popups[group.groupId]);
 };

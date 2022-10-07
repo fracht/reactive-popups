@@ -5,7 +5,7 @@ import { createPopupGroup } from '../../src/components/PopupGroup';
 import { DefaultPopup } from '../../src/types/DefaultPopup';
 import { Popup } from '../../src/types/Popup';
 import { PopupIdentifier } from '../../src/types/PopupIdentifier';
-import { popupsReducer } from '../../src/utils/popupsReducer';
+import { ActionType, popupsReducer } from '../../src/utils/popupsReducer';
 import { uuid } from '../../src/utils/uuid';
 
 const group = createPopupGroup();
@@ -27,11 +27,18 @@ describe('State reducer of popups', () => {
         const [state, dispatch] = result.current;
 
         const popupIdentifier = getNewPopupIdentifier();
-        const popup = new DefaultPopup(PopupComponent, {}, popupIdentifier);
+        const popup = new DefaultPopup(
+            PopupComponent,
+            {},
+            popupIdentifier,
+            () => {
+                // do nothing
+            }
+        );
 
         act(() => {
             dispatch({
-                type: 'mount',
+                type: ActionType.MOUNT,
                 payload: {
                     popup,
                 },
@@ -60,7 +67,7 @@ describe('State reducer of popups', () => {
 
         act(() => {
             dispatch({
-                type: 'unmount',
+                type: ActionType.UNMOUNT,
                 payload: {
                     popupIdentifier: {
                         groupId: group.groupId,

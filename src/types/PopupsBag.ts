@@ -1,13 +1,12 @@
 import { Popup } from './Popup';
 import { PopupIdentifier } from './PopupIdentifier';
-import { PopupGroup } from '../components/PopupGroup';
+import { PopupsState } from '../utils/popupsReducer';
 
 export type PopupsBag = {
     mount: <P>(popup: Popup<P>) => PopupIdentifier;
     unmount: (popupIdentifier: PopupIdentifier) => void;
-
-    getPopupsByGroup: (group: PopupGroup) => Array<Popup<object>>;
-    getPopup: (popupIdentifier: PopupIdentifier) => Popup<object> | null;
-
     close: (popupIdentifier: PopupIdentifier) => void;
+
+    popupsState: PopupsState;
+    getPopup: (popupIdentifier: PopupIdentifier) => Popup<object> | null;
 };

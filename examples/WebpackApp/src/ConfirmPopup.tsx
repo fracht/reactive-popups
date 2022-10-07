@@ -22,7 +22,7 @@ export const ConfirmPopup = ({ message }: ConfirmPopupProps) => {
         setOpen(false);
     }, []);
 
-    const { reject, resolve, unmount } = useResponseHandler(close);
+    const { reject, resolve, unmount } = useResponseHandler<boolean>(close);
 
     return (
         <Dialog
