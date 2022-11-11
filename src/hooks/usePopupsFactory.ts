@@ -1,5 +1,6 @@
-import { ComponentType, useCallback } from 'react';
+import { ComponentType } from 'react';
 
+import { useEvent } from './useEvent';
 import { usePopupsContext } from './usePopupsContext';
 import { PopupGroup } from '../components/PopupGroup';
 import { DefaultPopup } from '../types/DefaultPopup';
@@ -19,37 +20,34 @@ export const usePopupsFactory = <P, K extends keyof P>(
 ): UsePopupsFactoryBag<P, K> => {
     const { mount, unmount } = usePopupsContext();
 
-    const create = useCallback(
-        (omittedProps?: Omit<P, K>) => {
-            const id = uuid();
+    const create = useEvent((omittedProps?: Omit<P, K>) => {
+        const id = uuid();
 
-            const popupIdentifier: PopupIdentifier = {
-                id,
-                groupId: group.groupId,
-            };
+        const popupIdentifier: PopupIdentifier = {
+            id,
+            groupId: group.groupId,
+        };
 
-            const defaultClose = () => {
-                unmount(popupIdentifier);
-            };
+        const defaultClose = () => {
+            unmount(popupIdentifier);
+        };
 
-            const popup = new DefaultPopup(
-                PopupComponent,
-                {
-                    ...props,
-                    ...omittedProps,
-                } as P,
-                popupIdentifier,
-                defaultClose
-            );
+        const popup = new DefaultPopup(
+            PopupComponent,
+            {
+                ...props,
+                ...omittedProps,
+            } as P,
+            popupIdentifier,
+            defaultClose
+        );
 
-            mount<P>(popup);
+        mount<P>(popup);
 
-            return () => {
-                unmount(popupIdentifier);
-            };
-        },
-        [group.groupId, PopupComponent, props, mount, unmount]
-    );
+        return () => {
+            unmount(popupIdentifier);
+        };
+    });
 
     return create;
 };
