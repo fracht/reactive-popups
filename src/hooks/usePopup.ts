@@ -1,5 +1,6 @@
 import { ComponentType, useCallback, useRef } from 'react';
 
+import { useEvent } from './useEvent';
 import { usePopupsContext } from './usePopupsContext';
 import { PopupGroup } from '../components/PopupGroup';
 import { DefaultPopup } from '../types/DefaultPopup';
@@ -24,7 +25,7 @@ export const usePopup = <P, K extends keyof P>(
         groupId: group.groupId,
     });
 
-    const open = useCallback<OptionalParamFunction<Omit<P, K>, void>>(
+    const open = useEvent<OptionalParamFunction<Omit<P, K>, void>>(
         (omittedProps?: Omit<P, K>) => {
             const defaultClose = () => {
                 unmount(popupIdentifier.current);
@@ -38,8 +39,7 @@ export const usePopup = <P, K extends keyof P>(
             );
 
             mount(popup);
-        },
-        [PopupComponent, mount, props, unmount]
+        }
     );
 
     const close = useCallback(() => {
