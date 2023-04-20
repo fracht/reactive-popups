@@ -4,7 +4,7 @@ import { useEvent } from './useEvent';
 import { usePopupsContext } from './usePopupsContext';
 import { PopupGroup } from '../components/PopupGroup';
 import { OptionalParamFunction } from '../types/OptionalParamFunction';
-import { PopupIdentifier } from '../types/PopupIdentifier';
+import { ControlledPopupIdentifier } from '../types/PopupIdentifier';
 import { ResponsePopup } from '../types/ResponsePopup';
 import { uuid } from '../utils/uuid';
 
@@ -21,9 +21,10 @@ export const useResponsePopup = <P, K extends keyof P, R>(
 ): UseResponsePopupBag<P, K, R> => {
     const { mount, unmount } = usePopupsContext();
 
-    const popupIdentifierRef = useRef<PopupIdentifier>({
+    const popupIdentifierRef = useRef<ControlledPopupIdentifier>({
         id: uuid(),
         groupId: group.groupId,
+        type: 'controlled',
     });
 
     const defaultClose = useCallback(() => {

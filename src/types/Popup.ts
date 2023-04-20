@@ -1,12 +1,12 @@
 import { ComponentType } from 'react';
 
-import { PopupIdentifier } from './PopupIdentifier';
+import { ControlledPopupIdentifier } from './PopupIdentifier';
 
 export abstract class Popup<P = {}> {
     constructor(
         public PopupComponent: ComponentType<P>,
         public props: P,
-        public popupIdentifier: PopupIdentifier,
+        public popupIdentifier: ControlledPopupIdentifier,
         public close: () => void | Promise<void>
     ) {}
 

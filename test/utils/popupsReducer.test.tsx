@@ -4,14 +4,15 @@ import { act, renderHook } from '@testing-library/react';
 import { createPopupGroup } from '../../src/components/PopupGroup';
 import { DefaultPopup } from '../../src/types/DefaultPopup';
 import { Popup } from '../../src/types/Popup';
-import { PopupIdentifier } from '../../src/types/PopupIdentifier';
+import { ControlledPopupIdentifier } from '../../src/types/PopupIdentifier';
 import { ActionType, popupsReducer } from '../../src/utils/popupsReducer';
 import { uuid } from '../../src/utils/uuid';
 
 const group = createPopupGroup();
-const getNewPopupIdentifier = (): PopupIdentifier => ({
+const getNewPopupIdentifier = (): ControlledPopupIdentifier => ({
     id: uuid(),
     groupId: group.groupId,
+    type: 'controlled',
 });
 
 const PopupComponent: React.FC = () => {
@@ -72,6 +73,7 @@ describe('State reducer of popups', () => {
                     popupIdentifier: {
                         groupId: group.groupId,
                         id: 1,
+                        type: 'controlled',
                     },
                 },
             });

@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 
 import { Popup } from './Popup';
-import { PopupIdentifier } from './PopupIdentifier';
+import { ControlledPopupIdentifier } from './PopupIdentifier';
 
 const uniqueKey = '_isDefault';
 
@@ -11,7 +11,7 @@ export class DefaultPopup<P> extends Popup<P> {
     constructor(
         PopupComponent: ComponentType<P>,
         props: P,
-        popupIdentifier: PopupIdentifier,
+        popupIdentifier: ControlledPopupIdentifier,
         close: () => void | Promise<void>
     ) {
         super(PopupComponent, props, popupIdentifier, close);

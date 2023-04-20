@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useRef } from 'react';
+import invariant from 'tiny-invariant';
 
 import { usePopupsContext } from './usePopupsContext';
 import { isResponsePopup, ResponsePopup } from '../types/ResponsePopup';
 import { usePopupIdentifier } from '../utils/PopupIdentifierContext';
+
+const responsePopupExceptionMessage =
+    'useResponseHandler hook must be used only in popups created with useResponsePopup.';
 
 export type ResponseHandler<R> = {
     resolve: (value: R | PromiseLike<R>) => void;
@@ -19,6 +23,11 @@ export const useResponseHandler = <R>(
         unmount: unmountPopup,
     } = usePopupsContext();
     const popupIdentifier = usePopupIdentifier();
+
+    invariant(
+        popupIdentifier.type === 'controlled',
+        responsePopupExceptionMessage
+    );
 
     const popupRef = useRef<ResponsePopup<object, R> | null>(null);
 
@@ -52,9 +61,7 @@ export const useResponseHandler = <R>(
         const popup = getPopup(popupIdentifier);
 
         if (!isResponsePopup(popup!)) {
-            throw new Error(
-                'useResponseHandler hook must be used only in popups created with useResponsePopup.'
-            );
+            throw new Error(responsePopupExceptionMessage);
         }
 
         popup.setCloseHandler(close);

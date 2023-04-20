@@ -5,7 +5,7 @@ import { usePopupsContext } from './usePopupsContext';
 import { PopupGroup } from '../components/PopupGroup';
 import { DefaultPopup } from '../types/DefaultPopup';
 import { OptionalParamFunction } from '../types/OptionalParamFunction';
-import { PopupIdentifier } from '../types/PopupIdentifier';
+import { ControlledPopupIdentifier } from '../types/PopupIdentifier';
 import { uuid } from '../utils/uuid';
 
 export type UsePopupsFactoryBag<P, K extends keyof P> = OptionalParamFunction<
@@ -23,9 +23,10 @@ export const usePopupsFactory = <P, K extends keyof P>(
     const create = useEvent((omittedProps?: Omit<P, K>) => {
         const id = uuid();
 
-        const popupIdentifier: PopupIdentifier = {
+        const popupIdentifier: ControlledPopupIdentifier = {
             id,
             groupId: group.groupId,
+            type: 'controlled',
         };
 
         const defaultClose = () => {

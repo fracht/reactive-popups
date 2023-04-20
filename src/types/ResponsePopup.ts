@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 
 import { Popup } from './Popup';
-import { PopupIdentifier } from './PopupIdentifier';
+import { ControlledPopupIdentifier } from './PopupIdentifier';
 
 const isSettledKey = 'isSettled';
 
@@ -11,7 +11,7 @@ export class ResponsePopup<P, R> extends Popup<P> {
     constructor(
         PopupComponent: ComponentType<P>,
         props: P,
-        popupIdentifier: PopupIdentifier,
+        popupIdentifier: ControlledPopupIdentifier,
         close: () => void | Promise<void>,
         public resolve: (value: R | PromiseLike<R>) => void,
         public reject: (reason?: unknown) => void

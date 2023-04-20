@@ -1,7 +1,7 @@
 import { useCallback, useReducer, useRef } from 'react';
 
 import { Popup } from '../types/Popup';
-import { PopupIdentifier } from '../types/PopupIdentifier';
+import { ControlledPopupIdentifier } from '../types/PopupIdentifier';
 import { PopupsBag } from '../types/PopupsBag';
 import { ActionType, popupsReducer } from '../utils/popupsReducer';
 
@@ -11,19 +11,28 @@ export const usePopupsBag = (): PopupsBag => {
     const popupsStateRef = useRef(popupsState);
     popupsStateRef.current = popupsState;
 
-    const getPopup = useCallback(({ groupId, id }: PopupIdentifier) => {
-        const popups = popupsStateRef.current.popups;
+    const getPopup = useCallback(
+        ({ groupId, id }: ControlledPopupIdentifier) => {
+            const popups = popupsStateRef.current.popups;
 
-        if (!popups[groupId] || !popups[groupId][id]) {
-            return null;
-        }
+            if (!popups[groupId] || !popups[groupId][id]) {
+                return null;
+            }
 
-        return popups[groupId][id];
-    }, []);
+            return popups[groupId][id];
+        },
+        []
+    );
 
-    const unmount = useCallback((popupIdentifier: PopupIdentifier) => {
-        dispatch({ type: ActionType.UNMOUNT, payload: { popupIdentifier } });
-    }, []);
+    const unmount = useCallback(
+        (popupIdentifier: ControlledPopupIdentifier) => {
+            dispatch({
+                type: ActionType.UNMOUNT,
+                payload: { popupIdentifier },
+            });
+        },
+        []
+    );
 
     const mount = useCallback(<P = {}>(popup: Popup<P>) => {
         dispatch({
@@ -37,7 +46,7 @@ export const usePopupsBag = (): PopupsBag => {
     }, []);
 
     const close = useCallback(
-        (popupIdentifier: PopupIdentifier) => {
+        (popupIdentifier: ControlledPopupIdentifier) => {
             const popup = getPopup(popupIdentifier);
             popup?.close();
         },

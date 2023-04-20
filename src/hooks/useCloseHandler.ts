@@ -12,20 +12,26 @@ export const useCloseHandler = (
     const popupIdentifier = usePopupIdentifier();
 
     const unmountPopup = useCallback(() => {
-        unmount(popupIdentifier);
+        if (popupIdentifier.type === 'controlled') {
+            unmount(popupIdentifier);
+        } else {
+            popupIdentifier.unmount();
+        }
     }, [popupIdentifier, unmount]);
 
     useEffect(() => {
-        const popup = getPopup(popupIdentifier);
+        if (popupIdentifier.type === 'controlled') {
+            const popup = getPopup(popupIdentifier);
 
-        if (!isDefaultPopup(popup!)) {
-            throw new Error(
-                'useCloseHandler hook must be used only in popups created with usePopupsFactory.'
-            );
-        }
+            if (!isDefaultPopup(popup!)) {
+                throw new Error(
+                    'useCloseHandler hook must be used only in popups created with usePopupsFactory.'
+                );
+            }
 
-        if (close) {
-            popup.setCloseHandler(close);
+            if (close) {
+                popup.setCloseHandler(close);
+            }
         }
     }, [popupIdentifier, close, getPopup]);
 

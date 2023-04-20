@@ -1,5 +1,5 @@
 import { Popup } from '../types/Popup';
-import { PopupIdentifier } from '../types/PopupIdentifier';
+import { ControlledPopupIdentifier } from '../types/PopupIdentifier';
 import { PopupsRegistry } from '../types/PopupsRegistry';
 
 export enum ActionType {
@@ -17,7 +17,7 @@ type MountAction = {
 type UnmountAction = {
     type: ActionType.UNMOUNT;
     payload: {
-        popupIdentifier: PopupIdentifier;
+        popupIdentifier: ControlledPopupIdentifier;
     };
 };
 

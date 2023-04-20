@@ -5,7 +5,7 @@ import { usePopupsContext } from './usePopupsContext';
 import { PopupGroup } from '../components/PopupGroup';
 import { DefaultPopup } from '../types/DefaultPopup';
 import { OptionalParamFunction } from '../types/OptionalParamFunction';
-import { PopupIdentifier } from '../types/PopupIdentifier';
+import { ControlledPopupIdentifier } from '../types/PopupIdentifier';
 import { uuid } from '../utils/uuid';
 
 export type UsePopupBag<P, K extends keyof P> = [
@@ -20,9 +20,10 @@ export const usePopup = <P, K extends keyof P>(
 ): UsePopupBag<P, K> => {
     const { mount, close: closePopup, unmount } = usePopupsContext();
 
-    const popupIdentifier = useRef<PopupIdentifier>({
+    const popupIdentifier = useRef<ControlledPopupIdentifier>({
         id: uuid(),
         groupId: group.groupId,
+        type: 'controlled',
     });
 
     const open = useEvent<OptionalParamFunction<Omit<P, K>, void>>(
