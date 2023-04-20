@@ -1,4 +1,5 @@
-import { ComponentType } from 'react';
+import { ComponentType, useId } from 'react';
+import { nanoid } from 'nanoid';
 
 import { useEvent } from './useEvent';
 import { usePopupsContext } from './usePopupsContext';
@@ -6,11 +7,11 @@ import { PopupGroup } from '../components/PopupGroup';
 import { DefaultPopup } from '../types/DefaultPopup';
 import { OptionalParamFunction } from '../types/OptionalParamFunction';
 import { PopupIdentifier } from '../types/PopupIdentifier';
-import { uuid } from '../utils/uuid';
 
 export type UsePopupsFactoryBag<P, K extends keyof P> = OptionalParamFunction<
     Omit<P, K>,
-    () => void
+    () => void,
+    [id?: string]
 >;
 
 export const usePopupsFactory = <P, K extends keyof P>(
@@ -20,34 +21,36 @@ export const usePopupsFactory = <P, K extends keyof P>(
 ): UsePopupsFactoryBag<P, K> => {
     const { mount, unmount } = usePopupsContext();
 
-    const create = useEvent((omittedProps?: Omit<P, K>) => {
-        const id = uuid();
+    const factoryId = useId();
 
-        const popupIdentifier: PopupIdentifier = {
-            id,
-            groupId: group.groupId,
-        };
+    const create = useEvent(
+        (omittedProps?: Omit<P, K>, id: string = nanoid()) => {
+            const popupIdentifier: PopupIdentifier = {
+                id: `${factoryId}:${id}`,
+                groupId: group.groupId,
+            };
 
-        const defaultClose = () => {
-            unmount(popupIdentifier);
-        };
+            const defaultClose = () => {
+                unmount(popupIdentifier);
+            };
 
-        const popup = new DefaultPopup(
-            PopupComponent,
-            {
-                ...props,
-                ...omittedProps,
-            } as P,
-            popupIdentifier,
-            defaultClose
-        );
+            const popup = new DefaultPopup(
+                PopupComponent,
+                {
+                    ...props,
+                    ...omittedProps,
+                } as P,
+                popupIdentifier,
+                defaultClose
+            );
 
-        mount<P>(popup);
+            mount<P>(popup);
 
-        return () => {
-            unmount(popupIdentifier);
-        };
-    });
+            return () => {
+                unmount(popupIdentifier);
+            };
+        }
+    );
 
     return create;
 };

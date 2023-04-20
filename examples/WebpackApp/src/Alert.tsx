@@ -70,16 +70,21 @@ const AlertPopup: React.FunctionComponent<AlertPopupProps> = ({
     </SnackbarPopupTemplate>
 );
 
+let lastId = 0;
+
 const props = {};
 export const useAlert = () => {
     const enqueueAlert = usePopupsFactory(AlertPopup, props, SnackbarGroup);
 
     const showAlert = useCallback(
         (message: string, severity: AlertColor) => {
-            enqueueAlert({
-                severity,
-                message,
-            });
+            enqueueAlert(
+                {
+                    severity,
+                    message,
+                },
+                (lastId++ % 5).toString()
+            );
         },
         [enqueueAlert]
     );
@@ -93,7 +98,7 @@ export const AlertTrigger = () => {
     return (
         <button
             onClick={() => {
-                showAlert('hello', 'success');
+                showAlert('hello' + Date.now(), 'success');
             }}
             style={{ marginLeft: 500 }}
         >
