@@ -1,16 +1,16 @@
 import React, { useReducer } from 'react';
 import { act, renderHook } from '@testing-library/react';
+import { nanoid } from 'nanoid';
 
 import { createPopupGroup } from '../../src/components/PopupGroup';
 import { DefaultPopup } from '../../src/types/DefaultPopup';
 import { Popup } from '../../src/types/Popup';
 import { PopupIdentifier } from '../../src/types/PopupIdentifier';
 import { ActionType, popupsReducer } from '../../src/utils/popupsReducer';
-import { uuid } from '../../src/utils/uuid';
 
 const group = createPopupGroup();
 const getNewPopupIdentifier = (): PopupIdentifier => ({
-    id: uuid(),
+    id: nanoid(),
     groupId: group.groupId,
 });
 
@@ -71,7 +71,7 @@ describe('State reducer of popups', () => {
                 payload: {
                     popupIdentifier: {
                         groupId: group.groupId,
-                        id: 1,
+                        id: 'a',
                     },
                 },
             });

@@ -1,4 +1,5 @@
 import { ComponentType, useCallback, useRef } from 'react';
+import { nanoid } from 'nanoid';
 
 import { useEvent } from './useEvent';
 import { usePopupsContext } from './usePopupsContext';
@@ -6,7 +7,6 @@ import { PopupGroup } from '../components/PopupGroup';
 import { DefaultPopup } from '../types/DefaultPopup';
 import { OptionalParamFunction } from '../types/OptionalParamFunction';
 import { PopupIdentifier } from '../types/PopupIdentifier';
-import { uuid } from '../utils/uuid';
 
 export type UsePopupBag<P, K extends keyof P> = [
     open: OptionalParamFunction<Omit<P, K>, void>,
@@ -21,7 +21,7 @@ export const usePopup = <P, K extends keyof P>(
     const { mount, close: closePopup, unmount } = usePopupsContext();
 
     const popupIdentifier = useRef<PopupIdentifier>({
-        id: uuid(),
+        id: nanoid(),
         groupId: group.groupId,
     });
 
