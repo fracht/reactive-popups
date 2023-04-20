@@ -14,5 +14,5 @@ const Popup = () => {
 export const FalsyResponsePopup = () => {
     const create = usePopupsFactory(Popup, {}, DefaultPopupGroup);
 
-    return <button onClick={create}>test error behaviour</button>;
+    return <button onClick={() => create()}>test error behaviour</button>;
 };

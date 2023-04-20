@@ -10,7 +10,8 @@ import { PopupIdentifier } from '../types/PopupIdentifier';
 
 export type UsePopupsFactoryBag<P, K extends keyof P> = OptionalParamFunction<
     Omit<P, K>,
-    () => void
+    () => void,
+    [id?: string]
 >;
 
 export const usePopupsFactory = <P, K extends keyof P>(
