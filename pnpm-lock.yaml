@@ -14,7 +14,7 @@ dependencies:
 devDependencies:
   '@testing-library/react':
     specifier: ^13.3.0
-    version: 13.3.0(react-dom@18.2.0)(react@18.2.0)
+    version: 13.3.0(react-dom@18.1.0)(react@18.2.0)
   '@types/jest':
     specifier: ^29.5.1
     version: 29.5.1
@@ -1979,7 +1979,7 @@ packages:
       pretty-format: 27.5.1
     dev: true
 
-  /@testing-library/react@13.3.0(react-dom@18.2.0)(react@18.2.0):
+  /@testing-library/react@13.3.0(react-dom@18.1.0)(react@18.2.0):
     resolution: {integrity: sha512-DB79aA426+deFgGSjnf5grczDPiL4taK3hFaa+M5q7q20Kcve9eQottOG5kZ74KEr55v0tU2CQormSSDK87zYQ==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -1990,7 +1990,7 @@ packages:
       '@testing-library/dom': 8.20.0
       '@types/react-dom': 18.2.4
       react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
+      react-dom: 18.1.0(react@18.2.0)
     dev: true
 
   /@tootallnate/once@2.0.0:
@@ -6756,14 +6756,14 @@ packages:
       strip-json-comments: 2.0.1
     dev: true
 
-  /react-dom@18.2.0(react@18.2.0):
-    resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
+  /react-dom@18.1.0(react@18.2.0):
+    resolution: {integrity: sha512-fU1Txz7Budmvamp7bshe4Zi32d0ll7ect+ccxNu9FlObT605GOEB8BfO4tmRJ39R5Zj831VCpvQ05QPBW5yb+w==}
     peerDependencies:
-      react: ^18.2.0
+      react: ^18.1.0
     dependencies:
       loose-envify: 1.4.0
       react: 18.2.0
-      scheduler: 0.23.0
+      scheduler: 0.22.0
     dev: true
 
   /react-is@16.13.1:
@@ -7030,8 +7030,8 @@ packages:
       xmlchars: 2.2.0
     dev: true
 
-  /scheduler@0.23.0:
-    resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
+  /scheduler@0.22.0:
+    resolution: {integrity: sha512-6QAm1BgQI88NPYymgGQLCZgvep4FyePDWFpXVK+zNSUgHwlqpJy8VEh8Et0KxTACS4VWwMousBElAZOH9nkkoQ==}
     dependencies:
       loose-envify: 1.4.0
     dev: true
