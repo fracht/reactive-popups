@@ -55,9 +55,9 @@ describe('State reducer of popups', () => {
             useReducer(popupsReducer, {
                 popups: {
                     [group.groupId]: {
-                        0: {} as Popup<object>,
-                        1: {} as Popup<object>,
-                        2: {} as Popup<object>,
+                        '0': {} as Popup<object>,
+                        '1': {} as Popup<object>,
+                        '2': {} as Popup<object>,
                     },
                 },
             })
@@ -71,7 +71,7 @@ describe('State reducer of popups', () => {
                 payload: {
                     popupIdentifier: {
                         groupId: group.groupId,
-                        id: 'a',
+                        id: '1',
                     },
                 },
             });
