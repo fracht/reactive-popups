@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 import { act, renderHook } from '@testing-library/react';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure';
 
 import { createPopupGroup } from '../../src/components/PopupGroup';
 import { DefaultPopup } from '../../src/types/DefaultPopup';
