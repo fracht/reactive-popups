@@ -13,7 +13,7 @@ const PopupComponent = () => {
 const App = ({ group }: { group: PopupGroup }) => {
     const create = usePopupsFactory(PopupComponent, {}, group);
 
-    return <button onClick={create}>open</button>;
+    return <button onClick={() => create()}>open</button>;
 };
 
 describe('PopupsRenderer', () => {

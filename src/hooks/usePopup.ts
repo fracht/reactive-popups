@@ -1,5 +1,5 @@
 import { ComponentType, useCallback, useRef } from 'react';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure';
 
 import { useEvent } from './useEvent';
 import { usePopupsContext } from './usePopupsContext';
