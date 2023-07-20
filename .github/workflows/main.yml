@@ -9,29 +9,31 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                node: ['14.x', '16.x']
+                node: ['16.x', '18.x']
                 os: [ubuntu-latest]
 
         steps:
             - name: Checkout repo
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Use Node ${{ matrix.node }}
-              uses: actions/setup-node@v1
+              uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node }}
 
-            - name: Install latest npm
-              run: npm i -g npm@latest
+            - name: Install pnpm 8.6.7
+              uses: pnpm/action-setup@v2.2.4
+              with:
+                  version: 8.6.7
 
-            - name: Install global dependencies
-              run: npm install
+            - name: Install pnpm dependencies (with cache)
+              uses: covbot/pnpm-install-with-cache@v1
 
             - name: Build
-              run: npm run build
+              run: pnpm build
 
             - name: Lint
-              run: npm run lint
+              run: pnpm lint
 
             - name: Test
-              run: npm run test
+              run: pnpm test

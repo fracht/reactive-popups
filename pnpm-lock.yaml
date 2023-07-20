@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@sirse-dev/safe-context':
     specifier: ^0.3.0
@@ -3470,7 +3474,7 @@ packages:
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
-      typescript: 4.5.4
+      typescript: 4.9.5
       yargs: 17.7.2
     dev: true
 
