@@ -11,7 +11,7 @@ export type ResponseHandler<R> = {
 };
 
 export const useResponseHandler = <R>(
-    close: () => void
+    close?: () => void
 ): ResponseHandler<R> => {
     const {
         getPopup,
@@ -57,7 +57,9 @@ export const useResponseHandler = <R>(
             );
         }
 
-        popup.setCloseHandler(close);
+        if (close) {
+            popup.setCloseHandler(close);
+        }
         popupRef.current = popup;
     }, [getPopup, popupIdentifier, close]);
 
