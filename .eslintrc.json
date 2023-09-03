@@ -1,0 +1,7 @@
+{
+    "root": true,
+    "extends": ["@sirse-dev/eslint-config"],
+    "rules": {
+        "unicorn/no-useless-undefined": "off"
+    }
+}

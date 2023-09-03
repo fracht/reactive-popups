@@ -3,10 +3,8 @@ import { ComponentType } from 'react';
 import { Popup } from './Popup';
 import { PopupIdentifier } from './PopupIdentifier';
 
-const isSettledKey = 'isSettled';
-
 export class ResponsePopup<P, R> extends Popup<P> {
-    public [isSettledKey] = false;
+    public isSettled = false;
 
     constructor(
         PopupComponent: ComponentType<P>,
@@ -14,12 +12,12 @@ export class ResponsePopup<P, R> extends Popup<P> {
         popupIdentifier: PopupIdentifier,
         close: () => void | Promise<void>,
         public resolve: (value: R | PromiseLike<R>) => void,
-        public reject: (reason?: unknown) => void
+        public reject: (reason?: unknown) => void,
     ) {
         super(PopupComponent, props, popupIdentifier, close);
     }
 }
 
 export const isResponsePopup = (
-    popup: Popup<object>
-): popup is ResponsePopup<object, unknown> => isSettledKey in popup;
+    popup: Popup<object>,
+): popup is ResponsePopup<object, unknown> => popup instanceof ResponsePopup;

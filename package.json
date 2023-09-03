@@ -5,20 +5,10 @@
     "files": [
         "dist"
     ],
-    "main": "./dist/index.js",
-    "types": "./dist/reactive-popups.d.ts",
-    "module": "./dist/reactive-popups.esm.js",
+    "main": "./dist/src/index.js",
+	"types": "./dist/src/index.d.ts",
     "scripts": {
-        "build": "aqu build",
-        "start": "aqu watch",
-        "lint": "aqu lint",
-        "lint:fix": "aqu lint --fix",
-        "test": "aqu test",
-        "test:watch": "npm test -- --watch",
-        "test:coverage": "npm test -- --coverage --json --silent --ci --outputFile=\"report.json\"",
-        "test:log-coverage": "npm test -- --coverage --silent --ci --coverageReporters=text",
-        "release": "np",
-        "prepublishOnly": "aqu build"
+        "build": "tsc"
     },
     "repository": {
         "type": "git",
@@ -31,35 +21,20 @@
         "url": "https://github.com/AlexShukel/reactive-popups/issues"
     },
     "homepage": "https://github.com/AlexShukel/reactive-popups#readme",
-    "devDependencies": {
-        "@testing-library/react": "^13.3.0",
-        "@types/jest": "^29.5.1",
-        "@types/react": "^18.0.9",
-        "@typescript-eslint/eslint-plugin": "^4.33.0",
-        "aqu": "^0.4.3",
-        "cross-env": "^7.0.3",
-        "eslint": "^7.32.0",
-        "eslint-config-prettier": "^8.5.0",
-        "eslint-plugin-prettier": "^3.4.1",
-        "eslint-plugin-react": "^7.29.4",
-        "eslint-plugin-react-hooks": "^4.4.0",
-        "eslint-plugin-simple-import-sort": "^7.0.0",
-        "jest-environment-jsdom": "^29.5.0",
-        "jest-watch-typeahead": "^2.2.2",
-        "np": "^8.0.4",
-        "react": "^18.2.0",
-        "typescript": "^4.5.4"
-    },
-    "dependencies": {
-        "@sirse-dev/safe-context": "^0.3.0",
-        "nanoid": "^3.3.6",
-        "tiny-invariant": "^1.2.0"
-    },
     "peerDependencies": {
         "react": ">=16"
     },
     "packageManager": "pnpm@8.6.9",
     "engines": {
         "node": "18.12.1"
+    },
+    "devDependencies": {
+        "@types/react": "^18.2.21",
+        "react": "^18.2.0",
+        "typescript": "^5.2.2"
+    },
+    "dependencies": {
+        "@sirse-dev/safe-context": "^0.3.0",
+        "nanoid": "^4.0.2"
     }
 }
