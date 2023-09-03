@@ -14,9 +14,9 @@
         "lint": "aqu lint",
         "lint:fix": "aqu lint --fix",
         "test": "aqu test",
-        "test:watch": "npm test -- --watch",
-        "test:coverage": "npm test -- --coverage --json --silent --ci --outputFile=\"report.json\"",
-        "test:log-coverage": "npm test -- --coverage --silent --ci --coverageReporters=text",
+        "test:watch": "pnpm test -- --watch",
+        "test:coverage": "pnpm test -- --coverage --json --silent --ci --outputFile=\"report.json\"",
+        "test:log-coverage": "pnpm test -- --coverage --silent --ci --coverageReporters=text",
         "release": "np",
         "prepublishOnly": "aqu build"
     },

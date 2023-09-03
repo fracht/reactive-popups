@@ -14,7 +14,7 @@ const SimplePopupComponent: React.FC = jest.fn(() => {
 });
 
 const CustomizablePopupComponent: React.FC<{ message: string }> = jest.fn(
-    ({ message }) => <div>{message}</div>
+    ({ message }) => <div>{message}</div>,
 );
 
 const PopupComponentWithProps: React.FC<{
@@ -24,11 +24,12 @@ const PopupComponentWithProps: React.FC<{
 
 describe('usePopup', () => {
     it('should render only one popup', () => {
+        const initialProps = {};
         const { result } = renderHook(
-            () => usePopup(SimplePopupComponent, {}, group),
+            () => usePopup(SimplePopupComponent, initialProps, group),
             {
                 wrapper: TestHookWrapper,
-            }
+            },
         );
 
         act(() => {
@@ -45,11 +46,12 @@ describe('usePopup', () => {
     });
 
     it('should close popup', () => {
+        const initialProps = {};
         const { result } = renderHook(
-            () => usePopup(SimplePopupComponent, {}, group),
+            () => usePopup(SimplePopupComponent, initialProps, group),
             {
                 wrapper: TestHookWrapper,
-            }
+            },
         );
 
         act(() => {
@@ -65,13 +67,14 @@ describe('usePopup', () => {
         expect(() => screen.getByText('simple popup')).toThrow();
     });
 
-    it('should update popup', () => {
+    it('should reopen popup with new props', () => {
         const initialMessage = 'initial message';
         const updatedMessage = 'updated message';
 
+        const initialProps = {};
         const { result } = renderHook(
-            () => usePopup(CustomizablePopupComponent, {}, group),
-            { wrapper: TestHookWrapper }
+            () => usePopup(CustomizablePopupComponent, initialProps, group),
+            { wrapper: TestHookWrapper },
         );
 
         act(() => {
@@ -90,11 +93,12 @@ describe('usePopup', () => {
     });
 
     it('should merge props', () => {
+        const initialProps = { prop1: 42 };
         const { result } = renderHook(
-            () => usePopup(PopupComponentWithProps, { prop1: 42 }, group),
+            () => usePopup(PopupComponentWithProps, initialProps, group),
             {
                 wrapper: TestHookWrapper,
-            }
+            },
         );
 
         act(() => {
@@ -102,10 +106,35 @@ describe('usePopup', () => {
         });
 
         expect(
-            (PopupComponentWithProps as jest.Mock).mock.calls[0][0]
+            (PopupComponentWithProps as jest.Mock).mock.calls[0][0],
         ).toStrictEqual({
             prop1: 42,
             prop2: 'hello',
         });
+    });
+
+    it('should update popup when props changing', () => {
+        const { result, rerender } = renderHook(
+            (props: { message: string }) =>
+                usePopup(CustomizablePopupComponent, props, group),
+            {
+                wrapper: TestHookWrapper,
+                initialProps: {
+                    message: 'initial',
+                },
+            },
+        );
+
+        act(() => {
+            result.current[0]();
+        });
+
+        expect(screen.getByText('initial')).toBeDefined();
+
+        rerender({
+            message: 'updated',
+        });
+
+        expect(screen.getByText('updated')).toBeDefined();
     });
 });

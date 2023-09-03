@@ -5,6 +5,7 @@ import { PopupsState } from '../utils/popupsReducer';
 export type PopupsBag = {
     mount: <P>(popup: Popup<P>) => PopupIdentifier;
     unmount: (popupIdentifier: PopupIdentifier) => void;
+    update: (popupIdentifier: PopupIdentifier, props: object) => void;
     close: (popupIdentifier: PopupIdentifier) => void;
 
     popupsState: PopupsState;
