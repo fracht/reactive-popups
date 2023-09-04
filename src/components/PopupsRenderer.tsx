@@ -1,17 +1,14 @@
-import React from 'react';
-
+import { FunctionComponent, Fragment } from 'react';
 import { PopupGroup } from './PopupGroup';
 import { usePopupsByGroup } from '../hooks/usePopupsByGroup';
 import { renderPopups } from '../utils/renderPopups';
 
 export type PopupsRendererProps = {
-    group: PopupGroup;
+	group: PopupGroup;
 };
 
-export const PopupsRenderer: React.FunctionComponent<PopupsRendererProps> = ({
-    group,
-}) => {
-    const popups = usePopupsByGroup(group);
+export const PopupsRenderer: FunctionComponent<PopupsRendererProps> = ({ group }) => {
+	const popups = usePopupsByGroup(group);
 
-    return <React.Fragment>{renderPopups(popups)}</React.Fragment>;
+	return <Fragment>{renderPopups(popups)}</Fragment>;
 };

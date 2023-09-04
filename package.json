@@ -1,40 +1,54 @@
 {
-    "name": "reactive-popups",
-    "version": "0.4.2",
-    "description": "Easy popup management with React",
-    "files": [
-        "dist"
-    ],
-    "main": "./dist/src/index.js",
+	"name": "reactive-popups",
+	"version": "0.4.2",
+	"description": "Easy popup management with React",
+	"files": [
+		"dist"
+	],
+	"main": "./dist/src/index.js",
 	"types": "./dist/src/index.d.ts",
-    "scripts": {
-        "build": "tsc"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/AlexShukel/reactive-popups.git"
-    },
-    "keywords": [],
-    "author": "Aleksandras Šukelovič",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/AlexShukel/reactive-popups/issues"
-    },
-    "homepage": "https://github.com/AlexShukel/reactive-popups#readme",
-    "peerDependencies": {
-        "react": ">=16"
-    },
-    "packageManager": "pnpm@8.6.9",
-    "engines": {
-        "node": "18.12.1"
-    },
-    "devDependencies": {
-        "@types/react": "^18.2.21",
-        "react": "^18.2.0",
-        "typescript": "^5.2.2"
-    },
-    "dependencies": {
-        "@sirse-dev/safe-context": "^0.3.0",
-        "nanoid": "^4.0.2"
-    }
+	"scripts": {
+		"build": "tsc",
+		"lint": "eslint **/*.{ts,tsx,js,jsx}",
+		"format": "prettier --write **/*.{ts,tsx,js,jsx,json,yml,md}"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/AlexShukel/reactive-popups.git"
+	},
+	"keywords": [],
+	"author": "Aleksandras Šukelovič",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/AlexShukel/reactive-popups/issues"
+	},
+	"homepage": "https://github.com/AlexShukel/reactive-popups#readme",
+	"peerDependencies": {
+		"react": ">=16"
+	},
+	"packageManager": "pnpm@8.6.9",
+	"engines": {
+		"node": "18.12.1"
+	},
+	"devDependencies": {
+		"@sirse-dev/eslint-config": "link:..\\eslint-config",
+		"@types/react": "^18.2.21",
+		"@typescript-eslint/eslint-plugin": "^6.5.0",
+		"eslint": "^8.48.0",
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-plugin-import": "^2.28.1",
+		"eslint-plugin-lodash": "^7.4.0",
+		"eslint-plugin-prettier": "^5.0.0",
+		"eslint-plugin-react": "^7.33.2",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"eslint-plugin-unicorn": "^48.0.1",
+		"eslint-plugin-workspaces": "^0.9.0",
+		"prettier": "^3.0.3",
+		"react": "^18.2.0",
+		"typescript": "^5.2.2"
+	},
+	"dependencies": {
+		"@sirse-dev/safe-context": "^0.3.0",
+		"nanoid": "^4.0.2"
+	}
 }

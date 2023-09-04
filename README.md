@@ -18,25 +18,25 @@ Example with [@mui/material](https://github.com/mui/material-ui)
 
 ```jsx
 const SomeComponent = () => {
-    // Popup state must be defined in a component where it is created.
-    const [open, setOpen] = useState(false);
+	// Popup state must be defined in a component where it is created.
+	const [open, setOpen] = useState(false);
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
+	const handleOpen = () => {
+		setOpen(true);
+	};
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+	const handleClose = () => {
+		setOpen(false);
+	};
 
-    return (
-        <div>
-            <button onClick={handleOpen}>open dialog</button>
-            <Dialog open={open} onClose={handleClose}>
-                Your dialog content...
-            </Dialog>
-        </div>
-    );
+	return (
+		<div>
+			<button onClick={handleOpen}>open dialog</button>
+			<Dialog open={open} onClose={handleClose}>
+				Your dialog content...
+			</Dialog>
+		</div>
+	);
 };
 ```
 
@@ -53,45 +53,45 @@ This library provides some useful hooks to create popups: `usePopupsFactory` and
 const PopupGroup = createPopupGroup();
 
 const PopupComponent = (props) => {
-    // Unmount popup from inside
-    const unmount = useCloseHandler();
-    return (
-        <div>
-            {props.message}
-            <button onClick={unmount}>unmount</button>
-        </div>
-    );
+	// Unmount popup from inside
+	const unmount = useCloseHandler();
+	return (
+		<div>
+			{props.message}
+			<button onClick={unmount}>unmount</button>
+		</div>
+	);
 };
 
 const TriggerComponent = () => {
-    const create = usePopupsFactory(
-        // component
-        PopupComponent,
-        // props
-        { message: 'hello world' },
-        // group
-        PopupGroup
-    );
+	const create = usePopupsFactory(
+		// component
+		PopupComponent,
+		// props
+		{ message: 'hello world' },
+		// group
+		PopupGroup,
+	);
 
-    return (
-        <button
-            onClick={() => {
-                const close = create();
-                // Unmount popup from outside
-            }}
-        >
-            open my popup
-        </button>
-    );
+	return (
+		<button
+			onClick={() => {
+				const close = create();
+				// Unmount popup from outside
+			}}
+		>
+			open my popup
+		</button>
+	);
 };
 
 const App = () => {
-    return (
-        <PopupsContextProvider>
-            {/* Groups can be rendered anywhere. It is up to you. */}
-            <PopupGroup />
-            <TriggerComponent />
-        </PopupsContextProvider>
-    );
+	return (
+		<PopupsContextProvider>
+			{/* Groups can be rendered anywhere. It is up to you. */}
+			<PopupGroup />
+			<TriggerComponent />
+		</PopupsContextProvider>
+	);
 };
 ```

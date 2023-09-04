@@ -1,22 +1,18 @@
-import React, { createContext, PropsWithChildren, useContext } from 'react';
+import { createContext, PropsWithChildren, useContext } from 'react';
 
 import { PopupIdentifier } from '../types/PopupIdentifier';
 
 const IdentifierContext = createContext<PopupIdentifier | undefined>(undefined);
 
 export const PopupIdentifierProvider = ({
-    children,
-    popupIdentifier,
+	children,
+	popupIdentifier,
 }: PropsWithChildren<{
-    popupIdentifier: PopupIdentifier;
+	popupIdentifier: PopupIdentifier;
 }>) => {
-    return (
-        <IdentifierContext.Provider value={popupIdentifier}>
-            {children}
-        </IdentifierContext.Provider>
-    );
+	return <IdentifierContext.Provider value={popupIdentifier}>{children}</IdentifierContext.Provider>;
 };
 
 export const usePopupIdentifier = () => {
-    return useContext(IdentifierContext)!;
+	return useContext(IdentifierContext)!;
 };

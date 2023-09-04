@@ -1,22 +1,22 @@
 {
-    "compilerOptions": {
-        "target": "es6",
-        "jsx": "react-jsx",
-        "module": "CommonJS",
-        "lib": ["ES2022", "DOM"],
-        "declaration": true,
-        "strict": true,
-        "esModuleInterop": true,
-        "rootDir": ".",
-        "outDir": "dist",
-        "skipLibCheck": true,
-        "allowSyntheticDefaultImports": true,
-        "moduleResolution": "node",
-        "allowJs": true,
-        "forceConsistentCasingInFileNames": true,
-        "noFallthroughCasesInSwitch": true,
-        "resolveJsonModule": true,
-        "isolatedModules": true
-    },
-    "include": ["src"]
+	"compilerOptions": {
+		"target": "es6",
+		"jsx": "react-jsx",
+		"module": "CommonJS",
+		"lib": ["ES2022", "DOM"],
+		"declaration": true,
+		"strict": true,
+		"esModuleInterop": true,
+		"rootDir": ".",
+		"outDir": "dist",
+		"skipLibCheck": true,
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "node",
+		"allowJs": true,
+		"forceConsistentCasingInFileNames": true,
+		"noFallthroughCasesInSwitch": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true
+	},
+	"include": ["src"]
 }
