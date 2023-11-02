@@ -14,7 +14,7 @@ const SimplePopupComponent: React.FC = jest.fn(() => {
 });
 
 const CustomizablePopupComponent: React.FC<{ message: string }> = jest.fn(
-    ({ message }) => <div>{message}</div>,
+    ({ message }) => <div>{message}</div>
 );
 
 const PopupComponentWithProps: React.FC<{
@@ -29,7 +29,7 @@ describe('usePopup', () => {
             () => usePopup(SimplePopupComponent, initialProps, group),
             {
                 wrapper: TestHookWrapper,
-            },
+            }
         );
 
         act(() => {
@@ -51,7 +51,7 @@ describe('usePopup', () => {
             () => usePopup(SimplePopupComponent, initialProps, group),
             {
                 wrapper: TestHookWrapper,
-            },
+            }
         );
 
         act(() => {
@@ -74,7 +74,7 @@ describe('usePopup', () => {
         const initialProps = {};
         const { result } = renderHook(
             () => usePopup(CustomizablePopupComponent, initialProps, group),
-            { wrapper: TestHookWrapper },
+            { wrapper: TestHookWrapper }
         );
 
         act(() => {
@@ -98,7 +98,7 @@ describe('usePopup', () => {
             () => usePopup(PopupComponentWithProps, initialProps, group),
             {
                 wrapper: TestHookWrapper,
-            },
+            }
         );
 
         act(() => {
@@ -106,7 +106,7 @@ describe('usePopup', () => {
         });
 
         expect(
-            (PopupComponentWithProps as jest.Mock).mock.calls[0][0],
+            (PopupComponentWithProps as jest.Mock).mock.calls[0][0]
         ).toStrictEqual({
             prop1: 42,
             prop2: 'hello',
@@ -122,7 +122,7 @@ describe('usePopup', () => {
                 initialProps: {
                     message: 'initial',
                 },
-            },
+            }
         );
 
         act(() => {

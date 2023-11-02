@@ -46,7 +46,7 @@ export const usePopupsBag = (): PopupsBag => {
                 },
             });
         },
-        [],
+        []
     );
 
     const close = useCallback(
@@ -54,7 +54,7 @@ export const usePopupsBag = (): PopupsBag => {
             const popup = getPopup(popupIdentifier);
             popup?.close();
         },
-        [getPopup],
+        [getPopup]
     );
 
     return {

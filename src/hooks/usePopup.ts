@@ -10,13 +10,13 @@ import { PopupIdentifier } from '../types/PopupIdentifier';
 
 export type UsePopupBag<P, K extends keyof P> = [
     open: OptionalParamFunction<Omit<P, K>, void>,
-    close: () => void,
+    close: () => void
 ];
 
 export const usePopup = <P, K extends keyof P>(
     PopupComponent: ComponentType<P>,
     props: Pick<P, K>,
-    group: PopupGroup,
+    group: PopupGroup
 ): UsePopupBag<P, K> => {
     const { mount, close: closePopup, unmount, update } = usePopupsContext();
 
@@ -35,11 +35,11 @@ export const usePopup = <P, K extends keyof P>(
                 PopupComponent as ComponentType<{}>,
                 { ...props, ...omittedProps },
                 popupIdentifier.current,
-                defaultClose,
+                defaultClose
             );
 
             mount(popup);
-        },
+        }
     );
 
     const close = useCallback(() => {
@@ -48,7 +48,7 @@ export const usePopup = <P, K extends keyof P>(
 
     useEffect(() => {
         update(popupIdentifier.current, props);
-    }, [props]);
+    }, [props, update]);
 
     return [open, close];
 };
