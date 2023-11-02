@@ -1,4 +1,4 @@
-import { ComponentType, useCallback, useRef } from 'react';
+import { ComponentType, useCallback, useEffect, useRef } from 'react';
 import { nanoid } from 'nanoid/non-secure';
 
 import { useEvent } from './useEvent';
@@ -18,7 +18,7 @@ export const usePopup = <P, K extends keyof P>(
     props: Pick<P, K>,
     group: PopupGroup
 ): UsePopupBag<P, K> => {
-    const { mount, close: closePopup, unmount } = usePopupsContext();
+    const { mount, close: closePopup, unmount, update } = usePopupsContext();
 
     const popupIdentifier = useRef<PopupIdentifier>({
         id: nanoid(),
@@ -45,6 +45,10 @@ export const usePopup = <P, K extends keyof P>(
     const close = useCallback(() => {
         closePopup(popupIdentifier.current);
     }, [closePopup]);
+
+    useEffect(() => {
+        update(popupIdentifier.current, props);
+    }, [props, update]);
 
     return [open, close];
 };

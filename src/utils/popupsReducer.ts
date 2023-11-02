@@ -5,6 +5,7 @@ import { PopupsRegistry } from '../types/PopupsRegistry';
 export enum ActionType {
     MOUNT,
     UNMOUNT,
+    UPDATE,
 }
 
 type MountAction = {
@@ -21,14 +22,21 @@ type UnmountAction = {
     };
 };
 
-export type PopupsAction = MountAction | UnmountAction;
+type UpdateAction = {
+    type: ActionType.UPDATE;
+    payload: {
+        popupIdentifier: PopupIdentifier;
+        props: object;
+    };
+};
+
+export type PopupsAction = MountAction | UnmountAction | UpdateAction;
 
 export type PopupsState = { popups: PopupsRegistry };
 
-export const popupsReducer = (
-    { popups }: PopupsState,
-    action: PopupsAction
-) => {
+export const popupsReducer = (prevState: PopupsState, action: PopupsAction) => {
+    const { popups } = prevState;
+
     switch (action.type) {
         case ActionType.MOUNT: {
             const { popup } = action.payload;
@@ -41,6 +49,22 @@ export const popupsReducer = (
             }
 
             popups[groupId][id] = popup;
+
+            return {
+                popups,
+            };
+        }
+
+        case ActionType.UPDATE: {
+            const { popupIdentifier, props } = action.payload;
+
+            const { groupId, id } = popupIdentifier;
+
+            if (!popups[groupId]?.[id]) {
+                return prevState;
+            }
+
+            popups[groupId][id].props = props;
 
             return {
                 popups,

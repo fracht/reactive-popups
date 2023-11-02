@@ -36,6 +36,19 @@ export const usePopupsBag = (): PopupsBag => {
         return popup.popupIdentifier;
     }, []);
 
+    const update = useCallback(
+        (popupIdentifier: PopupIdentifier, props: object) => {
+            dispatch({
+                type: ActionType.UPDATE,
+                payload: {
+                    popupIdentifier,
+                    props,
+                },
+            });
+        },
+        []
+    );
+
     const close = useCallback(
         (popupIdentifier: PopupIdentifier) => {
             const popup = getPopup(popupIdentifier);
@@ -47,6 +60,7 @@ export const usePopupsBag = (): PopupsBag => {
     return {
         mount,
         unmount,
+        update,
         getPopup,
         close,
         popupsState,
