@@ -26,3 +26,5 @@ yarn-error.log*
 
 # Intellij IDE automatically generated folder
 .idea
+
+prepared-package

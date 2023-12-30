@@ -1,0 +1,6 @@
+{
+    "withoutPublish": true,
+    "tempDir": "prepared-package",
+    "files": ["src", "examples", ".gitignore", "tsconfig.json", "tsconfig.test.json", "aqu.config.json", "jest.config.json"],
+    "fields": ["publishConfig", "engines", "packageManager"]
+}
