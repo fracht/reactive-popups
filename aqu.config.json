@@ -1,8 +1,8 @@
 {
-    "dtsBundleGeneratorOptions": {
-        "libraries": {
-            "importedLibraries": ["react"],
-            "allowedTypesLibraries": []
-        }
-    }
+	"dtsBundleGeneratorOptions": {
+		"libraries": {
+			"importedLibraries": ["react"],
+			"allowedTypesLibraries": []
+		}
+	}
 }

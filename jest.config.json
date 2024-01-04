@@ -1,3 +1,13 @@
 {
-    "testEnvironment": "jsdom"
+	"transformIgnorePatterns": ["[/\\\\]node_modules[/\\\\].+\\.(js|cjs|jsx)$'"],
+	"rootDir": "C:\\Git\\reactive-popups",
+	"preset": "ts-jest/presets/js-with-babel",
+	"moduleFileExtensions": ["ts", "tsx", "js", "jsx", "cjs", "mjs", "json", "node"],
+	"collectCoverageFrom": ["C:\\Git\\reactive-popups\\src/**/*.{ts,tsx,js,jsx,cjs,mjs}"],
+	"testMatch": ["<rootDir>/**/*.(spec|test).{ts,tsx,js,jsx,cjs,mjs}"],
+	"testURL": "http://localhost",
+	"watchPlugins": [
+		"C:\\Git\\reactive-popups\\node_modules\\.pnpm\\jest-watch-typeahead@2.2.2_jest@29.7.0\\node_modules\\jest-watch-typeahead\\build\\file_name_plugin\\plugin.js",
+		"C:\\Git\\reactive-popups\\node_modules\\.pnpm\\jest-watch-typeahead@2.2.2_jest@29.7.0\\node_modules\\jest-watch-typeahead\\build\\test_name_plugin\\plugin.js"
+	]
 }

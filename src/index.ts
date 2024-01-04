@@ -1,15 +1,2 @@
-// components
-export * from './components/PopupsContextProvider';
-export * from './components/PopupGroup';
-
-// hooks
-export * from './hooks/usePopupsFactory';
-export * from './hooks/useResponsePopup';
-export * from './hooks/useCloseHandler';
-export * from './hooks/useResponseHandler';
-export * from './hooks/usePopupsByGroup';
-export * from './hooks/usePopup';
-export * from './hooks/useUnmount';
-
-// types
-export * from './types/Popup';
+export { usePopup } from './usePopup';
+export { createPopupGroup, PopupGroup } from './createPopupGroup';
