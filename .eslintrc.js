@@ -56,4 +56,12 @@ module.exports = {
 			version: 'detect',
 		},
 	},
+	overrides: [
+		{
+			files: ['*.test.ts', '*.test.tsx'],
+			rules: {
+				'@typescript-eslint/no-unused-vars': 'off',
+			},
+		},
+	],
 };

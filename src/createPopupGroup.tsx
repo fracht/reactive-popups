@@ -11,18 +11,19 @@ export type PopupGroup = ComponentType<PropsWithChildren<{}>> & {
 export const createPopupGroup = (): PopupGroup => {
 	const GroupContext = createSafeContext<PopupsControl>();
 
-	const group = (({ children }: PropsWithChildren<{}>) => {
+	const Group = (({ children }: PropsWithChildren<{}>) => {
 		const popupsControl = usePopupsControl();
 
 		return <GroupContext.Provider value={popupsControl}>{children}</GroupContext.Provider>;
 	}) as PopupGroup;
 
-	group.context = GroupContext;
-	group.Entry = (() => {
+	Group.context = GroupContext;
+
+	Group.Entry = (() => {
 		const { popups } = useSafeContext(GroupContext);
 
 		return popups.map(({ Component, props, id }) => <Component {...props} key={id} />);
 	}) as ComponentType;
 
-	return group;
+	return Group;
 };
