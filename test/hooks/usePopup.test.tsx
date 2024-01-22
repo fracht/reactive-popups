@@ -4,6 +4,8 @@ import { act, renderHook, screen } from '@testing-library/react';
 import { group, TestHookWrapper } from './TestHookWrapper';
 import { useCloseHandler } from '../../src/hooks/useCloseHandler';
 import { usePopup } from '../../src/hooks/usePopup';
+import { PopupsContext } from '../../src/PopupsContext';
+import { PopupsBag } from '../../src/types/PopupsBag';
 
 const SimplePopupComponent: React.FC = jest.fn(() => {
     const unmount = useCloseHandler(() => {
@@ -17,6 +19,23 @@ const CustomizablePopupComponent: React.FC<{ message: string }> = jest.fn(
     ({ message }) => <div>{message}</div>
 );
 
+type ComplexPopupComponentProps = {
+    a: { value: string };
+    b: string;
+};
+
+const ComplexPopupComponent: React.FC<ComplexPopupComponentProps> = ({
+    a,
+    b,
+}) => {
+    return (
+        <div>
+            <span>{a.value}</span>
+            <span>{b}</span>
+        </div>
+    );
+};
+
 const PopupComponentWithProps: React.FC<{
     prop1: number;
     prop2: string;
@@ -24,9 +43,8 @@ const PopupComponentWithProps: React.FC<{
 
 describe('usePopup', () => {
     it('should render only one popup', () => {
-        const initialProps = {};
         const { result } = renderHook(
-            () => usePopup(SimplePopupComponent, initialProps, group),
+            () => usePopup(SimplePopupComponent, {}, group),
             {
                 wrapper: TestHookWrapper,
             }
@@ -46,9 +64,8 @@ describe('usePopup', () => {
     });
 
     it('should close popup', () => {
-        const initialProps = {};
         const { result } = renderHook(
-            () => usePopup(SimplePopupComponent, initialProps, group),
+            () => usePopup(SimplePopupComponent, {}, group),
             {
                 wrapper: TestHookWrapper,
             }
@@ -71,9 +88,8 @@ describe('usePopup', () => {
         const initialMessage = 'initial message';
         const updatedMessage = 'updated message';
 
-        const initialProps = {};
         const { result } = renderHook(
-            () => usePopup(CustomizablePopupComponent, initialProps, group),
+            () => usePopup(CustomizablePopupComponent, {}, group),
             { wrapper: TestHookWrapper }
         );
 
@@ -93,9 +109,8 @@ describe('usePopup', () => {
     });
 
     it('should merge props', () => {
-        const initialProps = { prop1: 42 };
         const { result } = renderHook(
-            () => usePopup(PopupComponentWithProps, initialProps, group),
+            () => usePopup(PopupComponentWithProps, { prop1: 42 }, group),
             {
                 wrapper: TestHookWrapper,
             }
@@ -136,5 +151,79 @@ describe('usePopup', () => {
         });
 
         expect(screen.getByText('updated')).toBeDefined();
+    });
+
+    it.only('should make shallow copy on values in props when updating popup', () => {
+        const initialA = {
+            value: 'A',
+        };
+
+        const mount = jest.fn();
+        const unmount = jest.fn();
+        const close = jest.fn();
+        const update = jest.fn();
+
+        const { result, rerender } = renderHook(
+            (props: ComplexPopupComponentProps) =>
+                usePopup(ComplexPopupComponent, props, group),
+            {
+                wrapper: ({ children }) => (
+                    <PopupsContext.Provider
+                        value={
+                            {
+                                mount,
+                                unmount,
+                                close,
+                                update,
+                            } as unknown as PopupsBag
+                        }
+                    >
+                        {children}
+                    </PopupsContext.Provider>
+                ),
+                initialProps: {
+                    a: initialA,
+                    b: 'B',
+                },
+            }
+        );
+
+        act(() => {
+            result.current[0]();
+        });
+
+        expect(mount).toBeCalled();
+
+        rerender({
+            a: initialA,
+            b: 'B',
+        });
+
+        expect(update).toBeCalledTimes(0);
+
+        rerender({
+            a: initialA,
+            b: 'C',
+        });
+
+        expect(update).toBeCalledTimes(1);
+
+        rerender({
+            a: initialA,
+            b: 'C',
+            c: 'HELLO',
+        } as unknown as ComplexPopupComponentProps);
+
+        expect(update).toBeCalledTimes(2);
+
+        rerender({
+            a: {
+                value: 'A',
+            },
+            b: 'C',
+            c: 'HELLO',
+        } as unknown as ComplexPopupComponentProps);
+
+        expect(update).toBeCalledTimes(3);
     });
 });

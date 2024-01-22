@@ -37,6 +37,7 @@
         "@testing-library/react": "^13.3.0",
         "@types/jest": "^29.5.1",
         "@types/react": "^18.0.9",
+        "@types/shallowequal": "^1.1.5",
         "@typescript-eslint/eslint-plugin": "^4.33.0",
         "aqu": "^0.4.3",
         "clean-publish": "^4.2.0",
@@ -56,6 +57,7 @@
     "dependencies": {
         "@sirse-dev/safe-context": "^0.3.0",
         "nanoid": "^3.3.6",
+        "shallowequal": "^1.1.0",
         "tiny-invariant": "^1.2.0"
     },
     "peerDependencies": {
@@ -63,6 +65,6 @@
     },
     "packageManager": "pnpm@8.6.9",
     "engines": {
-        "node": "18.12.1"
+        "node": "20.11.0"
     }
 }
