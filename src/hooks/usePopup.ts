@@ -55,7 +55,7 @@ export const usePopup = <P, K extends keyof P>(
         }
 
         oldPropsRef.current = props;
-    }, [props, update]);
+    });
 
     return [open, close];
 };
