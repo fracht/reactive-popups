@@ -1,5 +1,6 @@
 import { ComponentType, useCallback, useEffect, useRef } from 'react';
 import { nanoid } from 'nanoid/non-secure';
+import shallowEqual from 'shallowequal';
 
 import { useEvent } from './useEvent';
 import { usePopupsContext } from './usePopupsContext';
@@ -46,9 +47,15 @@ export const usePopup = <P, K extends keyof P>(
         closePopup(popupIdentifier.current);
     }, [closePopup]);
 
+    const oldPropsRef = useRef(props);
+
     useEffect(() => {
-        update(popupIdentifier.current, props);
-    }, [props, update]);
+        if (!shallowEqual(props, oldPropsRef.current)) {
+            update(popupIdentifier.current, props);
+        }
+
+        oldPropsRef.current = props;
+    });
 
     return [open, close];
 };
