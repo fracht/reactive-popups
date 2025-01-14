@@ -2,25 +2,30 @@
     "name": "reactive-popups",
     "version": "0.5.1",
     "description": "Easy popup management with React",
+    "type": "module",
+    "main": "./dist/index.mjs",
+    "types": "./.tsup/declaration/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./.tsup/declaration/index.d.ts",
+            "require": "./dist/index.js",
+            "import": "./dist/index.mjs"
+        }
+    },
     "files": [
-        "dist"
+        "dist",
+        ".tsup"
     ],
     "publishConfig": {
         "directory": "prepared-package"
     },
-    "main": "./dist/index.js",
-    "types": "./dist/reactive-popups.d.ts",
-    "module": "./dist/reactive-popups.esm.js",
     "scripts": {
-        "build": "aqu build",
-        "start": "aqu watch",
-        "lint": "aqu lint",
-        "lint:fix": "aqu lint --fix",
-        "test": "aqu test",
-        "test:watch": "pnpm test -- --watch",
-        "test:coverage": "pnpm test -- --coverage --json --silent --ci --outputFile=\"report.json\"",
-        "test:log-coverage": "pnpm test -- --coverage --silent --ci --coverageReporters=text",
-        "prepublishOnly": "aqu build && rimraf ./prepared-package && clean-publish"
+        "build": "tsup",
+        "start": "tsup --watch",
+        "lint": "eslint .",
+        "test": "vitest",
+        "test:ci": "vitest --run",
+        "prepublishOnly": "pnpm build && rimraf ./prepared-package && clean-publish"
     },
     "repository": {
         "type": "git",
@@ -34,25 +39,30 @@
     },
     "homepage": "https://github.com/fracht/reactive-popups#readme",
     "devDependencies": {
-        "@testing-library/react": "^13.3.0",
-        "@types/jest": "^29.5.1",
-        "@types/react": "^18.0.9",
+        "@eslint/compat": "^1.2.5",
+        "@eslint/eslintrc": "^3.2.0",
+        "@eslint/js": "^9.18.0",
+        "@microsoft/api-extractor": "^7.49.1",
+        "@testing-library/react": "^16.1.0",
+        "@types/react": "^19.0.7",
         "@types/shallowequal": "^1.1.5",
-        "@typescript-eslint/eslint-plugin": "^4.33.0",
-        "aqu": "^0.4.3",
+        "@typescript-eslint/eslint-plugin": "^8.20.0",
+        "@typescript-eslint/parser": "^8.20.0",
         "clean-publish": "^4.2.0",
         "cross-env": "^7.0.3",
-        "eslint": "^7.32.0",
-        "eslint-config-prettier": "^8.5.0",
-        "eslint-plugin-prettier": "^3.4.1",
-        "eslint-plugin-react": "^7.29.4",
-        "eslint-plugin-react-hooks": "^4.4.0",
-        "eslint-plugin-simple-import-sort": "^7.0.0",
-        "jest-environment-jsdom": "^29.5.0",
-        "jest-watch-typeahead": "^2.2.2",
-        "react": "^18.2.0",
+        "eslint": "^9.18.0",
+        "eslint-config-prettier": "^10.0.1",
+        "eslint-plugin-prettier": "^5.2.1",
+        "eslint-plugin-react": "^7.37.4",
+        "eslint-plugin-react-hooks": "^5.1.0",
+        "eslint-plugin-simple-import-sort": "^12.1.1",
+        "jsdom": "^26.0.0",
+        "prettier": "^3.4.2",
+        "react": "^19.0.0",
         "rimraf": "^5.0.5",
-        "typescript": "^4.5.4"
+        "tsup": "^8.3.5",
+        "typescript": "^5.7.3",
+        "vitest": "^2.1.8"
     },
     "dependencies": {
         "@sirse-dev/safe-context": "^0.3.0",
