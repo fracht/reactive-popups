@@ -1,4 +1,4 @@
-import React, { type ComponentType, Fragment, type FunctionComponent } from 'react';
+import React, { type ComponentType, createElement, Fragment, type FunctionComponent, isValidElement } from 'react';
 import { useSafeContext } from '@sirse-dev/safe-context';
 
 import { IdentifierContextProvider } from './IdentifierContext';
@@ -128,6 +128,7 @@ if (import.meta.vitest) {
 			});
 
 			expect(MyGroup.groupId).toBeDefined();
+			expect(isValidElement(createElement(MyGroup)));
 		});
 	});
 }

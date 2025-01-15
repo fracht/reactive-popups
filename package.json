@@ -48,6 +48,7 @@
         "@types/shallowequal": "^1.1.5",
         "@typescript-eslint/eslint-plugin": "^8.20.0",
         "@typescript-eslint/parser": "^8.20.0",
+        "@vitest/coverage-v8": "^2.1.8",
         "clean-publish": "^4.2.0",
         "cross-env": "^7.0.3",
         "eslint": "^9.18.0",
