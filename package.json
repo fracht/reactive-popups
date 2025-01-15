@@ -1,17 +1,10 @@
 {
     "name": "reactive-popups",
-    "version": "0.5.2",
+    "version": "0.5.3",
     "description": "Easy popup management with React",
-    "type": "module",
-    "main": "./dist/index.js",
+    "main": "./dist/index.cjs",
     "types": "./.tsup/declaration/index.d.ts",
-    "exports": {
-        ".": {
-            "types": "./.tsup/declaration/index.d.ts",
-            "require": "./dist/index.cjs",
-            "import": "./dist/index.js"
-        }
-    },
+    "module": "./dist/index.js",
     "files": [
         "dist",
         ".tsup"
