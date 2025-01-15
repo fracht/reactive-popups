@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 
 import { App } from './App';
 import { SnackbarContainer } from './SnackbarContainer';
+import { NestedGroupRoot } from './NestedGroupRoot';
 
 export const SnackbarGroup = createPopupGroup();
 export const DefaultPopupGroup = createPopupGroup();
@@ -22,5 +23,6 @@ root.render(
         <App />
         <SnackbarContainer />
         <Hello />
+        <NestedGroupRoot />
     </PopupsContextProvider>
 );
