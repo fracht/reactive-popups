@@ -3,13 +3,13 @@
     "version": "0.5.1",
     "description": "Easy popup management with React",
     "type": "module",
-    "main": "./dist/index.mjs",
+    "main": "./dist/index.js",
     "types": "./.tsup/declaration/index.d.ts",
     "exports": {
         ".": {
             "types": "./.tsup/declaration/index.d.ts",
-            "require": "./dist/index.js",
-            "import": "./dist/index.mjs"
+            "require": "./dist/index.cjs",
+            "import": "./dist/index.js"
         }
     },
     "files": [
