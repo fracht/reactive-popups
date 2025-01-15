@@ -85,6 +85,6 @@ export default [
 		},
 	},
 	{
-		ignores: ['dist', 'old', 'examples'],
+		ignores: ['dist', 'examples', '.tsup', 'prepared-package'],
 	},
 ];
