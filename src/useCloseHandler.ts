@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useSafeContext } from '@sirse-dev/safe-context';
 
-import { isDefaultPopup } from './DefaultPopup';
 import { useIdentifier } from './IdentifierContext';
 import { PopupsContext } from './PopupsContext';
 
@@ -17,10 +16,8 @@ export const useCloseHandler = (close?: () => void | Promise<void>): (() => void
 	useEffect(() => {
 		const popup = getPopup(popupIdentifier);
 
-		if (popup === null || !isDefaultPopup(popup)) {
-			throw new Error(
-				'`useCloseHandler` hook must be called only from default popups created by `usePopup` or `usePopupsFactory`.',
-			);
+		if (popup === null) {
+			throw new Error('`useCloseHandler` hook must be called only from popups.');
 		}
 
 		if (close) {
