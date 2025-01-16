@@ -94,7 +94,7 @@ export const useResponseHandler = <R>(close?: () => void): ResponseHandler<R> =>
 	useEffect(() => {
 		const popup = getPopup(popupIdentifier);
 
-		if (!isResponsePopup(popup!)) {
+		if (popup === null || !isResponsePopup(popup)) {
 			throw new Error(
 				'`useResponseHandler` hook must be called only from response popups created with `useResponsePopup`.',
 			);
